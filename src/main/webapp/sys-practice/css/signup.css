@@ -1,0 +1,115 @@
+#C {
+    min-height:500px;
+    height:auto;
+    width:100%;
+    background-color:#D5D5D5;
+}
+
+h4{
+    padding-top: 10px;
+/*    text-align: right;*/
+    font-size: 18px;
+    color: blue;
+}
+
+p{
+    padding-top: 20px;
+}
+
+/*.talk{
+        display: flex;
+        flex-direction: column;
+    margin-top: 30px;
+}
+
+.next{
+    margin-top: 30px;
+    text-align: center;
+}*/
+
+
+h2{
+    margin-top: 30px;
+    font-size: 22px;
+    color:indianred;
+}
+
+.centering-ttl-box{
+    width: 100%;
+    padding-left: 15px;
+/*    margin-left: 10px;*/
+    /*    margin: 20px auto 0px;*/
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+
+}
+.centering-ttl{
+    padding-top: 20px;
+    /*    text-align: center;*/
+    /*    width: 92%;*/
+    font-size: 20px;
+    font-weight: bold;
+    /*    position: absolute;*/
+}
+
+.post {
+    margin: 0 auto;
+    width: 60%;
+    padding-top: 20px;
+/*    padding: 10px 30px 70px 90px;*/
+}
+
+.btn-square-so-pop {
+/*  left:150px;*/
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: #FFF;
+  background: #fd9535;/*色*/
+  border-radius: 4px;/*角の丸み*/
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+  font-weight: bold;
+  border: solid 2px #d27d00;/*線色*/
+}
+
+.btn-square-so-pop:active {
+  /*押したとき*/
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+}
+
+.completion{
+    margin-top: 30px;
+    text-align: right;
+}
+
+.text-box{
+    /*    width: calc(100% - 2em);*/
+    width: 100%;
+    margin-top: 10px;
+    outline: 0; /*クリック時の青い枠線消す*/
+    height: 30px; /*検索ボックスの高さ*/
+    padding: 0 10px; /*テキスト位置調整*/
+    border-radius: 2px 0 0 2px; /*検索ボックスの角を丸める*/
+    background: #eee; /*検索ボックスの背景カラー*/
+    padding-top: 3px;
+}
+
+
+ul{
+    position: relative;
+/*    text-align: center;*/
+}
+
+.link{
+    margin-top: 10px;
+}
+
+h4{
+/*    margin-top: 20px;
+    margin-left: 50px;*/
+}
+
+.information{
+    
+}

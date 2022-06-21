@@ -1,0 +1,82 @@
+#main{
+    display:flex;
+}
+
+#C {
+/*    min-height:800px;*/
+    height:auto;
+    width:100%;
+    background-color:#D5D5D5;
+}
+
+h4{
+/*    padding: 10px;*/
+/*    text-align: center;*/
+    font-size: 28px;
+    width: 270px;
+}
+
+.talk{
+    /*    display: flex;
+        flex-direction: column;*/
+/*    margin-top: 20px;*/
+    margin-left: 10px;
+    width: 93%;
+}
+
+.next{
+    margin-top: 30px;
+    text-align: center;
+}
+
+
+h2{
+    margin-top: 30px;
+    font-size: 22px;
+    color:indianred;
+}
+
+.centering-ttl-box{
+    width: 92%;
+    padding-left: 15px;
+    margin-left: 10px;
+    /*    margin: 20px auto 0px;*/
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+
+}
+.centering-ttl{
+    padding-top: 20px;
+    /*    text-align: center;*/
+    /*    width: 92%;*/
+    font-size: 20px;
+    font-weight: bold;
+    /*    position: absolute;*/
+}
+
+.post {
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 40px;
+    /*    padding: 10px 30px 70px 90px;*/
+}
+
+.inner{
+    margin-bottom: 60px;
+}
+
+.name-chat{
+    display: flex;
+    padding-bottom: 20px;
+}
+
+h5{
+/*    padding: 10px;*/
+/*    text-align: center;*/
+    font-size: 28px;
+    margin-left: 20px;
+}
+
+ul > a{
+    
+}
