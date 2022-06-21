@@ -7,7 +7,7 @@
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
-		あなたの好きをここに<br> 私のページ
+		あなたの好きをここに<br>ファミリーマート♪
 	</h1>
 </div>
 
