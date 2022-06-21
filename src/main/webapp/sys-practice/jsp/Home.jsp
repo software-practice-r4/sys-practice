@@ -7,7 +7,7 @@
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
-		あなたの好きをここに<br> 素材提供サイト
+		あなたの好きをここに<br> クラフトボスにげぇ
 	</h1>
 </div>
 
@@ -81,4 +81,3 @@
 
 </body>
 </html>
-
