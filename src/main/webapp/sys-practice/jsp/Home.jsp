@@ -7,7 +7,7 @@
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
-		あなたの好きをここに<br> クラフトボスうめぇ
+		あなたの好きをここに<br> クラフトボスにげぇ
 	</h1>
 </div>
 
