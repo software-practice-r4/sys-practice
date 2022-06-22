@@ -37,38 +37,37 @@
 </html>
 
 <jsp:useBean id="signIn" scope="session" class="sys_practice.SignIn" />
-<%
-    try {
-        signIn.signIn();
-%>
-
-<%
-} catch (Exception e) {
-
-%>
-
-
 <% /* エンコード */
     request.setCharacterEncoding("UTF-8");
 
     /* 変数の宣言　*/
-    String pr_name = "";
+    String email = "";
+    String passWord = "";
 
     /* パラメータの取得 */
     try {
-        if (request.getParameter("pr_name") != null) {
-            pr_name = request.getParameter("pr_name");
+        if (request.getParameter("email") != null) {
+        	email = request.getParameter("email");
+        }
+        if (request.getParameter("passWord") != null) {
+        	passWord = request.getParameter("passWord");
         }
 
-    session.setAttribute("pr_name", pr_name);
+        session.setAttribute("email", email);
+        session.setAttribute("passWord", passWord);
 
-    /* Insertメソッドの実行 */
-        int err = product.insert(pr_name);
+        /* detaloadメソッドの実行 */
+        signIn.signIn(email,passWord);//ID+関数名()
 %>
-
-<% if (err != 0) { %>
-<jsp:forward page="Mypage.jsp" />
-<%} catch (Exception e) {%>
-<jsp:forward page="Signin.jsp" />
-警告
-<%} %>
+     <% if (email == signIn.getEmail(0) && passWord == signIn.getPassWord(0)){ %>
+        <jsp:forward page="Mypage.jsp" />
+     <% } %>
+<%  } catch (Exception e) {
+        if (request.getParameter("email") == null) {
+    	alert("emailが未入力");
+        }
+        if (request.getParameter("passWord") == null) {
+    	alert("passwordが未入力");
+        }%>
+        <jsp:forward page="Signin.jsp" />
+<%  } %>

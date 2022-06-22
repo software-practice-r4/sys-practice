@@ -34,3 +34,46 @@
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
+
+<jsp:useBean id="signUp" scope="session" class="sys_practice.SignUp"/>
+<% /* エンコード */
+    request.setCharacterEncoding("UTF-8");
+
+    /* 変数の宣言　*/
+    String userId = "";
+    String email = "";
+    String passWord = "";
+
+    /* パラメータの取得 */
+    try {
+        if (request.getParameter("userId") != null) {
+        	userId = request.getParameter("userId");
+        }
+        if (request.getParameter("email") != null) {
+        	email = request.getParameter("email");
+        }
+        if (request.getParameter("passWord") != null) {
+        	passWord = request.getParameter("passWord");
+        }
+
+    session.setAttribute("userId", userId);
+    session.setAttribute("email", email);
+    session.setAttribute("passWord", passWord);
+
+    /* Insertメソッドの実行 */
+        int err = signUp.signUp(userId,email,passWord);//ID+関数名()
+%>
+<% if (err != 0) { %>
+<jsp:forward page="Mypage.jsp" />
+<%} catch (Exception e) {
+if (request.getParameter("userId") == null) {
+    	alert("useridが未入力");
+    }
+    if (request.getParameter("email") == null) {
+    	alert("emailが未入力");
+    }
+    if (request.getParameter("passWord") == null) {
+    	alert("passwordが未入力");
+    }%>
+<jsp:forward page="Signup.jsp" />
+<%  } %>
