@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="カート" />
 	<jsp:param name="style" value="cart" />

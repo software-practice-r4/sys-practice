@@ -35,3 +35,40 @@
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
+
+<jsp:useBean id="signIn" scope="session" class="sys_practice.SignIn" />
+<%
+    try {
+        signIn.signIn();
+%>
+
+<%
+} catch (Exception e) {
+
+%>
+
+
+<% /* エンコード */
+    request.setCharacterEncoding("UTF-8");
+
+    /* 変数の宣言　*/
+    String pr_name = "";
+
+    /* パラメータの取得 */
+    try {
+        if (request.getParameter("pr_name") != null) {
+            pr_name = request.getParameter("pr_name");
+        }
+
+    session.setAttribute("pr_name", pr_name);
+
+    /* Insertメソッドの実行 */
+        int err = product.insert(pr_name);
+%>
+
+<% if (err != 0) { %>
+<jsp:forward page="Mypage.jsp" />
+<%} catch (Exception e) {%>
+<jsp:forward page="Signin.jsp" />
+警告
+<%} %>

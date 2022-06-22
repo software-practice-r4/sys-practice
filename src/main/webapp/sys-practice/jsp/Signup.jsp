@@ -15,13 +15,13 @@
                     <ul>
                         <form action="" method="post">
                             <p>
-                                ユーザー名：<br><input type="text" name="user_name" size="40" placeholder="ユーザー名" class="text-box">
+                                ユーザー名：<br><input type="text" name="userId" size="40" placeholder="ユーザー名" class="text-box">
                             </p>
                             <p>
-                                メールアドレス：<br><input type="email" name="mail" size="40" placeholder="メールアドレス" class="text-box">
+                                メールアドレス：<br><input type="email" name="email" size="40" placeholder="メールアドレス" class="text-box">
                             </p>
                             <p>
-                                パスワード：<br><input type="password" name="password" size="40" placeholder="パスワード" class="text-box"><br>
+                                パスワード：<br><input type="password" name="passWord" size="40" placeholder="パスワード" class="text-box"><br>
                             </p>
                     </ul>
                 </div>
