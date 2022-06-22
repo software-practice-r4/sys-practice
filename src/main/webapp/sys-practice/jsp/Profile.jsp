@@ -14,8 +14,9 @@
 				<div class="user-information">
 					<div class="lead-ttl">
 						<h3>
-							テスト太郎さん <a href="Dm-detail.jsp" class="btn-circle-border-double">
-								<i class="fa-solid fa-mailbox"></i>
+							テスト太郎さん
+						    <a href="Dm-detail.jsp" class="btn-circle-border-double">
+								<i class="fa fa-envelope-o"></i>
 							</a>
 						</h3>
 					</div>
