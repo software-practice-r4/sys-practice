@@ -47,33 +47,34 @@
     /* パラメータの取得 */
     try {
         if (request.getParameter("userId") != null) {
-        	userId = request.getParameter("userId");
+            userId = request.getParameter("userId");
         }
         if (request.getParameter("email") != null) {
-        	email = request.getParameter("email");
+            email = request.getParameter("email");
         }
         if (request.getParameter("passWord") != null) {
-        	passWord = request.getParameter("passWord");
+            passWord = request.getParameter("passWord");
         }
 
-    session.setAttribute("userId", userId);
-    session.setAttribute("email", email);
-    session.setAttribute("passWord", passWord);
+        session.setAttribute("userId", userId);
+        session.setAttribute("email", email);
+        session.setAttribute("passWord", passWord);
 
-    /* Insertメソッドの実行 */
-        int err = signUp.signUp(userId,email,passWord);//ID+関数名()
+        /* Insertメソッドの実行 */
+        int err = signUp.signUp(userId, email, passWord);//ID+関数名()
 %>
-<% if (err != 0) { %>
-<jsp:forward page="Mypage.jsp" />
+<%   if (err != 0) { %>
+<jsp:forward page="./../jsp/Mypage.jsp" />
+<%}%>
 <%} catch (Exception e) {
-if (request.getParameter("userId") == null) {
-    	alert("useridが未入力");
+    if (request.getParameter("userId") == null) {
+    	signUp.errorUserId();
     }
     if (request.getParameter("email") == null) {
-    	alert("emailが未入力");
+        signUp.errorEmail();
     }
     if (request.getParameter("passWord") == null) {
-    	alert("passwordが未入力");
+    	signUp.errorPassWord();
     }%>
-<jsp:forward page="Signup.jsp" />
-<%  } %>
+<%--<jsp:forward page="Signup.jsp" />--%>
+<%}%>
