@@ -35,6 +35,7 @@
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
+
 <jsp:useBean id="signIn" scope="session" class="sys_practice.SignIn" />
 <% /* エンコード */
     request.setCharacterEncoding("UTF-8");
@@ -56,9 +57,9 @@
         session.setAttribute("passWord", passWord);
 
         /* detaloadメソッドの実行 */
-        signIn.signIn(email, passWord);//ID+関数名()
+        int err = signIn.signIn(email, passWord);//ID+関数名()
 %>
-<% if (email == signIn.getEmail(0) && passWord == signIn.getPassWord(0)) { %>
+<% if (err != 0) { %>
 <jsp:forward page="./../jsp/Mypage.jsp" />
 <% } %>
 <%  } catch (Exception e) {
@@ -66,7 +67,7 @@
         signIn.errorEmail();
     }
     if (request.getParameter("passWord") == null) {
-    	signIn.errorPassWord();
+        signIn.errorPassWord();
     }%>
 <%--<jsp:forward page="Signin.jsp" />--%>
 <%  }%>
