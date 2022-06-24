@@ -1,3 +1,5 @@
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="トップページ" />
@@ -6,8 +8,9 @@
 
 <div class="intro">
 	<span class="cover"></span>
+	<p><%=user.printHoge() %></p>
 	<h1>
-		あなたの好きをここに<br>hoge
+		あなたの好きをここに<br>クラフトボス最強
 	</h1>
 </div>
 
