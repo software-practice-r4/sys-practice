@@ -10,7 +10,7 @@
     /* パラメータの取得 */
     try {
         if (request.getParameter("displayName") != null) {
-            userId = request.getParameter("displayName");
+        	displayName = request.getParameter("displayName");
         }
         if (request.getParameter("email") != null) {
             email = request.getParameter("email");
