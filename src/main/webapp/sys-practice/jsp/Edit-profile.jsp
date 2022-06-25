@@ -1,4 +1,4 @@
-<jsp:useBean id="editProfile" scope="session" class="sys_practice.EditProfile"/>
+<jsp:useBean id="user" scope="session" class="sys_practice.User"/>
 <% /* エンコード */
     request.setCharacterEncoding("UTF-8");
 
@@ -8,11 +8,12 @@
     String displayName = "";
     String explain = "";
     String icon = "画像予定";
+    String passWord = "";
 
     /* パラメータの取得 */
     try {
-    	if (request.getParameter("email") != null) {
-            email = request.getParameter("email");
+    	if (request.getParameter("userId") != null) {
+    		userId = request.getParameter("userId");
         }
         if (request.getParameter("email") != null) {
             email = request.getParameter("email");
@@ -20,35 +21,27 @@
         if (request.getParameter("displayName") != null) {
         	displayName = request.getParameter("displayName");
         }
+        if (request.getParameter("explain") != null) {
+        	explain = request.getParameter("explain");
+        }
         if (request.getParameter("passWord") != null) {
             passWord = request.getParameter("passWord");
         }
 
+        session.setAttribute("userId", userId);
+		session.setAttribute("email", email);
         session.setAttribute("displayName", displayName);
-        session.setAttribute("email", email);
+        session.setAttribute("explain", explain);
         session.setAttribute("passWord", passWord);
 
-        /* Insertメソッドの実行 */
-        int err = signUp.signUp(displayName, email, passWord);//ID+関数名()
+        /* Updateメソッドの実行 */
+        int err = user.editProfile(userId, email,  displayName, explain, icon, passWord);//ID+関数名()
 %>
 <%   if (err != 0) { %>
 <jsp:forward page="./../jsp/Mypage.jsp" />
 <%}%>
-<%} catch (Exception e) {
-	boolean err_flag = false;
-    if (request.getParameter("displayName") == null) {
-    	//signUp.errorUserId();
-    	err_flag = true;
-    }
-    if (request.getParameter("email") == null) {
-        //signUp.errorEmail();
-    	err_flag = true;
-    }
-    if (request.getParameter("passWord") == null) {
-    	//signUp.errorPassWord();
-    	err_flag = true;
-    }%>
-<%--<jsp:forward page="Signup.jsp" />--%>
+<%} catch (Exception e) {%>
+
 <%}%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
