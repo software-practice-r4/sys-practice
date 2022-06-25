@@ -1,3 +1,51 @@
+<jsp:useBean id="signUp" scope="session" class="sys_practice.SignUp"/>
+<% /* エンコード */
+    request.setCharacterEncoding("UTF-8");
+
+    /* 変数の宣言　*/
+    String displayName = "";
+    String email = "";
+    String passWord = "";
+
+    /* パラメータの取得 */
+    try {
+        if (request.getParameter("displayName") != null) {
+            userId = request.getParameter("displayName");
+        }
+        if (request.getParameter("email") != null) {
+            email = request.getParameter("email");
+        }
+        if (request.getParameter("passWord") != null) {
+            passWord = request.getParameter("passWord");
+        }
+
+        session.setAttribute("displayName", displayName);
+        session.setAttribute("email", email);
+        session.setAttribute("passWord", passWord);
+
+        /* Insertメソッドの実行 */
+        int err = signUp.signUp(displayName, email, passWord);//ID+関数名()
+%>
+<%   if (err != 0) { %>
+<jsp:forward page="./../jsp/Mypage.jsp" />
+<%}%>
+<%} catch (Exception e) {
+	boolean err_flag = false;
+    if (request.getParameter("displayName") == null) {
+    	//signUp.errorUserId();
+    	err_flag = true;
+    }
+    if (request.getParameter("email") == null) {
+        //signUp.errorEmail();
+    	err_flag = true;
+    }
+    if (request.getParameter("passWord") == null) {
+    	//signUp.errorPassWord();
+    	err_flag = true;
+    }%>
+<%--<jsp:forward page="Signup.jsp" />--%>
+<%}%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="サインアップページ" />
@@ -14,8 +62,11 @@
                 <div class="information">
                     <ul>
                         <form action="" method="post">
+                        <%= if(err_flag) %>
+                        	<p class="err-txt">間違ってるよ！あんた</p>
+                        <%= endif; %>
                             <p>
-                                ユーザー名：<br><input type="text" name="userId" size="40" placeholder="ユーザー名" class="text-box">
+                                ユーザー名：<br><input type="text" name="displayName" size="40" placeholder="ユーザー名" class="text-box">
                             </p>
                             <p>
                                 メールアドレス：<br><input type="email" name="email" size="40" placeholder="メールアドレス" class="text-box">
@@ -34,47 +85,3 @@
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
-
-<jsp:useBean id="signUp" scope="session" class="sys_practice.SignUp"/>
-<% /* エンコード */
-    request.setCharacterEncoding("UTF-8");
-
-    /* 変数の宣言　*/
-    String userId = "";
-    String email = "";
-    String passWord = "";
-
-    /* パラメータの取得 */
-    try {
-        if (request.getParameter("userId") != null) {
-            userId = request.getParameter("userId");
-        }
-        if (request.getParameter("email") != null) {
-            email = request.getParameter("email");
-        }
-        if (request.getParameter("passWord") != null) {
-            passWord = request.getParameter("passWord");
-        }
-
-        session.setAttribute("userId", userId);
-        session.setAttribute("email", email);
-        session.setAttribute("passWord", passWord);
-
-        /* Insertメソッドの実行 */
-        int err = signUp.signUp(userId, email, passWord);//ID+関数名()
-%>
-<%   if (err != 0) { %>
-<jsp:forward page="./../jsp/Mypage.jsp" />
-<%}%>
-<%} catch (Exception e) {
-    if (request.getParameter("userId") == null) {
-    	signUp.errorUserId();
-    }
-    if (request.getParameter("email") == null) {
-        signUp.errorEmail();
-    }
-    if (request.getParameter("passWord") == null) {
-    	signUp.errorPassWord();
-    }%>
-<%--<jsp:forward page="Signup.jsp" />--%>
-<%}%>
