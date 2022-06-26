@@ -51,8 +51,7 @@ try {
 	href="../css/start/common.css" />
 <%
 if (!style.equals(""))
-%><link rel="stylesheet"
-	href=<%="../css/" + style + ".css"%>>
+%><link rel="stylesheet" href=<%="../css/" + style + ".css"%>>
 <script src="https://kit.fontawesome.com/313a5a93b1.js"
 	crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -71,25 +70,27 @@ if (!style.equals(""))
 			<div class="head-left">
 				<form method="GET" action="List.jsp" class="search">
 					<input id="sbox" id="s" name="s" type="search"
-						placeholder="キーワードを入力" /> <input id="sbtn"
-						type="submit" value="検索" />
+						placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
+						value="検索" />
 				</form>
 			</div>
 			<div class="head-right">
 				<a href="../jsp/Cart.jsp" class="btn-text-3d"> <img
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
-				</a> <a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
-					class="fa fa-chevron-right"></i>
-					<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-					<c:if err_flag="${err = 0}">
-						ログイン
-					</c:if>--%>
-					<%--<c:if err_flag="${err != 0}">
-						<%= user.getDisplayName(0)%>さん
-					</c:if>--%>
-					ログイン
 				</a>
+				<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+					<c:if err_flag="${err = 0}">--%>
+				<%--<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
+					class="fa fa-chevron-right"></i><%= user.getDisplayName(0)%>さん
+				</a>--%>
+				<%--</c:if>--%>
+				<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+					<c:if err_flag="${err = 0}">--%>
+				<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
+					class="fa fa-chevron-right"></i>ログイン
+				</a>
+				<%--</c:if>--%>
 			</div>
 		</div>
 	</div>
