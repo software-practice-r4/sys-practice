@@ -1,4 +1,4 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.User" />
+<jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
 <% /* エンコード */
     request.setCharacterEncoding("UTF-8");
 
@@ -34,7 +34,7 @@
                 <div class="inner">
                     <div class="information">
 
-                        <h3>君の名前は</h3>
+                        <h3><%= user.getEmail(0)%></h3>
 
                         <div class="completion">
                             <a href="signup.jsp" class="link"><h4>サインインページに戻る</h4></a>
