@@ -1,9 +1,11 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.EditProfile"/>
-<% /* エンコード */
+<%
+/* エンコード */
     request.setCharacterEncoding("UTF-8");
 
     /* 変数の宣言　*/
     String userId = "";
+    String userIdAfter = "";
     String email = "";
     String displayName = "";
     String explain = "";
@@ -12,30 +14,30 @@
 
     /* パラメータの取得 */
     try {
-    	if (request.getParameter("userId") != null) {
-    		userId = request.getParameter("userId");
-        }
-        if (request.getParameter("email") != null) {
-            email = request.getParameter("email");
-        }
-        if (request.getParameter("displayName") != null) {
-        	displayName = request.getParameter("displayName");
-        }
-        if (request.getParameter("explain") != null) {
-        	explain = request.getParameter("explain");
-        }
-        if (request.getParameter("passWord") != null) {
-            passWord = request.getParameter("passWord");
-        }
+    	if (request.getParameter("userIdAfter") != null) {
+    		userIdAfter = request.getParameter("userIdAfter");
+		}
+		if (request.getParameter("email") != null) {
+	email = request.getParameter("email");
+		}
+		if (request.getParameter("displayName") != null) {
+	displayName = request.getParameter("displayName");
+		}
+		if (request.getParameter("explain") != null) {
+	explain = request.getParameter("explain");
+		}
+		if (request.getParameter("userId") != null) {
+	userId = request.getParameter("userId");
+		}
 
-        session.setAttribute("userId", userId);
+		session.setAttribute("userIdAfter", userIdAfter);
 		session.setAttribute("email", email);
-        session.setAttribute("displayName", displayName);
-        session.setAttribute("explain", explain);
-        session.setAttribute("passWord", passWord);
+		session.setAttribute("displayName", displayName);
+		session.setAttribute("explain", explain);
+		session.setAttribute("userId", userId);
 
-        /* Updateメソッドの実行 */
-        int err = user.editProfile(userId, email,  displayName, explain, icon, passWord);//ID+関数名()
+		/* Updateメソッドの実行 */
+		int err = user.editProfile(userIdAfter, email, displayName, explain, icon, userId);//ID+関数名()
 %>
 <%   if (err != 0) { %>
 <jsp:forward page="./../jsp/Mypage.jsp" />
@@ -65,7 +67,7 @@
                             <ul>
                                 <form action="" method="post">
                                     <p>
-                                        ユーザーID：<br><input type="text" name="user_id" size="40" placeholder="ユーザーID" class="text-box">
+                                        ユーザーID：<br><input type="text" name="userIdAfter" size="40" placeholder="ユーザーID" class="text-box">
                                     </p>
                                     <p>
                                         メールアドレス：<br><input type="email" name="mail" size="40" placeholder="メールアドレス" class="text-box">
