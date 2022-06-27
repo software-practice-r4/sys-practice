@@ -16,5 +16,7 @@
 	<classpathentry kind="lib" path="C:/workspace/classpass/taglibs-standard-impl-1.2.5.jar"/>
 	<classpathentry kind="lib" path="C:/workspace/classpass/taglibs-standard-jstlel-1.2.5.jar"/>
 	<classpathentry kind="lib" path="C:/workspace/classpass/taglibs-standard-spec-1.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/workspace/classpass/commons-fileupload-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/workspace/classpass/commons-io-2.4.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
