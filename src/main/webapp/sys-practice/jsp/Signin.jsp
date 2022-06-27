@@ -38,6 +38,7 @@
 <%  }%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="サインインページ" />
 	<jsp:param name="style" value="signin" />
@@ -51,9 +52,9 @@
 		<div class="inner">
 			<form action="./" method="POST">
 				<div class="information">
-					<%= if(err_flag) %>
-					<p class="err-txt">間違ってるよ！あんた</p>
-					<%= endif; %>
+					<c:if test="${err == 0}">
+						<p class="err-txt">入力が足りません</p>
+					</c:if>
 					<ul>
 						<p>
 							メールアドレス：<br> <input type="email" name="mail" size="40"

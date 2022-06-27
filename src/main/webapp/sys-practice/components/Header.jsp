@@ -26,7 +26,18 @@ try {
 if (err != 0) {
 %>
 
+<%
+}
+%>
+<%
+} catch (Exception e) {
+%>
+<%
+}
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%
 String title = "";
 String style = "";
@@ -79,31 +90,19 @@ if (!style.equals(""))
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
 				</a>
-				<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-					<c:if err_flag="${err = 0}">--%>
-				<%--<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
-					class="fa fa-chevron-right"></i><%= user.getDisplayName(0)%>さん
-				</a>--%>
-				<%--</c:if>--%>
-				<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-					<c:if err_flag="${err = 0}">--%>
-				<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
-					class="fa fa-chevron-right"></i>ログイン
-				</a>
-				<%--</c:if>--%>
+				<c:if test="${err != 0}">--%>
+				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
+						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
+					</a>
+				</c:if>
+				<c:if test="${err == 0}">
+					<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
+						class="fa fa-chevron-right"></i>ログイン
+					</a>
+				</c:if>
 			</div>
 		</div>
 	</div>
 </header>
 <body></body>
 </html>
-
-<%
-}
-%>
-<%
-} catch (Exception e) {
-%>
-<%
-}
-%>

@@ -1,4 +1,5 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.Profile" />
+<%--
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
 /* エンコード */
 request.setCharacterEncoding("UTF-8");
@@ -20,6 +21,7 @@ try {
 <%
 if (err != 0) {
 %>
+--%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
@@ -37,7 +39,7 @@ if (err != 0) {
 				<div class="user-information">
 					<div class="lead-ttl">
 						<h3>
-							<%= user.getDisplayName(0)%>
+							<%--<%= user.getDisplayName(0)%>--%>テスト太郎さん
 						    <a href="Dm-detail.jsp" class="btn-circle-border-double">
 								<i class="fa fa-envelope-o"></i>
 							</a>
@@ -45,7 +47,7 @@ if (err != 0) {
 					</div>
 				</div>
 				<p class="txt" style="margin-top: 40px;">
-					<%= user.getExplain(0)%>
+					<%-- <%= user.getExplain(0)%>--%>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
 				</p>
 			</div>
 		</div>
@@ -77,6 +79,7 @@ if (err != 0) {
 </body>
 </html>
 
+<%--
 <%
 }
 %>
@@ -87,3 +90,4 @@ if (err != 0) {
 <%
 }
 %>
+--%>

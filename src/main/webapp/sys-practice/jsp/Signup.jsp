@@ -55,7 +55,9 @@ if (request.getParameter("passWord") == null) {
 }
 %>
 
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="サインアップページ" />
 	<jsp:param name="style" value="signup" />
@@ -69,13 +71,9 @@ if (request.getParameter("passWord") == null) {
 		<div class="information">
 			<ul>
 				<form action="" method="post">
-					<%--<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-					<c:if err_flag="${err = 0}">
-						<p class="err-txt">間違ってるよ！あんた</p>
-					</c:if>--%>
-					<%--<%= if(err_flag) %>
-					<p class="err-txt">間違ってるよ！あんた</p>
-					<%= endif; %>--%>
+					<c:if test="${err == 0}">
+						<p class="err-txt">入力ミス</p>
+					</c:if>
 					<p>
 						ユーザー名：<br> <input type="text" name="displayName" size="40"
 							placeholder="ユーザー名" class="text-box">
