@@ -12,6 +12,8 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+//import javax.servlet.http.*;
+
 import org.apache.tomcat.util.http.fileupload.FileItem;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
@@ -19,13 +21,8 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-//import javax.servlet.*;
-//import javax.servlet.http.*;
-//import org.apache.commons.fileupload.servlet.ServletFileUpload;
-//import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-//import org.apache.commons.fileupload.FileItem;
 
-public class EditProfile {
+public class Profile {
 
 	/* 1. フィールドの定義 */
 	protected String[] userId = new String[100]; //ユーザーID
@@ -39,6 +36,7 @@ public class EditProfile {
 	protected String[] icon = new String[100]; //アイコン
 	protected int[] wallet = new int[100]; //財布
 	protected int num;
+	protected int count;
 
 	private final String dataDir = "C:\\Users\\kuritarou\\git\\sys-practice\\src\\main\\webapp\\sys-practice\\img"; //保存先のパス
 	private final FileDB file = new FileDB();
@@ -49,12 +47,56 @@ public class EditProfile {
 		/* 2.1.1 データベースに接続 */
 		try {
 			num = 0; //取得件数の初期化
+			count = 0;//更新されたテーブルの個数
 			Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
 			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8"; //データベース名：文字エンコードはUTF-8
 			Connection conn = DriverManager.getConnection(url, "softd", "softd"); //上記URL設定でユーザ名とパスワードを使って接続
 
 			/* 2.1.2 UPDATE文の実行 *///
-			String sql = "UPDATE user SET userId=?,email=?,displayName=?,explain=?,icon=? WHERE userId Like ?"; //SQL文の設定 ?などパラメータが必要がない場合は通常のStatementを利用
+			String sql = "UPDATE user SET";
+			if (userId != null) {
+				String sqlUserId = " userId=?";
+				sql = sql.concat(sqlUserId);
+				count += 1;
+			}
+			if (email != null) {
+				if (count > 0) {
+					String sqlComma = ",";
+					sql = sql.concat(sqlComma);
+				}
+				String sqlEmail = " email=?";
+				sql = sql.concat(sqlEmail);
+				count += 1;
+			}
+			if (displayName != null) {
+				if (count > 0) {
+					String sqlComma = ",";
+					sql = sql.concat(sqlComma);
+				}
+				String sqlDisplayName = " displayName=?";
+				sql = sql.concat(sqlDisplayName);
+				count += 1;
+			}
+			if (explain != null) {
+				if (count > 0) {
+					String sqlComma = ",";
+					sql = sql.concat(sqlComma);
+				}
+				String sqlExplain = " explain=?";
+				sql = sql.concat(sqlExplain);
+				count += 1;
+			}
+			if (userId != null) {
+				if (count > 0) {
+					String sqlComma = ",";
+					sql = sql.concat(sqlComma);
+				}
+				String sqlIcon = " icon=?";
+				sql = sql.concat(sqlIcon);
+			}
+			String sqlTerms = " WHERE userId Like ?";
+			sql = sql.concat(sqlTerms);
+
 			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
 			stmt.setString(1, userIdAfter); //1つ目の？に引数をセットする
 			stmt.setString(2, email);

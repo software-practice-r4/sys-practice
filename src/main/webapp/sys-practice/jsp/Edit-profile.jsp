@@ -1,4 +1,4 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.EditProfile" />
+<jsp:useBean id="user" scope="session" class="sys_practice.Profile" />
 <%
 /* エンコード */
 request.setCharacterEncoding("UTF-8");
