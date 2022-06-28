@@ -49,8 +49,8 @@ public class Profile {
 			num = 0; //取得件数の初期化
 			count = 0;//更新されたテーブルの個数
 			Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8"; //データベース名：文字エンコードはUTF-8
-			Connection conn = DriverManager.getConnection(url, "softd", "softd"); //上記URL設定でユーザ名とパスワードを使って接続
+			String url = "jdbc:mysql:/              characterEncoding=UTF-8"; //データベース名：文字エンコードはUTF-8
+			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
 
 			/* 2.1.2 UPDATE文の実行 *///
 			String sql = "UPDATE user SET";

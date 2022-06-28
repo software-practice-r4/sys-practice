@@ -7,6 +7,7 @@ request.setCharacterEncoding("UTF-8");
 String email = "";
 String passWord = "";
 String questionAnswer = "";
+int questionId = 0;
 
 /* パラメータの取得 */
 try {
@@ -16,7 +17,10 @@ try {
 	if (request.getParameter("passWord") != null) {
 		passWord = request.getParameter("passWord");
 	}
-	int questionId = Integer.parseInt(request.getParameter("questionId"));
+	if (request.getParameter("questionId") != null) {
+		questionId = Integer.parseInt(request.getParameter("questionId"));
+	}
+
 	if (request.getParameter("questionAnswer") != null) {
 		questionAnswer = request.getParameter("questionAnswer");
 	}
@@ -84,10 +88,12 @@ if (Integer.parseInt(request.getParameter("questionId")) == 0) {
 						パスワード：<br> <input type="password" name="passWord" size="40"
 							placeholder="パスワード" class="text-box"><br>
 					</p>
-					<p>
-						質問Id：<br> <input type="text" name="questionId" size="40"
-							placeholder="質問Id" class="text-box">
-					</p>
+					<select name="questionId" id="question">
+						<option value="1">卒業した中学校は？</option>
+						<option value="2">卒業した小学校は？</option>
+						<option value="3">好きな食べ物は</option>
+						<option value="4">ほったいもいじんな</option>
+					</select>
 					<p>
 						秘密の質問：<br> <input type="text" name="questionAnswer" size="40"
 							placeholder="秘密の質問" class="text-box"><br>
@@ -97,7 +103,7 @@ if (Integer.parseInt(request.getParameter("questionId")) == 0) {
 		</div>
 		<div class="completion">
 			<input type="submit" class="btn-square-so-pop" value="完了"></input><br>
-			<a href="signin.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
+			<a href="Signin.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
 		</div>
 	</div>
 </div>

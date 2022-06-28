@@ -99,7 +99,7 @@ public class SignUp {
 		}
 	}
 
-	public String getExplain(int i) {
+	public String getExplanation(int i) {
 		if (i >= 0 && num > i) {
 			return explanation[i];
 		} else {
