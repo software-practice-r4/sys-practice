@@ -4,28 +4,30 @@
 request.setCharacterEncoding("UTF-8");
 
 /* 変数の宣言　*/
-String displayName = "";
 String email = "";
 String passWord = "";
+String questionAnswer = "";
 
 /* パラメータの取得 */
 try {
-	if (request.getParameter("displayName") != null) {
-		displayName = request.getParameter("displayName");
-	}
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
 	if (request.getParameter("passWord") != null) {
 		passWord = request.getParameter("passWord");
 	}
+	int questionId = Integer.parseInt(request.getParameter("questionId"));
+	if (request.getParameter("questionAnswer") != null) {
+		questionAnswer = request.getParameter("questionAnswer");
+	}
 
-	session.setAttribute("displayName", displayName);
 	session.setAttribute("email", email);
 	session.setAttribute("passWord", passWord);
+	session.setAttribute("questionId", questionId);
+	session.setAttribute("questionAnswer", questionAnswer);
 
 	/* Insertメソッドの実行 */
-	int err = user.signUp(displayName, email, passWord);//ID+関数名()
+	int err = user.signUp(email, passWord, questionId, questionAnswer);//ID+関数名()
 %>
 <%
 if (err != 0) {
@@ -37,16 +39,16 @@ if (err != 0) {
 <%
 } catch (Exception e) {
 boolean err_flag = false;
-if (request.getParameter("displayName") == null) {
-	//signUp.errorUserId();
+if (request.getParameter("questionAnswer") == null) {
 	err_flag = true;
 }
 if (request.getParameter("email") == null) {
-	//signUp.errorEmail();
 	err_flag = true;
 }
 if (request.getParameter("passWord") == null) {
-	//signUp.errorPassWord();
+	err_flag = true;
+}
+if (Integer.parseInt(request.getParameter("questionId")) == 0) {
 	err_flag = true;
 }
 %>
@@ -71,13 +73,9 @@ if (request.getParameter("passWord") == null) {
 		<div class="information">
 			<ul>
 				<form action="" method="post">
-					<c:if test="${err == 0}">
+					<c:if test="${err_flag == true;}">
 						<p class="err-txt">入力ミス</p>
 					</c:if>
-					<p>
-						ユーザー名：<br> <input type="text" name="displayName" size="40"
-							placeholder="ユーザー名" class="text-box">
-					</p>
 					<p>
 						メールアドレス：<br> <input type="email" name="email" size="40"
 							placeholder="メールアドレス" class="text-box">
@@ -85,6 +83,14 @@ if (request.getParameter("passWord") == null) {
 					<p>
 						パスワード：<br> <input type="password" name="passWord" size="40"
 							placeholder="パスワード" class="text-box"><br>
+					</p>
+					<p>
+						質問Id：<br> <input type="text" name="questionId" size="40"
+							placeholder="質問Id" class="text-box">
+					</p>
+					<p>
+						秘密の質問：<br> <input type="text" name="questionAnswer" size="40"
+							placeholder="秘密の質問" class="text-box"><br>
 					</p>
 				</form>
 			</ul>

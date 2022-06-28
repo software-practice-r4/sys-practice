@@ -50,9 +50,9 @@
 			<h2 class="centering-ttl">ログイン</h2>
 		</div>
 		<div class="inner">
-			<form action="./" method="POST">
+			<form action="" method="POST">
 				<div class="information">
-					<c:if test="${err == 0}">
+					<c:if test="${err_flag == true;}">
 						<p class="err-txt">入力が足りません</p>
 					</c:if>
 					<ul>

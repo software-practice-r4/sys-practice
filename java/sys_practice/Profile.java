@@ -25,15 +25,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class Profile {
 
 	/* 1. フィールドの定義 */
-	protected int[] userIdAfter = new int[100]; //ユーザーID
-	protected int[] userId = new int[100]; //ユーザーID
-	protected String[] email = new String[50]; //eメール
-	protected String[] passWord = new String[20]; //パスワード
-	protected String[] displayName = new String[50];//表示名
+	protected String[] userId = new String[100]; //ユーザーID
+	protected String[] userIdAfter = new String[100]; //ユーザーID
+	protected String[] email = new String[100]; //eメール
+	protected String[] passWord = new String[100]; //パスワード
+	protected String[] displayName = new String[100];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] answer = new String[50];//秘密の質問の応え
-	protected String[] explanation = new String[100];//自己紹介文
-	protected String[] icon = new String[50]; //アイコン
+	protected String[] answer = new String[100];//秘密の質問の応え
+	protected String[] explain = new String[100];//自己紹介文
+	protected String[] icon = new String[100]; //アイコン
 	protected int[] wallet = new int[100]; //財布
 	protected int num;
 	protected int count;
@@ -42,7 +42,7 @@ public class Profile {
 	private final FileDB file = new FileDB();
 
 	/*プロフィール編集*/
-	public int editProfile(int userIdAfter, String email, String displayName, String explain, String icon,
+	public int editProfile(String userIdAfter, String email, String displayName, String explain, String icon,
 			String userId) throws Exception { //エラー処理が必要にする
 		/* 2.1.1 データベースに接続 */
 		try {
@@ -54,8 +54,11 @@ public class Profile {
 
 			/* 2.1.2 UPDATE文の実行 *///
 			String sql = "UPDATE user SET";
-
-
+			if (userId != null) {
+				String sqlUserId = " userId=?";
+				sql = sql.concat(sqlUserId);
+				count += 1;
+			}
 			if (email != null) {
 				if (count > 0) {
 					String sqlComma = ",";
@@ -95,7 +98,7 @@ public class Profile {
 			sql = sql.concat(sqlTerms);
 
 			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-			stmt.setInt(1, userIdAfter);
+			stmt.setString(1, userIdAfter); //1つ目の？に引数をセットする
 			stmt.setString(2, email);
 			stmt.setString(3, displayName);
 			stmt.setString(4, explain);
