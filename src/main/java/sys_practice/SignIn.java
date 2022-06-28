@@ -123,21 +123,14 @@ public class SignIn {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* SELECT文の実行 */
-			String sql = "UPDATE user SET passWord='qwerty' WHERE questionId Like ? and email Like ?";
+			/* Update文の実行 */
+			String sql = "UPDATE user SET passWord='qwerty' WHERE questionAnswer Like ? and email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, questionAnswer);
 			stmt.setString(2, email);
 			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
+			stmt.executeUpdate();
 
-			while (rs.next()) {
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionTitle[num] = rs.getString("questionTitle");
-				num++;
-			}
-
-			rs.close();
 			stmt.close();
 			conn.close();
 			return num;

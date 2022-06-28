@@ -101,7 +101,7 @@ if (request.getParameter("questionAnswer") == null) {
 	err_flag = true;
 }
 %>
-<%--<jsp:forward page="Signin.jsp" />--%>
+
 <%
 }
 %>
