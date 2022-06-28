@@ -218,7 +218,7 @@ public class EditProfile {
 					}
 				}
 			} // ファイル名をデータベースに登録する
-			file.insert(icon);
+			icon.insert(icon);
 
 			// ファイル名をデータベースに登録する
 			if (!uploaded) {
@@ -232,5 +232,5 @@ public class EditProfile {
 		}
 
 	}
-
+	//---------------------------------------------------------
 }
