@@ -1,6 +1,5 @@
 package sys_practice;
 
-//SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,14 +7,13 @@ import java.sql.ResultSet;
 
 public class SignIn {
 
-	/* 1. フィールドの定義 */
-	protected int[] userId = new int[100]; //ユーザーID
+	protected int[] userId = new int[100];//ユーザーID
 	protected String[] email = new String[50]; //eメール
 	protected String[] passWord = new String[20]; //パスワード
 	protected String[] displayName = new String[50];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] questionTitle = new String[50];//秘密の質問の応え
-	protected String[] questionAnswer = new String[50];//秘密の質問の応え
+	protected String[] questionTitle = new String[50];//秘密の質問の質問内容
+	protected String[] questionAnswer = new String[50];//秘密の質問に対する答え
 	protected String[] explanation = new String[100];//自己紹介文
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
@@ -65,7 +63,7 @@ public class SignIn {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* 2.1.2 SELECT文の実行 */
+			/* SELECT文の実行 */
 			String sql = "SELECT questionId,questionAnswer FROM  user WHERE email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
@@ -138,7 +136,6 @@ public class SignIn {
 			return 0;
 		}
 	}
-
 
 	/* アクセッサ */
 	public int getUserId(int i) {
@@ -222,7 +219,7 @@ public class SignIn {
 	}
 
 	public int getNum() {
-		return num; // データ件数
+		return num;
 	}
 
 }

@@ -2,7 +2,7 @@
 <%
 request.setCharacterEncoding("UTF-8");
 
-int questionId = 0;
+int questionId = 0;//多分取れてない
 
 try {
 	if (request.getParameter("questionId") != null) {
@@ -72,7 +72,7 @@ try {
 request.setCharacterEncoding("UTF-8");
 
 String questionAnswer = "";
-String email = "";
+String email = "";//取れてるかわからない
 
 try {
 	if (request.getParameter("questionAnswer") != null) {

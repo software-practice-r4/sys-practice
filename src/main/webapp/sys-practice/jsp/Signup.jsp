@@ -1,15 +1,12 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.SignUp" />
 <%
-/* エンコード */
 request.setCharacterEncoding("UTF-8");
 
-/* 変数の宣言　*/
 String email = "";
 String passWord = "";
 String questionAnswer = "";
-int questionId = 0;
+int questionId = 0;//多分取り方が合ってない
 
-/* パラメータの取得 */
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
@@ -30,13 +27,12 @@ try {
 	session.setAttribute("questionId", questionId);
 	session.setAttribute("questionAnswer", questionAnswer);
 
-	/* Insertメソッドの実行 */
 	int err = user.signUp(email, passWord, questionId, questionAnswer);//ID+関数名()
 %>
 <%
 if (err != 0) {
 %>
-<jsp:forward page="./../jsp/Mypage.jsp" />
+<jsp:forward page="Mypage.jsp" />
 <%
 }
 %>
@@ -52,11 +48,8 @@ if (request.getParameter("email") == null) {
 if (request.getParameter("passWord") == null) {
 	err_flag = true;
 }
-if (Integer.parseInt(request.getParameter("questionId")) == 0) {
-	err_flag = true;
-}
 %>
-<%--<jsp:forward page="Signup.jsp" />--%>
+
 <%
 }
 %>

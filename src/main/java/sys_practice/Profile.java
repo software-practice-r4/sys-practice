@@ -24,37 +24,31 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class Profile {
 
-	/* 1. フィールドの定義 */
-	protected int[] userIdAfter = new int[100]; //ユーザーID
 	protected int[] userId = new int[100]; //ユーザーID
 	protected String[] email = new String[50]; //eメール
 	protected String[] passWord = new String[20]; //パスワード
 	protected String[] displayName = new String[50];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] answer = new String[50];//秘密の質問の応え
+	protected String[] questionAnswer = new String[50];//秘密の質問の応え
 	protected String[] explanation = new String[100];//自己紹介文
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
 	protected int num;
 	protected int count;
 
-	private final String dataDir = "C:\\Users\\kuritarou\\git\\sys-practice\\src\\main\\webapp\\sys-practice\\img"; //保存先のパス
+	private final String dataDir = "C:\\Users\\kuritarou\\git\\sys-practice\\src\\main\\webapp\\sys-practice\\img";
 	private final FileDB file = new FileDB();
 
-	/*プロフィール編集*/
-	public int editProfile(int userIdAfter, String email, String displayName, String explain, String icon,
-			String userId) throws Exception { //エラー処理が必要にする
-		/* 2.1.1 データベースに接続 */
+	public int editProfile(String email, String displayName, String explain, String icon, int userId) throws Exception {
 		try {
-			num = 0; //取得件数の初期化
-			count = 0;//更新されたテーブルの個数
-			Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8"; //データベース名：文字エンコードはUTF-8
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
+			num = 0;
+			count = 0;
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
+			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* 2.1.2 UPDATE文の実行 *///
+			/* UPDATE文の実行 */
 			String sql = "UPDATE user SET";
-
 
 			if (email != null) {
 				if (count > 0) {
@@ -79,33 +73,22 @@ public class Profile {
 					String sqlComma = ",";
 					sql = sql.concat(sqlComma);
 				}
-				String sqlExplain = " explain=?";
-				sql = sql.concat(sqlExplain);
+				String sqlExplanation = " explain=?";
+				sql = sql.concat(sqlExplanation);
 				count += 1;
-			}
-			if (userId != null) {
-				if (count > 0) {
-					String sqlComma = ",";
-					sql = sql.concat(sqlComma);
-				}
-				String sqlIcon = " icon=?";
-				sql = sql.concat(sqlIcon);
 			}
 			String sqlTerms = " WHERE userId Like ?";
 			sql = sql.concat(sqlTerms);
 
-			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-			stmt.setInt(1, userIdAfter);
-			stmt.setString(2, email);
-			stmt.setString(3, displayName);
-			stmt.setString(4, explain);
-			stmt.setString(5, icon);
-			stmt.setString(6, userId);
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setString(2, displayName);
+			stmt.setString(3, explain);
+			stmt.setString(4, icon);
+			stmt.setInt(5, userId);
 
-			/* 2.3.3 実行 */
 			stmt.executeUpdate();
 
-			/* 2.5 データベースからの切断 */
 			stmt.close();
 			conn.close();
 			return num;
@@ -114,13 +97,12 @@ public class Profile {
 		}
 	}
 
-	/* 3. アクセッサ */
-	/* 3.1 Getアクセッサ */
-	public String getUserId(int i) {
+	/* アクセッサ */
+	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {
-			return "";
+			return 0;
 		}
 	}
 
@@ -156,17 +138,17 @@ public class Profile {
 		}
 	}
 
-	public String Answer(int i) {
+	public String getQuestionAnswer(int i) {
 		if (i >= 0 && num > i) {
-			return answer[i];
+			return questionAnswer[i];
 		} else {
 			return "";
 		}
 	}
 
-	public String getExplain(int i) {
+	public String getExplanation(int i) {
 		if (i >= 0 && num > i) {
-			return explain[i];
+			return explanation[i];
 		} else {
 			return "";
 		}
@@ -189,7 +171,7 @@ public class Profile {
 	}
 
 	public int getNum() {
-		return num; // データ件数
+		return num;
 	}
 
 	//----------------------------------------

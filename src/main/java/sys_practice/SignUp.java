@@ -1,13 +1,11 @@
 package sys_practice;
 
-//SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 public class SignUp {
 
-	/* 1. フィールドの定義 */
 	protected int[] userId = new int[100]; //ユーザーID
 	protected String[] email = new String[50]; //eメール
 	protected String[] passWord = new String[20]; //パスワード
@@ -19,28 +17,23 @@ public class SignUp {
 	protected int[] wallet = new int[100]; //財布
 	protected int num;
 
-	/* サインアップ */
 	public int signUp(String email, String passWord, int questionId, String questionAnswer) {
-		int num = 0; //登録件数のカウント
+		int num = 0;
 		try {
-			/* 2.2.1 データベースに接続 */
-			Class.forName("com.mysql.jdbc.Driver").newInstance(); // SELECTの時と同じ
-			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "softd", "softd");
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
+			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
+			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* 2.2.2 INSERT文の実行 */
-			String sql = "INSERT INTO user (email,passWord,questionId,questionAnswer) VALUES (?,?,?,?)"; //SQL文の設定 INSERTはパラメータが必要なことが多い
-			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
+			/* INSERT文の実行 */
+			String sql = "INSERT INTO user (email,passWord,questionId,questionAnswer) VALUES (?,?,?,?)";
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setString(2, passWord);
 			stmt.setInt(3, questionId);
 			stmt.setString(4, questionAnswer);
 
-
-			/* 2.2.3 実行（UpdateやDeleteも同じメソッドを使う） */
 			num = stmt.executeUpdate();
 
-			/* 2.2.4 データベースからの切断 */
 			stmt.close();
 			conn.close();
 			return num;
@@ -49,8 +42,7 @@ public class SignUp {
 		}
 	}
 
-	/* 3. アクセッサ */
-	/* 3.1 Getアクセッサ */
+	/*アクセッサ */
 	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];
@@ -124,7 +116,7 @@ public class SignUp {
 	}
 
 	public int getNum() {
-		return num; // データ件数
+		return num;
 	}
 
 }
