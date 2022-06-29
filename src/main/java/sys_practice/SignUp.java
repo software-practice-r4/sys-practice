@@ -18,7 +18,7 @@ public class SignUp {
 	protected int num;
 
 	public int signUp(String email, String passWord, int questionId, String questionAnswer) {
-		int num = 0;
+		int num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";

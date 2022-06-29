@@ -20,7 +20,7 @@ public class SignIn {
 	protected int num;
 
 	public int signIn(String email, String passWord) throws Exception {
-		num = 0;
+		num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
@@ -56,7 +56,7 @@ public class SignIn {
 	}
 
 	public int requestQuestionId(String email) throws Exception {
-		num = 0;
+		num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
@@ -84,7 +84,7 @@ public class SignIn {
 	}
 
 	public int requestQuestionTitle(int questionId) throws Exception {
-		num = 0;
+		num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
@@ -112,7 +112,6 @@ public class SignIn {
 	}
 
 	public int resetPassWord(String questionAnswer, String email, String passWord) throws Exception {
-		num = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";

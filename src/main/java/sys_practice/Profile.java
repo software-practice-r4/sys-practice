@@ -40,9 +40,9 @@ public class Profile {
 	private final FileDB file = new FileDB();
 
 	public int editProfile(String email, String displayName, String explain, String icon, int userId) throws Exception {
+		num = 0; //取得件数の初期化
+		count = 0;//更新されたテーブルの個数
 		try {
-			num = 0;
-			count = 0;
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
