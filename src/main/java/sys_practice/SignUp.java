@@ -24,7 +24,6 @@ public class SignUp {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* INSERT文の実行 */
 			String sql = "INSERT INTO user (email,passWord,questionId,questionAnswer) VALUES (?,?,?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);

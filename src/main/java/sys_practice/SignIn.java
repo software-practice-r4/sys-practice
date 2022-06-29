@@ -26,7 +26,6 @@ public class SignIn {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/*SELECT文の実行 */
 			String sql = "SELECT * FROM  user WHERE email Like ? AND passWord Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
@@ -63,7 +62,6 @@ public class SignIn {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* SELECT文の実行 */
 			String sql = "SELECT questionId,questionAnswer FROM  user WHERE email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
@@ -92,7 +90,6 @@ public class SignIn {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* SELECT文の実行 */
 			String sql = "SELECT * FROM  question WHERE questionId Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, questionId);
@@ -114,18 +111,18 @@ public class SignIn {
 		}
 	}
 
-	public int resetPassWord(String questionAnswer, String email) throws Exception {
+	public int resetPassWord(String questionAnswer, String email, String passWord) throws Exception {
 		num = 0;
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* Update文の実行 */
-			String sql = "UPDATE user SET passWord='qwerty' WHERE questionAnswer Like ? and email Like ?";
+			String sql = "UPDATE user SET passWord Like ? WHERE questionAnswer Like ? and email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, questionAnswer);
-			stmt.setString(2, email);
+			stmt.setString(1, passWord);
+			stmt.setString(2, questionAnswer);
+			stmt.setString(3, email);
 			stmt.setMaxRows(100);
 			stmt.executeUpdate();
 

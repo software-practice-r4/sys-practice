@@ -47,7 +47,6 @@ public class Profile {
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			/* UPDATE文の実行 */
 			String sql = "UPDATE user SET";
 
 			if (email != null) {

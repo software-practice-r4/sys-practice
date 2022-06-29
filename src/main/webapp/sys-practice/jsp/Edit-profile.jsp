@@ -14,9 +14,6 @@ String passWord = "";
 
 /* パラメータの取得 */
 try {
-	if (request.getParameter("userIdAfter") != null) {
-		userIdAfter = request.getParameter("userIdAfter");
-	}
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
@@ -74,7 +71,7 @@ if (err != 0) {
 						<form action="" method="post">
 							<p>
 								ユーザーID：<br>
-								<input type="text" name="userIdAfter" size="40"
+								<input type="text" name="userId" size="40"
 									placeholder="ユーザーID" class="text-box">
 							</p>
 							<p>
