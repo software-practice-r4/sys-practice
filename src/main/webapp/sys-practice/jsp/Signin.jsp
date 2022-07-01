@@ -60,7 +60,7 @@ if (request.getParameter("passWord") == null) {
 					</c:if>
 					<ul>
 						<p>
-							メールアドレス：<br> <input type="email" name="mail" size="40"
+							メールアドレス：<br> <input type="email" name="email" size="40"
 								placeholder="メールアドレス" class="text-box">
 						</p>
 						<p>

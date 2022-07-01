@@ -1,26 +1,8 @@
 package sys_practice;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-
-//import javax.servlet.http.*;
-
-import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
-import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
-
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 
 public class Profile {
 
@@ -33,11 +15,8 @@ public class Profile {
 	protected String[] explanation = new String[100];//自己紹介文
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
-	protected int num;
-	protected int count;
-
-	private final String dataDir = "C:\\Users\\kuritarou\\git\\sys-practice\\src\\main\\webapp\\sys-practice\\img";
-	private final FileDB file = new FileDB();
+	protected int num;//データ取得件数
+	protected int count;//更新されたデータの数
 
 	public int editProfile(String email, String displayName, String explain, String icon, int userId) throws Exception {
 		num = 0; //取得件数の初期化
@@ -172,85 +151,4 @@ public class Profile {
 	public int getNum() {
 		return num;
 	}
-
-	//----------------------------------------
-	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		response.setContentType("text/html;charset=UTF-8");
-		//エラーを表示するHTMLの出力
-		try (PrintWriter out = response.getWriter()) {
-			out.println("<html>");
-			out.println("<head><title>エラー表示</title></head>");
-			out.println("<body><article>画像アップロード時にエラーが発生しました</article></body>");
-			out.println("</html>");
-		}
-	}
-
-	@Override
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
-		//文字コード等　基本設定
-		response.setContentType("text/html; charset=UTF-8");
-		request.setCharacterEncoding("UTF-8");
-
-		// アップロードの可否
-		boolean uploaded = false;
-
-		// 時刻の取得　ファイルの元ファイル名に時刻を追加するため
-		Date date = new Date();
-		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss_");
-		String time = df.format(date); //現在の時刻を上記フォーマットに変換する
-
-		// ファイル取得設定
-		File dataDirFile = new File(dataDir); //保存先ディレクトリの設定
-		DiskFileItemFactory dfi = new DiskFileItemFactory(); // fileuploadのファイル作成オブジェクト
-		dfi.setRepository(dataDirFile); // 一時ファイルの保存先フォルダ
-		dfi.setSizeThreshold(1024); // バッファサイズ
-		ServletFileUpload sfu = new ServletFileUpload(dfi); // fileuploadのサーブレット関連オブジェクト
-		sfu.setHeaderEncoding("UTF-8");
-		sfu.setSizeMax(-1); // アップロードファイルの最大サイズ（-1は無限）
-
-		// *** ファイルやPostデータの取得 *****
-		try {
-			// アップロードされたファイル情報をFileItemオブジェクトのリストとして取得
-			List objLst = sfu.parseRequest(request);
-			Iterator objItr = objLst.iterator();
-			// リストから順にファイルデータを取り出し保存
-			while (objItr.hasNext()) {
-				FileItem objFi = (FileItem) objItr.next(); //fileuploadのファイル関連オブジェクト
-				//フォームフィールドの場合
-				if (objFi.isFormField()) {
-					String name = objFi.getFieldName();
-					String value = objFi.getString(request.getCharacterEncoding());
-					// if (name.equals("postされてきたパラメータ名")) {
-					// フィールド変数 = value;
-					//}
-					//ファイルデータの場合
-				} else {
-					icon = objFi.getName();
-					// ディレクトリ名などを取り除く
-					icon = icon.replaceAll("^.*[^A-Za-z0-9_\\-\\.]", "");
-					if (icon != null && !icon.equals("")) {
-						uploaded = true; //ファイル名が取得できるかどうか
-						icon = time + icon;
-						objFi.write(new File(dataDir + "/" + icon));
-					}
-				}
-			} // ファイル名をデータベースに登録する
-			icon.insert(icon);
-
-			// ファイル名をデータベースに登録する
-			if (!uploaded) {
-				processRequest(request, response); //エラー表示
-			} else {
-				// 次の一覧表示ページへ転送する
-				response.sendRedirect("./../jsp/Profile.jsp");
-			}
-		} catch (Exception e) {
-			processRequest(request, response); //エラー表示
-		}
-
-	}
-	//---------------------------------------------------------
 }

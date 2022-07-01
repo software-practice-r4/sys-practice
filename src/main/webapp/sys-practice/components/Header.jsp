@@ -16,8 +16,8 @@ try {
 		passWord = request.getParameter("passWord");
 	}
 
-	//session.setAttribute("email", email);
-	//session.setAttribute("passWord", passWord);
+	session.setAttribute("email", email);
+	session.setAttribute("passWord", passWord);
 
 	/* detaloadメソッドの実行 */
 	int err = user.signIn(email, passWord);//ID+関数名()

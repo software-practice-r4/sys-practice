@@ -15,7 +15,7 @@ public class SignUp {
 	protected String[] explanation = new String[100];//自己紹介文
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
-	protected int num;
+	protected int num;//データ取得件数
 
 	public int signUp(String email, String passWord, int questionId, String questionAnswer) {
 		int num = 0;//取得件数の初期化

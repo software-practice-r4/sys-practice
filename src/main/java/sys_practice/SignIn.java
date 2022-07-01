@@ -17,7 +17,7 @@ public class SignIn {
 	protected String[] explanation = new String[100];//自己紹介文
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
-	protected int num;
+	protected int num;//データ取得件数
 
 	public int signIn(String email, String passWord) throws Exception {
 		num = 0;//取得件数の初期化
@@ -112,6 +112,7 @@ public class SignIn {
 	}
 
 	public int resetPassWord(String questionAnswer, String email, String passWord) throws Exception {
+		num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
