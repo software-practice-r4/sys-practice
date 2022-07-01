@@ -9,19 +9,15 @@ try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
-	if (request.getParameter("passWord") != null) {
-		passWord = request.getParameter("passWord");
-	}
 
 	session.setAttribute("email", email);
-	session.setAttribute("passWord", passWord);
 
-	int err = user.signIn(email, passWord);
+	int err = user.requestQuestionId(email);
 %>
 <%
 if (err != 0) {
 %>
-<jsp:forward page="Mypage.jsp" />
+<jsp:forward page="Secret-question.jsp" />
 <%
 }
 %>
@@ -31,11 +27,8 @@ boolean err_flag = false;
 if (request.getParameter("email") == null) {
 	err_flag = true;
 }
-if (request.getParameter("passWord") == null) {
-	err_flag = true;
-}
 %>
-
+<%--<jsp:forward page="Signin.jsp" />--%>
 <%
 }
 %>
@@ -43,7 +36,7 @@ if (request.getParameter("passWord") == null) {
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="サインインページ" />
+	<jsp:param name="title" value="ひみつの質問リクエストページ" />
 	<jsp:param name="style" value="signin" />
 </jsp:include>
 
@@ -63,15 +56,9 @@ if (request.getParameter("passWord") == null) {
 							メールアドレス：<br> <input type="email" name="email" size="40"
 								placeholder="メールアドレス" class="text-box">
 						</p>
-						<p>
-							パスワード：<br> <input type="password" name="password" size="40"
-								placeholder="パスワード" class="text-box"><br> <a
-								href="Request-email.jsp" class="link"><h3>パスワードをお忘れですか？</h3></a>
-						</p>
 					</ul>
 					<div class="completion">
 						<input type="submit" class="btn-square-so-pop" value="完了"><br>
-						<a href="Signup.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
 					</div>
 				</div>
 			</form>
