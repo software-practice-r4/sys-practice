@@ -3,20 +3,20 @@
 request.setCharacterEncoding("UTF-8");
 
 String email = "";
-String passWord = "";
+String password = "";
 
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
-	if (request.getParameter("passWord") != null) {
-		passWord = request.getParameter("passWord");
+	if (request.getParameter("password") != null) {
+		password = request.getParameter("password");
 	}
 
 	session.setAttribute("email", email);
-	session.setAttribute("passWord", passWord);
+	session.setAttribute("password", password);
 
-	int err = user.signIn(email, passWord);
+	int err = user.signIn(email, password);
 %>
 <%
 if (err != 0) {
@@ -31,7 +31,7 @@ boolean err_flag = false;
 if (request.getParameter("email") == null) {
 	err_flag = true;
 }
-if (request.getParameter("passWord") == null) {
+if (request.getParameter("password") == null) {
 	err_flag = true;
 }
 %>
