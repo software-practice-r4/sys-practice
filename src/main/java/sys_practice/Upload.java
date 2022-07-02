@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Upload {
-	/* 1. フィールドの定義 */
 	protected String[] materialName = new String[100]; //タイトル
 	protected int price; //価格
 	protected String[] thumbnail = new String[70]; //サムネイル
@@ -16,64 +16,70 @@ public class Upload {
 	protected String[] category =  new String[10]; //カテゴリ
 	protected String[] fileName = new String[100]; //ファイル名
 
-	/* 2.2 データベースへのインサートメソッド */
+	/* AWSの接続 */
+	private static Connection getRemoteConnection() throws SQLException {
+	    if (System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com") != null) {
+	      try {
+	      Class.forName("org.postgresql.Driver");
+	      String dbName = System.getenv("eddb");
+	      String userName = System.getenv("admin");
+	      String password = System.getenv("AraikenR4!");
+	      String hostname = System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com");
+	      String port = System.getenv("3306");
+	      String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
+	      Connection con = DriverManager.getConnection(jdbcUrl);
+	      return con;
+	    }
+	    catch (ClassNotFoundException e) {}
+	    catch (SQLException e) {}
+	    }
+	    return null;
+	  }
+	
+	
 	public void uploadMaterial(String materialName, String explanation, int price, String category, String thumbnail, String fileName,  int categoryId, int providerId) throws Exception {
-	    if(categoryId == 0) {
-	    	/* 2.2.1 データベースに接続 */
-		    Class.forName("com.mysql.jdbc.Driver").newInstance();
-		    String url = "jdbc:mysql://localhost/softd1?characterEncoding=UTF-8";
-		    Connection conn = DriverManager.getConnection(url, "softd", "softd");
+		
+		/* categoryIdでその他が選択されているとき */
+		if(categoryId == 0) {
 
-		    /* 2.2.2 INSERT文の実行 */
-		    String sql = "INSERT INTO Category (categoryName) VALUES (?)";
-		    PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-		    stmt.setString(1, category); //1つ目の？に引数をセットする
-
-		    /* 2.2.3 実行（UpdateやDeleteも同じメソッドを使う） */
+			Connection con = getRemoteConnection();
+			
+		    /* categoryに新規カテゴリを追加 */
+		    String sql = "INSERT INTO category (categoryName) VALUES (?)";
+		    PreparedStatement stmt = con.prepareStatement(sql);
+		    stmt.setString(1, category);
 		    stmt.executeUpdate();
 
-		    /* データベースからの切断 */
 		    stmt.close();
-		    conn.close();
 
-
-		    /* データベースに接続 */
-		    Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-		    Connection conn2 = DriverManager.getConnection(url, "softd", "softd"); //上記URL設定でユーザ名とパスワードを使って接続
-
-		    /* 2.1.2 SELECT文の実行 */ String sql2 = "SELECT categoryId FROM category WHERE categoryName = ?"; //SQL文の設定 ?などパラメータが必要がない場合は通常のStatementを利用
-		    PreparedStatement stmt2 = conn2.prepareStatement(sql2); //JDBCのステートメント（SQL文）の作成
-		    stmt2.setString(1, category); //1つ目の？に引数をセットする
-		    ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
-		    /* 結果の取り出しと表示 */
+		    
+		    /* 新規カテゴリのIDをcategoryから取り出し */
+		    String sql2 = "SELECT categoryId FROM category WHERE categoryName = ?";
+		    PreparedStatement stmt2 = con.prepareStatement(sql2);
+		    stmt2.setString(1, category);
+		    ResultSet rs = stmt.executeQuery();
 		    categoryId = rs.getInt("categoryId");
 
-		    /* データベースからの切断 */
 		    rs.close();
 		    stmt2.close();
-		    conn.close();
+		    con.close();
 	    }
 
-		/* データベースに接続 */
-	    Class.forName("com.mysql.jdbc.Driver").newInstance();
-	    String url = "jdbc:mysql://localhost/softd1?characterEncoding=UTF-8";
-	    Connection conn = DriverManager.getConnection(url, "softd", "softd");
-
-	    /* INSERT文の実行 */
+		/* Materialへ素材を追加 */
+		Connection con = getRemoteConnection();
+		
 	    String sql = "INSERT INTO Material (materialName,price,thumbnail,categoryId,providerId,explanation) VALUES (?,?,?,?,?,?,?)";
-	    PreparedStatement stmt = conn.prepareStatement(sql); //SQL文の作成
-	    stmt.setString(1, materialName); //1つ目の？に引数をセットする
-	    stmt.setInt(2, price); //2つ目の？に引数をセットする
-	    stmt.setString(3, thumbnail); //3つ目の？に引数をセットする
-	    stmt.setInt(4, categoryId); //4つ目の？に引数をセットする
-	    stmt.setInt(5, providerId); //5つ目の？に引数をセットする
-	    stmt.setString(6, explanation); //6つ目の？に引数をセットする
+	    PreparedStatement stmt3 = con.prepareStatement(sql);
+	    stmt3.setString(1, materialName);
+	    stmt3.setInt(2, price);
+	    stmt3.setString(3, thumbnail);
+	    stmt3.setInt(4, categoryId);
+	    stmt3.setInt(5, providerId);
+	    stmt3.setString(6, explanation);
 
-	    /* 実行 */
-	    stmt.executeUpdate();
+	    stmt3.executeUpdate();
 
-	    /* データベースからの切断 */
-	    stmt.close();
-	    conn.close();
+	    stmt3.close();
+	    con.close();
 	}
 }
