@@ -35,29 +35,29 @@ public class Upload {
 	    }
 	    return null;
 	  }
-	
-	
+
+
 	public void uploadMaterial(String materialName, String explanation, int price, String category, String thumbnail, String fileName,  int categoryId, int providerId) throws Exception {
-		
+
 		/* categoryIdでその他が選択されているとき */
 		if(categoryId == 0) {
 
 			Connection con = getRemoteConnection();
-			
+
 		    /* categoryに新規カテゴリを追加 */
 		    String sql = "INSERT INTO category (categoryName) VALUES (?)";
-		    PreparedStatement stmt = con.prepareStatement(sql);
-		    stmt.setString(1, category);
-		    stmt.executeUpdate();
+		    PreparedStatement stmt1 = con.prepareStatement(sql);
+		    stmt1.setString(1, category);
+		    stmt1.executeUpdate();
 
-		    stmt.close();
+		    stmt1.close();
 
-		    
+
 		    /* 新規カテゴリのIDをcategoryから取り出し */
 		    String sql2 = "SELECT categoryId FROM category WHERE categoryName = ?";
 		    PreparedStatement stmt2 = con.prepareStatement(sql2);
 		    stmt2.setString(1, category);
-		    ResultSet rs = stmt.executeQuery();
+		    ResultSet rs = stmt2.executeQuery();
 		    categoryId = rs.getInt("categoryId");
 
 		    rs.close();
@@ -67,7 +67,7 @@ public class Upload {
 
 		/* Materialへ素材を追加 */
 		Connection con = getRemoteConnection();
-		
+
 	    String sql = "INSERT INTO Material (materialName,price,thumbnail,categoryId,providerId,explanation) VALUES (?,?,?,?,?,?,?)";
 	    PreparedStatement stmt3 = con.prepareStatement(sql);
 	    stmt3.setString(1, materialName);
