@@ -17,12 +17,17 @@
                         </div>
                         <div class="information">
                             <ul>
-                                <form action="" method="post">
+                               <%if(request.getAttribute("errorcode") == 1) {%>
+                               <p>
+                               素材のアップロードに失敗しました
+                               </p>
+                               <%} %>
+                                <form action="/sys-practice/src/main/java/sys_practice/UploadFile.java" enctype="multipart/form-data" method="post">
                                     <p>
-                                        タイトル：<br><input type="text" name="title" size="40" placeholder="タイトル" class="text-box">
+                                        タイトル：<br><input type="text" name="materialName" size="40" placeholder="タイトル" class="text-box">
                                     </p>
                                     <p>
-                                        説明：<br><input type="text" name="explain" size="40" placeholder="説明" class="text-box">
+                                        説明：<br><input type="text" name="explanation" size="40" placeholder="説明" class="text-box">
                                     </p>
                                     <p>
                                         価格：<br><input type="text" name="price" size="40" placeholder="価格" class="text-box">
@@ -30,19 +35,20 @@
                                     <p>
                                         カテゴリー：
                                     <div class="select">
-                                        <select name="category" class="text-box" >
-                                            <option value="A">A型</option>
-                                            <option value="B">B型</option>
-                                            <option value="O">O型</option>
-                                            <option value="AB">AB型</option>
+                                        <select name="categoryId" class="text-box" >
+                                            <option value="1">イラスト</option>
+                                            <option value="2">BGM</option>
+                                            <option value="3">動画</option>
+                                            <option value="0">その他</option>
                                         </select>
                                     </div>
                                     </p>
                                     <p>
-                                        カテゴリーの中にないとき：<br><input type="text" name="name" size="40" placeholder="カテゴリーの中にないとき" class="text-box">
+                                        カテゴリーの中にないとき：<br><input type="text" name="category" size="40" placeholder="カテゴリーの中にないとき" class="text-box">
                                     </p>
                                     <p>
                                         アップロードファイル：<br><input type="file" name="name" size="40" placeholder="画像" class="text-box">
+                                        <br><input type="hidden" name="providerId" value=session.getAttribute("userId", "ub")>
                                     </p>
                                 </form>
                             </ul>
