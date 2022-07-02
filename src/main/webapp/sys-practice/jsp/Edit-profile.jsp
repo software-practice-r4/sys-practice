@@ -4,8 +4,7 @@
 request.setCharacterEncoding("UTF-8");
 
 /* 変数の宣言　*/
-String userId = "";
-String userIdAfter = "";
+int userId = 0;
 String email = "";
 String displayName = "";
 String explain = "";
@@ -24,17 +23,16 @@ try {
 		explain = request.getParameter("explain");
 	}
 	if (request.getParameter("userId") != null) {
-		userId = request.getParameter("userId");
+		userId = Integer.parseInt(request.getParameter("userId"));
 	}
 
-	session.setAttribute("userIdAfter", userIdAfter);
 	session.setAttribute("email", email);
 	session.setAttribute("displayName", displayName);
 	session.setAttribute("explain", explain);
 	session.setAttribute("userId", userId);
 
 	/* Updateメソッドの実行 */
-	int err = user.editProfile(userIdAfter, email, displayName, explain, icon, userId);//ID+関数名()
+	int err = user.editProfile(email, displayName, explain, icon, userId);//ID+関数名()
 %>
 <%
 if (err != 0) {
@@ -73,6 +71,7 @@ if (err != 0) {
 								ユーザーID：<br>
 								<input type="text" name="userId" size="40"
 									placeholder="ユーザーID" class="text-box">
+									<%=user.getUserId(0)%>
 							</p>
 							<p>
 								メールアドレス：<br>

@@ -9,7 +9,7 @@ public class SignIn {
 
 	protected int[] userId = new int[100];//ユーザーID
 	protected String[] email = new String[50]; //eメール
-	protected String[] passWord = new String[20]; //パスワード
+	protected String[] password = new String[20]; //パスワード
 	protected String[] displayName = new String[50];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
 	protected String[] questionTitle = new String[50];//秘密の質問の質問内容
@@ -19,24 +19,24 @@ public class SignIn {
 	protected int[] wallet = new int[100]; //財布
 	protected int num;//データ取得件数
 
-	public int signIn(String email, String passWord) throws Exception {
+	public int signIn(String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			String sql = "SELECT * FROM  user WHERE email Like ? AND passWord Like ?";
+			String sql = "SELECT * FROM  user WHERE email Like ? AND password Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setString(2, passWord);
+			stmt.setString(2, password);
 			stmt.setMaxRows(100);
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
 				this.userId[num] = rs.getInt("userId");
 				this.email[num] = rs.getString("email");
-				this.passWord[num] = rs.getString("passWord");
+				this.password[num] = rs.getString("password");
 				this.displayName[num] = rs.getString("displayName");
 				this.questionId[num] = rs.getInt("questionId");
 				this.questionAnswer[num] = rs.getString(" questionAnswer");
@@ -111,16 +111,16 @@ public class SignIn {
 		}
 	}
 
-	public int resetPassWord(String questionAnswer, String email, String passWord) throws Exception {
+	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			String sql = "UPDATE user SET passWord Like ? WHERE questionAnswer Like ? and email Like ?";
+			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, passWord);
+			stmt.setString(1, password);
 			stmt.setString(2, questionAnswer);
 			stmt.setString(3, email);
 			stmt.setMaxRows(100);
@@ -151,9 +151,9 @@ public class SignIn {
 		}
 	}
 
-	public String getPassWord(int i) {
+	public String getPassword(int i) {
 		if (i >= 0 && num > i) {
-			return passWord[i];
+			return password[i];
 		} else {
 			return "";
 		}

@@ -53,7 +53,7 @@ try {
 							placeholder="解答" class="text-box">
 					</p>
 					<p>
-						新しいパスワード：<br> <input type="password" name="passWord"
+						新しいパスワード：<br> <input type="password" name="password"
 							size="40" placeholder="パスワード" class="text-box"><br>
 					</p>
 				</ul>
@@ -77,7 +77,7 @@ request.setCharacterEncoding("UTF-8");
 
 String questionAnswer = "";
 String email = "";//取れてるかわからない
-String passWord = "";
+String password = "";
 
 try {
 	if (request.getParameter("questionAnswer") != null) {
@@ -86,15 +86,15 @@ try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
-	if (request.getParameter("passWord") != null) {
-		passWord = request.getParameter("passWord");
+	if (request.getParameter("password") != null) {
+		password = request.getParameter("password");
 	}
 
 	session.setAttribute("questionAnswer", questionAnswer);
 	session.setAttribute("email", email);
-	session.setAttribute("passWord", passWord);
+	session.setAttribute("password", password);
 
-	int err = user.resetPassWord(questionAnswer, email, passWord);
+	int err = user.resetPassWord(questionAnswer, email, password);
 %>
 <%
 if (err != 0) {
@@ -109,7 +109,7 @@ boolean err_flag = false;
 if (request.getParameter("questionAnswer") == null) {
 	err_flag = true;
 }
-if (request.getParameter("passWord") == null) {
+if (request.getParameter("password") == null) {
 	err_flag = true;
 }
 %>

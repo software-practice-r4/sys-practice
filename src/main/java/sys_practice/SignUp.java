@@ -8,7 +8,7 @@ public class SignUp {
 
 	protected int[] userId = new int[100]; //ユーザーID
 	protected String[] email = new String[50]; //eメール
-	protected String[] passWord = new String[20]; //パスワード
+	protected String[] password = new String[20]; //パスワード
 	protected String[] displayName = new String[50];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
 	protected String[]  questionAnswer = new String[50];//秘密の質問の応え
@@ -17,17 +17,17 @@ public class SignUp {
 	protected int[] wallet = new int[100]; //財布
 	protected int num;//データ取得件数
 
-	public int signUp(String email, String passWord, int questionId, String questionAnswer) {
+	public int signUp(String email, String password, int questionId, String questionAnswer) {
 		int num = 0;//取得件数の初期化
 		try {
 			Class.forName("com.mysql.jdbc.Driver").newInstance();
 			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
 			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
 
-			String sql = "INSERT INTO user (email,passWord,questionId,questionAnswer) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setString(2, passWord);
+			stmt.setString(2, password);
 			stmt.setInt(3, questionId);
 			stmt.setString(4, questionAnswer);
 
@@ -58,9 +58,9 @@ public class SignUp {
 		}
 	}
 
-	public String getPassWord(int i) {
+	public String getPassword(int i) {
 		if (i >= 0 && num > i) {
-			return passWord[i];
+			return password[i];
 		} else {
 			return "";
 		}

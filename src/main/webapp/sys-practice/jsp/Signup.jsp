@@ -3,7 +3,7 @@
 request.setCharacterEncoding("UTF-8");
 
 String email = "";
-String passWord = "";
+String password = "";
 String questionAnswer = "";
 int questionId = 0;//多分取り方が合ってない
 
@@ -11,8 +11,8 @@ try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
-	if (request.getParameter("passWord") != null) {
-		passWord = request.getParameter("passWord");
+	if (request.getParameter("password") != null) {
+		password = request.getParameter("password");
 	}
 	if (request.getParameter("questionId") != null) {
 		questionId = Integer.parseInt(request.getParameter("questionId"));
@@ -23,11 +23,11 @@ try {
 	}
 
 	session.setAttribute("email", email);
-	session.setAttribute("passWord", passWord);
+	session.setAttribute("password", password);
 	session.setAttribute("questionId", questionId);
 	session.setAttribute("questionAnswer", questionAnswer);
 
-	int err = user.signUp(email, passWord, questionId, questionAnswer);//ID+関数名()
+	int err = user.signUp(email, password, questionId, questionAnswer);//ID+関数名()
 %>
 <%
 if (err != 0) {
@@ -45,7 +45,7 @@ if (request.getParameter("questionAnswer") == null) {
 if (request.getParameter("email") == null) {
 	err_flag = true;
 }
-if (request.getParameter("passWord") == null) {
+if (request.getParameter("password") == null) {
 	err_flag = true;
 }
 %>
@@ -78,7 +78,7 @@ if (request.getParameter("passWord") == null) {
 							placeholder="メールアドレス" class="text-box">
 					</p>
 					<p>
-						パスワード：<br> <input type="password" name="passWord" size="40"
+						パスワード：<br> <input type="password" name="password" size="40"
 							placeholder="パスワード" class="text-box"><br>
 					</p>
 					<select name="questionId" id="question">

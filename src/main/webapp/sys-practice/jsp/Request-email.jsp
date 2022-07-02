@@ -3,7 +3,6 @@
 request.setCharacterEncoding("UTF-8");
 
 String email = "";
-String passWord = "";
 
 try {
 	if (request.getParameter("email") != null) {

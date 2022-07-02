@@ -1,26 +1,22 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
 <%
-/* エンコード */
 request.setCharacterEncoding("UTF-8");
 
-/* 変数の宣言　*/
 String email = "";
-String passWord = "";
+String password = "";
 
-/* パラメータの取得 */
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
 	}
-	if (request.getParameter("passWord") != null) {
-		passWord = request.getParameter("passWord");
+	if (request.getParameter("password") != null) {
+		password = request.getParameter("password");
 	}
 
 	session.setAttribute("email", email);
-	session.setAttribute("passWord", passWord);
+	session.setAttribute("password", password);
 
-	/* detaloadメソッドの実行 */
-	int err = user.signIn(email, passWord);//ID+関数名()
+	int err = user.signIn(email, password);
 %>
 <%
 if (err != 0) {
