@@ -1,0 +1,238 @@
+#main{
+    display:flex;
+}
+
+#C {
+    /*    min-height:800px;*/
+    height:auto;
+    width:100%;
+    background-color:#D5D5D5;
+}
+
+.centering-ttl-box{
+    width: 92%;
+    padding-left: 15px;
+    margin-left: 10px;
+    /*    margin: 20px auto 0px;*/
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+
+}
+.centering-ttl{
+    padding-top: 20px;
+    /*    text-align: center;*/
+    /*    width: 92%;*/
+    font-size: 20px;
+    font-weight: bold;
+    /*    position: absolute;*/
+}
+
+.completion{
+    margin-top: 10px;
+    padding-left: 10px;
+    padding-top: 30px;
+    display: flex;
+}
+
+h1{
+    vertical-align:middle;
+    font-size: 18px;
+    color: black;
+}
+
+#nbox{
+    position:absolute;/*フォームの絶対位置*/
+    left:180px;
+    top:10px;
+    outline:0;/*クリック時の青い枠線消す*/
+    height:30px;/*検索ボックスの高さ*/
+    padding:0 10px;/*テキスト位置調整*/
+    border-radius:2px 0 0 2px;/*検索ボックスの角を丸める*/
+    background:#eee;/*検索ボックスの背景カラー*/
+}
+
+.chat{
+
+    /*    display: flex;*/
+    /*flex-direction: column;*/
+    margin-top: 30px;
+    width: 93%;
+    /*    padding: 30px;*/
+}
+
+.chat-left{
+    /*    margin-top: 10px;
+        padding: 10px;*/
+}
+
+.chat-right{
+    /*    margin-left: 1000px;*/
+
+    /*    margin-top: 30px;
+        padding: 10px;*/
+    margin:  0 auto;
+    text-align:right;
+    /*    float:right;*/
+    /*    color:black;*/
+    position: relative;
+}
+
+.samune{
+    /*    margin-top: 30px;*/
+    text-align: center;
+}
+
+.total{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.all{
+    display: flex;
+
+}
+
+.add{
+    /*    margin-top: 30px;
+        text-align: center;*/
+    color: blue;
+    margin-top: 10px;
+    padding: 10px;
+    margin-left: 30px;
+}
+
+
+.btn-square-so-pop {
+    /*  left:150px;*/
+    margin-top: 10px;
+    height: 30px;
+    width: 60px;
+    position: relative;
+    display: inline-block;
+    padding: 0.25em 0.5em;
+    text-decoration: none;
+    color: #FFF;
+    background: #fd9535;/*色*/
+    border-radius: 4px;/*角の丸み*/
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), inset 0 -2px 0 rgba(0, 0, 0, 0.05);
+    font-weight: bold;
+    border: solid 2px #d27d00;/*線色*/
+}
+
+.btn-square-so-pop:active {
+    /*押したとき*/
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+}
+
+.completion{
+    margin-top: 30px;
+    margin: 0 auto;
+    width: 100%;
+    /*    text-align: center;*/
+    display: flex;
+}
+
+input{
+    background-color: white;
+
+}
+
+h2{
+    margin-top: 30px;
+    font-size: 22px;
+    color:indianred;
+}
+
+.post {
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 40px;
+    /*    padding: 10px 30px 70px 90px;*/
+}
+
+.balloon1-left {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 0 1.5em 15px;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e0edff;
+}
+
+.balloon1-left:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -30px;
+    margin-top: -15px;
+    border: 15px solid transparent;
+    border-right: 15px solid #e0edff;
+}
+
+.balloon1-left p {
+/*    margin: 0;*/
+    padding: 0;
+}
+
+.balloon1-right {
+    position: relative;
+    display: inline-block;
+    margin: 1.5em 15px 1.5em 0;
+    padding: 7px 10px;
+    min-width: 120px;
+    max-width: 100%;
+    color: #555;
+    font-size: 16px;
+    background: #e0edff;
+}
+
+.balloon1-right:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    margin-top: -15px;
+    border: 15px solid transparent;
+    border-left: 15px solid #e0edff;
+}
+
+.balloon1-right p {
+/*    margin: 0;*/
+    padding: 0;
+}
+
+.text-box{
+    width: 100%;
+    margin-top: 10px;
+    outline: 0; /*クリック時の青い枠線消す*/
+    height: 30px; /*検索ボックスの高さ*/
+    padding: 0 10px; /*テキスト位置調整*/
+    border-radius: 2px 0 0 2px; /*検索ボックスの角を丸める*/
+    background: #eee; /*検索ボックスの背景カラー*/
+}
+
+.inner{
+    margin-bottom: 60px;
+}
+
+.all{
+    padding-left: 10px;
+    width: 100%;
+}
+
+ul{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.send {
+    margin: 0;
+    display: flex;
+    width: 100%;
+}

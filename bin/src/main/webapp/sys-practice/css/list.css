@@ -1,0 +1,169 @@
+#main{
+    display:flex;
+}
+
+.sidebar {
+    width: 180px;
+    min-height: calc(100vh - 50px);
+    height: 100%;
+    background-color:#FFAD90;
+    padding-top: 50px;
+    text-align: center;
+    font-size: 16px;
+    color: black;
+}
+
+.cnt {
+    height:auto;
+    width:80%;
+    background-color:#D5D5D5;
+}
+
+h3{
+    padding-bottom: 20px;
+    margin-top:30px;
+    text-align: center;
+    vertical-align:middle;
+    font-size: 18px;
+    color: red;
+}
+
+h1{
+    padding-top: 18px;
+    text-align: center;
+    vertical-align:middle;
+    font-size: 18px;
+    color: red;
+}
+
+.samune{
+    text-align: center;
+}
+
+.total {
+    display: flex;
+    flex-direction: column;
+    margin-right: 20px;
+    margin-top: 20px;
+    height: 230px;
+}
+
+.total > a {
+    width: 180px;
+    height: 180px;
+    margin-bottom: 10px;
+}
+
+.all {
+    display: flex;
+    flex-wrap: wrap;/*折り返し*/
+    margin-left: 10px;
+}
+
+.box27 {
+    text-align: center;
+    position: relative;
+/*    margin-top: 30px;*/
+    /*    margin-left: 10px;*/
+    /*    width: 200px;
+        height: 200px;*/
+    /*    margin: 2em 0;
+        padding: 0.5em 1em;*/
+    /*    border: solid 3px #62c1ce;*/
+    margin-bottom: 14px;
+}
+.box27 .box-title {
+    position: absolute;
+    display: inline-block;
+    top: 155px;
+    left: 0px;
+    padding: 0 9px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 17px;
+    background: #62c1ce;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 5px 5px 0 0;
+}
+
+.box27 p {
+    margin: 0;
+    padding: 0;
+}
+
+.tsuika{
+    margin-top: 30px;
+    text-align: center;
+}
+
+
+h2{
+    margin-top: 30px;
+    font-size: 22px;
+    color:indianred;
+}
+
+.centering-ttl-box{
+    width: 100%;
+    padding-left: 15px;
+    border-bottom: 1px solid black;
+    padding-bottom: 10px;
+
+}
+.centering-ttl{
+    padding-top: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.next{
+    margin-top: 30px;
+    text-align: center;
+}
+
+.text-box{
+    margin-top: 10px;
+    outline: 0; /*クリック時の青い枠線消す*/
+    height: 30px; /*検索ボックスの高さ*/
+    padding: 0 10px; /*テキスト位置調整*/
+    border-radius: 2px 0 0 2px; /*検索ボックスの角を丸める*/
+    background: #eee; /*検索ボックスの背景カラー*/
+}
+
+img{
+    object-fit: cover;
+}
+
+.post {
+    margin: 0 auto;
+    width: 100%;
+    padding-left: 40px;
+    margin-bottom: 50px;
+    /*    padding: 10px 30px 70px 90px;*/
+}
+
+.btn-gradient-3d {
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 4px;
+  color: rgba(0, 69, 212, 0.47);
+  text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.5);
+  background-image: linear-gradient(#6795fd 0%, #67ceff 100%);
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+  border-bottom: solid 3px #5e7fca;
+  
+}
+
+.btn-gradient-3d:active {
+  -webkit-transform: translateY(4px);
+  transform: translateY(4px);
+  box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.2);
+  border-bottom: none;
+}
+
+.search-more {
+    margin-top: 50px;
+}
