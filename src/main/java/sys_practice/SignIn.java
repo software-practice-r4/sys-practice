@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SignIn {
 
@@ -19,12 +20,30 @@ public class SignIn {
 	protected int[] wallet = new int[100]; //財布
 	protected int num;//データ取得件数
 
+	private static Connection getRemoteConnection() throws SQLException {
+		if (System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com") != null) {
+			try {
+				Class.forName("org.postgresql.Driver");
+				String dbName = System.getenv("eddb");
+				String userName = System.getenv("admin");
+				String password = System.getenv("AraikenR4!");
+				String hostname = System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com");
+				String port = System.getenv("3306");
+				String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName
+						+ "&password=" + password;
+				Connection con = DriverManager.getConnection(jdbcUrl);
+				return con;
+			} catch (ClassNotFoundException e) {
+			} catch (SQLException e) {
+			}
+		}
+		return null;
+	}
+
 	public int signIn(String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
+			Connection conn = getRemoteConnection();
 
 			String sql = "SELECT * FROM  user WHERE email Like ? AND password Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -58,9 +77,7 @@ public class SignIn {
 	public int requestQuestionId(String email) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
+			Connection conn = getRemoteConnection();
 
 			String sql = "SELECT questionId,questionAnswer FROM  user WHERE email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -86,9 +103,7 @@ public class SignIn {
 	public int requestQuestionTitle(int questionId) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
+			Connection conn = getRemoteConnection();
 
 			String sql = "SELECT * FROM  question WHERE questionId Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -114,9 +129,7 @@ public class SignIn {
 	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
+			Connection conn = getRemoteConnection();
 
 			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
