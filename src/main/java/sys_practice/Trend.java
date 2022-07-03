@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Trend {
-	protected int[] materialId = new int[100000];
+	protected int[] materialId = new int[100000]; //素材ID
 	protected String[] materialName = new String[100]; //タイトル
 	protected int[] price = new int[100000]; //価格
 	protected String[] thumbnail = new String[70]; //サムネイル
@@ -43,7 +43,7 @@ public class Trend {
 		num=0; //取得件数の初期化
 		Connection con = getRemoteConnection(); //上記URL設定でユーザ名とパスワードを使って接続
 
-		String sql = "SELECT * FROM Material WHERE ?";
+		String sql = "SELECT * FROM Material INNERJOIN Category ON Material.categoryId = Category.categoryId WHERE ?";
 		PreparedStatement stmt = con.prepareStatement(sql);
 		stmt.setInt(1,providerId);
 		stmt.setMaxRows(100); //最大の数を制限
@@ -53,7 +53,7 @@ public class Trend {
 		this.materialId[num] = rs,getInt("materialId");
 		this.materialName[num] = rs.getString("materialName");
 		this.price[num] = rs.getInt("price");
-		this.thumbnail[num] = rs.getString("thumbnail");
+		this.fileName[num] = rs.getString("fileName");
 		this.explanation[num] = rs.getString("explanation");
 		this.category[num] = rs.getString("category");
 		num++;
@@ -62,6 +62,14 @@ public class Trend {
 		rs.close();
 		stmt.close();
 		con.close();
+		}
+	
+		public String getmaterialId(int i) {
+		if (i >= 0 && num > i) {
+		return materialName[i];
+		} else {
+		return "";
+		}
 		}
 
 		public String getmaterialName(int i) {
@@ -80,9 +88,9 @@ public class Trend {
 		}
 		}
 
-		public String getthumbnail(int i) {
+		public String getfileName(int i) {
 		if (i >= 0 && num > i) {
-		return thumbnail[i];
+		return "./img/" + fileName[i];
 		} else {
 		return "";
 		}
