@@ -28,8 +28,7 @@ try {
 	session.setAttribute("questionId", questionId);
 	session.setAttribute("questionAnswer", questionAnswer);
 
-	int err = 1;
-	sign.signUp(email, password, questionId, questionAnswer);
+	int err = sign.signUp(email, password, questionId, questionAnswer);
 %>
 <%
 if (err != 0) {

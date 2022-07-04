@@ -51,7 +51,7 @@ public class SignUp {
 		return con;
 	}
 
-	public void signUp(String email, String password, int questionId, String questionAnswer) {
+	public int signUp(String email, String password, int questionId, String questionAnswer) {
 		//int num = 0;//取得件数の初期化
 		try {
 			Connection conn = getRemoteConnection();
@@ -66,18 +66,23 @@ public class SignUp {
 			ps.setString(4, questionAnswer);
 			ps.addBatch(sql);
 			ps.executeBatch();
-			//num = cnt;
+			if(cnt != null) {
+				num = 1;
+			}
 
 			ps.close();
 			resultSet.close();
 			setupStatement.close();
 			conn.close();
 
+			return num;
+
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -86,22 +91,6 @@ public class SignUp {
 				} catch (SQLException ignore) {
 				}
 		}
-
-		/*	String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, email);
-			stmt.setString(2, password);
-			stmt.setInt(3, questionId);
-			stmt.setString(4, questionAnswer);
-
-			num = stmt.executeUpdate();
-
-			stmt.close();
-			conn.close();
-			return num;
-		} catch (Exception e) {
-			return 0;
-		}   */
 	}
 
 	public int getUserId(int i) {
