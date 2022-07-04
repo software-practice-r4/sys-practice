@@ -18,6 +18,7 @@
   int numresults = 0;
   String statement = null;
 
+  /*
   try {
     conn = aws.getRemoteConnection("testdb");
 
@@ -36,7 +37,7 @@
   } finally {
     System.out.println("Closing the connection.");
     if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
-  }
+  }*/
 %>
 
 <div class="intro">
@@ -46,6 +47,9 @@
 	</h1>
 </div>
 
+<form action="<%=request.getContextPath() %>/awss3" method="POST">
+	<input type="submit" value="送信">
+</form>
 <div class="recommend">
 	<div class="inner">
 		<div class="content">
