@@ -1,4 +1,4 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
 
@@ -16,7 +16,7 @@ try {
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
 
-	int err = user.signIn(email, password);
+	int err = sign.signIn(email, password);
 %>
 <%
 if (err != 0) {
@@ -36,10 +36,6 @@ if (request.getParameter("password") == null) {
 }
 %>
 
-<%
-}
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
@@ -56,7 +52,7 @@ if (request.getParameter("password") == null) {
 			<form action="" method="POST">
 				<div class="information">
 					<c:if test="${err_flag == true;}">
-						<p class="err-txt">入力が足りません</p>
+						<p class="err-txt">入力してください</p>
 					</c:if>
 					<ul>
 						<p>
@@ -81,3 +77,7 @@ if (request.getParameter("password") == null) {
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
+
+<%
+}
+%>

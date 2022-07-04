@@ -5,7 +5,7 @@ request.setCharacterEncoding("UTF-8");
 String email = "";
 String password = "";
 String questionAnswer = "";
-int questionId = 0;//取れてるか心配
+int questionId = 0;//受け取れてるか心配
 String dbName = "sys-practice";
 
 try {

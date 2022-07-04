@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SignIn {
 
@@ -19,135 +20,163 @@ public class SignIn {
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
 	protected int num;//データ取得件数
+	protected int[] cnt = new int[100];
+
+	Connection conn = null;
+	Statement setupStatement = null;
+	Statement readStatement = null;
+	ResultSet resultSet = null;
+	String results = "";
+	int numresults = 0;
+	String statement = null;
 
 	private static Connection getRemoteConnection() throws SQLException {
-		if (System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com") != null) {
-			try {
-				Class.forName("org.postgresql.Driver");
-				String dbName = System.getenv("eddb");
-				String userName = System.getenv("admin");
-				String password = System.getenv("AraikenR4!");
-				String hostname = System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com");
-				String port = System.getenv("3306");
-				String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName
-						+ "&password=" + password;
-				Connection con = DriverManager.getConnection(jdbcUrl);
-				return con;
-			} catch (ClassNotFoundException e) {
-			} catch (SQLException e) {
-			}
+		// JDBCドライバー読み込み
+		try {
+			System.out.println("Loading driver...");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded!");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find the driver in the classpath!", e);
 		}
-		return null;
+
+		String userName = "admin";
+		String password = "AraikenR4!";
+		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
+		String port = "3306";
+		String dbName = "sys-practice";
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+				"?user=" + userName + "&password=" + password;
+		Connection con = DriverManager.getConnection(jdbcUrl);
+
+		return con;
 	}
 
 	public int signIn(String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Connection conn = getRemoteConnection();
-
-			String sql = "SELECT * FROM  user WHERE email Like ? AND password Like ?";
+			conn = getRemoteConnection();
+			String sql = "SELECT * FROM user WHERE email Like ? and password Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setString(2, password);
-			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
 
-			while (rs.next()) {
-				this.userId[num] = rs.getInt("userId");
-				this.email[num] = rs.getString("email");
-				this.password[num] = rs.getString("password");
-				this.displayName[num] = rs.getString("displayName");
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionAnswer[num] = rs.getString(" questionAnswer");
-				this.explanation[num] = rs.getString("explanation");
-				this.icon[num] = rs.getString("passWord");
-				this.wallet[num] = rs.getInt("wallet");
+			while (resultSet.next()) {
+				this.email[num] = resultSet.getString("email");
+				this.password[num] = resultSet.getString("password");
+				this.displayName[num] = resultSet.getString("displayName");
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.icon[num] = resultSet.getString("icon");
+				this.wallet[num] = resultSet.getInt("wallet");
 				num++;
 			}
 
-			rs.close();
 			stmt.close();
+			resultSet.close();
 			conn.close();
+
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
-	public int requestQuestionId(String email) throws Exception {
+	public int requestSecretQuestion(String email) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Connection conn = getRemoteConnection();
-
-			String sql = "SELECT questionId,questionAnswer FROM  user WHERE email Like ?";
+			conn = getRemoteConnection();
+			String sql = "SELECT user.questionId, user.questionAnswer, question.questionTitle FROM user FULL OUTER JOIN question ON user.questionId = question.questionId WHERE email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
 
-			while (rs.next()) {
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionAnswer[num] = rs.getString("questionAnswer");
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
 				num++;
 			}
 
-			rs.close();
 			stmt.close();
+			resultSet.close();
 			conn.close();
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
-		}
-	}
-
-	public int requestQuestionTitle(int questionId) throws Exception {
-		num = 0;//取得件数の初期化
-		try {
-			Connection conn = getRemoteConnection();
-
-			String sql = "SELECT * FROM  question WHERE questionId Like ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, questionId);
-			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionTitle[num] = rs.getString("questionTitle");
-				num++;
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-			return num;
-		} catch (Exception e) {
-			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
 	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
-		num = 0;//取得件数の初期化
+		int num = 0;//取得件数の初期化
 		try {
 			Connection conn = getRemoteConnection();
 
+			setupStatement = conn.createStatement();
 			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, password);
-			stmt.setString(2, questionAnswer);
-			stmt.setString(3, email);
-			stmt.setMaxRows(100);
-			stmt.executeUpdate();
 
-			stmt.close();
+			PreparedStatement ps = conn.prepareStatement(sql);
+
+			ps.setString(1, password);
+			ps.setString(2, questionAnswer);
+			ps.setString(3, email);
+			ps.addBatch(sql);
+			cnt = ps.executeBatch();
+			if (cnt != null) {
+				num = 1;
+			}
+
+			ps.close();
+			resultSet.close();
+			setupStatement.close();
 			conn.close();
+
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
-	/* アクセッサ */
 	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];

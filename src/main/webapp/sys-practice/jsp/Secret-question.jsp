@@ -1,30 +1,19 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
 
-int questionId = 0;//多分取れてない
+String email = "";
 
 try {
-	if (request.getParameter("questionId") != null) {
-		questionId = Integer.parseInt(request.getParameter("questionId"));
+	if (request.getParameter("email") != null) {
+		email = request.getParameter("email");
 	}
 
-	session.setAttribute("questionId", questionId);
+	session.setAttribute("email", email);
 
-	int err = user.requestQuestionTitle(questionId);
+	int err = sign.requestSecretQuestion(email);
 
-	if (err != 0) {
-%>
-
-<%
-}
-%>
-<%
-} catch (Exception e) {
-%>
-<jsp:forward page="Request-email.jsp" />
-<%
-}
+if (err != 0) {
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -46,7 +35,8 @@ try {
 				</c:if>
 				<ul>
 					<p>
-						<%=user.getQuestionTitle(0)%>
+						<%=sign.getQuestionTitle(0)%>
+						<%=sign.getQuestionAnswer(0)%>
 					</p>
 					<p>
 						解答：<br> <input type="text" name="questionAnswer" size="40"
@@ -71,50 +61,19 @@ try {
 </body>
 </html>
 
-
-<%
-request.setCharacterEncoding("UTF-8");
-
-String questionAnswer = "";
-String email = "";//取れてるかわからない
-String password = "";
-
-try {
-	if (request.getParameter("questionAnswer") != null) {
-		questionAnswer = request.getParameter("questionAnswer");
-	}
-	if (request.getParameter("email") != null) {
-		email = request.getParameter("email");
-	}
-	if (request.getParameter("password") != null) {
-		password = request.getParameter("password");
-	}
-
-	session.setAttribute("questionAnswer", questionAnswer);
-	session.setAttribute("email", email);
-	session.setAttribute("password", password);
-
-	int err = user.resetPassWord(questionAnswer, email, password);
-%>
-<%
-if (err != 0) {
-%>
-<jsp:forward page="Signin.jsp" />
 <%
 }
 %>
 <%
 } catch (Exception e) {
 boolean err_flag = false;
-if (request.getParameter("questionAnswer") == null) {
-	err_flag = true;
-}
-if (request.getParameter("password") == null) {
+if (request.getParameter("email") == null) {
 	err_flag = true;
 }
 %>
-
+<jsp:forward page="Request-email.jsp" />
 <%
 }
 %>
+
 

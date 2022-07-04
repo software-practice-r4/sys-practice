@@ -19,14 +19,13 @@ public class SignUp {
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
 	protected int num;//データ取得件数
-	protected int[] cnt = new int[100];
+	protected int[] cnt = new int[100];//実行回数
 
 	Connection conn = null;
 	Statement setupStatement = null;
 	Statement readStatement = null;
 	ResultSet resultSet = null;
 	String results = "";
-	int numresults = 0;
 	String statement = null;
 
 	public Connection getRemoteConnection() throws SQLException {
@@ -52,7 +51,7 @@ public class SignUp {
 	}
 
 	public int signUp(String email, String password, int questionId, String questionAnswer) {
-		//int num = 0;//取得件数の初期化
+		int num = 0;//取得件数の初期化
 		try {
 			Connection conn = getRemoteConnection();
 
@@ -65,7 +64,7 @@ public class SignUp {
 			ps.setInt(3, questionId);
 			ps.setString(4, questionAnswer);
 			ps.addBatch(sql);
-			ps.executeBatch();
+			cnt = ps.executeBatch();
 			if(cnt != null) {
 				num = 1;
 			}
