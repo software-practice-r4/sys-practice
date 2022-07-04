@@ -1,11 +1,12 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignUp" />
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignUp" />
 <%
 request.setCharacterEncoding("UTF-8");
 
 String email = "";
 String password = "";
 String questionAnswer = "";
-int questionId = 0;//多分取り方が合ってない
+int questionId = 0;//取れてるか心配
+String dbName = "sys-practice";
 
 try {
 	if (request.getParameter("email") != null) {
@@ -27,7 +28,8 @@ try {
 	session.setAttribute("questionId", questionId);
 	session.setAttribute("questionAnswer", questionAnswer);
 
-	int err = user.signUp(email, password, questionId, questionAnswer);//ID+関数名()
+	int err = 1;
+	sign.signUp(email, password, questionId, questionAnswer);
 %>
 <%
 if (err != 0) {

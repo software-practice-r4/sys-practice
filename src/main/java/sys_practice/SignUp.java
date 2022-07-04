@@ -3,7 +3,9 @@ package sys_practice;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SignUp {
 
@@ -17,33 +19,75 @@ public class SignUp {
 	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
 	protected int num;//データ取得件数
+	protected int[] cnt = new int[100];
 
-	private static Connection getRemoteConnection() throws SQLException {
-		if (System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com") != null) {
-			try {
-				Class.forName("org.postgresql.Driver");
-				String dbName = System.getenv("eddb");
-				String userName = System.getenv("admin");
-				String password = System.getenv("AraikenR4!");
-				String hostname = System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com");
-				String port = System.getenv("3306");
-				String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName
-						+ "&password=" + password;
-				Connection con = DriverManager.getConnection(jdbcUrl);
-				return con;
-			} catch (ClassNotFoundException e) {
-			} catch (SQLException e) {
-			}
+	Connection conn = null;
+	Statement setupStatement = null;
+	Statement readStatement = null;
+	ResultSet resultSet = null;
+	String results = "";
+	int numresults = 0;
+	String statement = null;
+
+	public Connection getRemoteConnection() throws SQLException {
+		// JDBCドライバー読み込み
+		try {
+			System.out.println("Loading driver...");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded!");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find the driver in the classpath!", e);
 		}
-		return null;
+
+		String userName = "admin";
+		String password = "AraikenR4!";
+		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
+		String port = "3306";
+		String dbName = "sys-practice";
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+				"?user=" + userName + "&password=" + password;
+		Connection con = DriverManager.getConnection(jdbcUrl);
+
+		return con;
 	}
 
-	public int signUp(String email, String password, int questionId, String questionAnswer) {
-		int num = 0;//取得件数の初期化
+	public void signUp(String email, String password, int questionId, String questionAnswer) {
+		//int num = 0;//取得件数の初期化
 		try {
 			Connection conn = getRemoteConnection();
 
+			setupStatement = conn.createStatement();
 			String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			ps.setString(2, password);
+			ps.setInt(3, questionId);
+			ps.setString(4, questionAnswer);
+			ps.addBatch(sql);
+			ps.executeBatch();
+			//num = cnt;
+
+			ps.close();
+			resultSet.close();
+			setupStatement.close();
+			conn.close();
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+
+		/*	String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setString(2, password);
@@ -57,10 +101,9 @@ public class SignUp {
 			return num;
 		} catch (Exception e) {
 			return 0;
-		}
+		}   */
 	}
 
-	/*アクセッサ */
 	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];
