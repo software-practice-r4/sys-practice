@@ -47,7 +47,7 @@ public class Trend {
 	    try {
 	      numresults = 0;
 	      conn = getRemoteConnection("sys-practice");
-	      String getTrend = "SELECT * FROM Material INNERJOIN Category ON Material.categoryId = Category.categoryId WHERE ?";
+	      String getTrend = "SELECT MAX(10) FROM Material INNERJOIN Category ON Material.categoryId = Category.categoryId ORDER BY dlCount WHERE providerId = ? DESC";
 	      PreparedStatement stmt = conn.prepareStatement(getTrend);
 	      stmt.setInt(1,providerId);
 	      stmt.setMaxRows(100); //最大の数を制限
