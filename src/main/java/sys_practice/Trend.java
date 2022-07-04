@@ -16,64 +16,79 @@ public class Trend {
 	protected String[] explanation = new String[300]; //説明文
 	protected String[] category =  new String[10]; //カテゴリ
 	protected String[] fileName = new String[100]; //ファイル名
-	protected int num; //データ取得件数
+	protected int numresults; //データ取得件数
 
 	/* AWSの接続 */
-	private static Connection getRemoteConnection() throws SQLException {
-	    if (System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com") != null) {
-	      try {
-	      Class.forName("org.postgresql.Driver");
-	      String dbName = System.getenv("eddb");
-	      String userName = System.getenv("admin");
-	      String password = System.getenv("AraikenR4!");
-	      String hostname = System.getenv("syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com");
-	      String port = System.getenv("3306");
-	      String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + dbName + "?user=" + userName + "&password=" + password;
-	      Connection con = DriverManager.getConnection(jdbcUrl);
-	      return con;
-	    }
-	    catch (ClassNotFoundException e) {}
-	    catch (SQLException e) {}
-	    }
-	    return null;
-	  }
+	private static Connection getRemoteConnection(String dbName) throws SQLException {
+		// JDBCドライバー読み込み
+		try {
+			System.out.println("Loading driver...");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded!");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find the driver in the classpath!", e);
+		}
+
+		String userName = "admin";
+		String password = "AraikenR4!";
+		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
+		String port = "3306";
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+				"?user=" + userName + "&password=" + password;
+		Connection con = DriverManager.getConnection(jdbcUrl);
+
+		return con;
+	}
 
 	public void getTrend(int providerId) throws Exception {
 
-		num=0; //取得件数の初期化
-		Connection con = getRemoteConnection(); //上記URL設定でユーザ名とパスワードを使って接続
+		Connection conn = null;
+	    ResultSet resultSet = null;
+	    try {
+	      numresults = 0;
+	      conn = getRemoteConnection("sys-practice");
+	      String getTrend = "SELECT * FROM Material INNERJOIN Category ON Material.categoryId = Category.categoryId WHERE ?";
+	      PreparedStatement stmt = conn.prepareStatement(getTrend);
+	      stmt.setInt(1,providerId);
+	      stmt.setMaxRows(100); //最大の数を制限
 
-		String sql = "SELECT * FROM Material INNERJOIN Category ON Material.categoryId = Category.categoryId WHERE ?";
-		PreparedStatement stmt = con.prepareStatement(sql);
-		stmt.setInt(1,providerId);
-		stmt.setMaxRows(100); //最大の数を制限
-		ResultSet rs = stmt.executeQuery();
+	      resultSet = stmt.executeQuery();
 
-		while (rs.next()) {
-		this.materialId[num] = rs,getInt("materialId");
-		this.materialName[num] = rs.getString("materialName");
-		this.price[num] = rs.getInt("price");
-		this.fileName[num] = rs.getString("fileName");
-		this.explanation[num] = rs.getString("explanation");
-		this.category[num] = rs.getString("category");
-		num++;
+	      while (resultSet.next()) {
+			this.materialId[numresults] = resultSet.getInt("materialId");
+			this.materialName[numresults] = resultSet.getString("materialName");
+			this.price[numresults] = resultSet.getInt("price");
+			this.fileName[numresults] = resultSet.getString("fileName");
+			this.explanation[numresults] = resultSet.getString("explanation");
+			this.category[numresults] = resultSet.getString("category");
+			numresults++;
+			}
+
+	      stmt.close();
+	      resultSet.close();
+	      conn.close();
+
+	    } catch (SQLException ex) {
+	      // Handle any errors
+	      System.out.println("SQLException: " + ex.getMessage());
+	      System.out.println("SQLState: " + ex.getSQLState());
+	      System.out.println("VendorError: " + ex.getErrorCode());
+	    } finally {
+	      System.out.println("Closing the connection.");
+	      if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
+	    }
 		}
 
-		rs.close();
-		stmt.close();
-		con.close();
-		}
-	
-		public String getmaterialId(int i) {
-		if (i >= 0 && num > i) {
-		return materialName[i];
+		public int getmaterialId(int i) {
+		if (i >= 0 && numresults > i) {
+		return materialId[i];
 		} else {
-		return "";
+		return 0;
 		}
 		}
 
 		public String getmaterialName(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0 && numresults > i) {
 		return materialName[i];
 		} else {
 		return "";
@@ -81,7 +96,7 @@ public class Trend {
 		}
 
 		public int getprice(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0 && numresults > i) {
 		return price[i];
 		} else {
 		return 0;
@@ -89,7 +104,7 @@ public class Trend {
 		}
 
 		public String getfileName(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0 && numresults > i) {
 		return "./img/" + fileName[i];
 		} else {
 		return "";
@@ -97,7 +112,7 @@ public class Trend {
 		}
 
 		public String getexplanation(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0 && numresults > i) {
 		return explanation[i];
 		} else {
 		return "";
@@ -105,7 +120,7 @@ public class Trend {
 		}
 
 		public String getcategory(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0 && numresults > i) {
 		return category[i];
 		} else {
 		return "";
@@ -113,7 +128,7 @@ public class Trend {
 		}
 
 		public int getNum() {
-		return num; // データ件数
+		return numresults; // データ件数
 		}
 
 }
