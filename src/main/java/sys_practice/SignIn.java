@@ -43,7 +43,7 @@ public class SignIn {
 		String password = "AraikenR4!";
 		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
 		String port = "3306";
-		String dbName = "sys-practice";
+		String dbName = "sys_practice";
 		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
 				"?user=" + userName + "&password=" + password;
 		Connection con = DriverManager.getConnection(jdbcUrl);

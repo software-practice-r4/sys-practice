@@ -86,8 +86,8 @@ if (!style.equals(""))
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
 				</a>
-				<%if(err == 1) {%>
-				<%}%>
+<%-- 				<%if(err == 1) {%>
+				<%}%>--%>
 				<c:if test="${err != 0}">--%>
 				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
 						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
