@@ -1,86 +1,46 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.User"/>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="トップページ" />
-	<jsp:param name="style" value="home" />
-</jsp:include>
+<jsp:useBean id="sb" scope="session" class="sys_practice.Search" />
 
-<div class="intro">/
-	<span class="cover"></span>
-	<p><%=user.printHoge() %></p>
-	<h1>
-		あなたの好きをここに<br>クラフトボス最強
-	</h1>
-</div>
-
-<div class="recommend">
-	<div class="inner">
-		<div class="content">
-			<div class="post">
-				<div class="centering-ttl-box">
-					<h2 class="centering-ttl">あなたへのおすすめ</h2>
-				</div>
-				<div class="material-card-wrapper">
-					<%
-					for (int i = 0; i < 10; i++) {
-					%>
-					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
-						<jsp:param name="price" value="500" />
-						<jsp:param name="thumbnail" value="./../img/106.jpg" />
-						<jsp:param name="category" value="BGM" />
-						<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
-					</jsp:include>
-					<%
-					}
-					%>
-				</div>
-				<!--  <div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
-				</div>
-				-->
-			</div>
-			<div class="post">
-				<div class="centering-ttl-box">
-					<h2 class="centering-ttl">今週の人気ランキング</h2>
-				</div>
-				<div class="material-card-wrapper">
-					<%
-					for (int i = 0; i < 10; i++) {
-					%>
-					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
-						<jsp:param name="price" value="500" />
-						<jsp:param name="thumbnail" value="./../img/106.jpg" />
-						<jsp:param name="category" value="BGM" />
-						<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
-					</jsp:include>
-					<%
-					}
-					%>
-				</div>
-				<div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
-				</div>
-			</div>
-
-			<div class="post">
-				<div class="centering-ttl-box">
-					<h2 class="centering-ttl">カテゴリー</h2>
-				</div>
-				<div class="category-list">
-					<a href=<%="List.jsp?category_id="+512%> class="btn-square">カテゴリー1</a>
-					<a href=<%="List.jsp?category_id="+212%> class="btn-square">カテゴリー2</a>
-				</div>
-				<div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
-<jsp:include page="./../components/Footer.jsp" />
-
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>講義科目の表示</title>
+</head>
+<body>
+	<header>
+		<h1>講義科目の表示</h1>
+	</header>
+	<article>
+		データ件数：<%=sb.getNum()%>
+		<table border="1">
+			<tr>
+				<th>素材名</th>
+				<th>サムネイル</th>
+				<th>説明文</th>
+				<th>素材ID</th>
+				<th>値段</th>
+				<th>カテゴリーId</th>
+				<th>提供者ID</th>
+				<th>年齢制限</th>
+			</tr>
+			<%
+			for (int i = 0; i < sb.getNum(); i++) {
+			%>
+			<tr>
+				<td><%=sb.getMaterialName(i)%></td>
+				<td><%=sb.getThumbnail(i)%></td>
+				<td><%=sb.getExplanation(i)%></td>
+				<td><%=sb.getMaterialId(i)%></td>
+				<td><%=sb.getPrice(i)%></td>
+				<td><%=sb.getCategoryId(i)%></td>
+				<td><%=sb.getProviderId(i)%></td>
+				<td><%=sb.getIsAdult(i)%></td>
+			</tr>
+			<%
+			}
+			%>
+		</table>
+	</article>
 </body>
 </html>

@@ -15,36 +15,34 @@
 				</div>
 				<div class="information">
 					<ul>
-						<form action="SearchErrorHandling.jsp" method="post">
+						<form action="ReceiveInfo.jsp" method="post">
 							<p>
-								キーワード:<br>
-								<input type="search" name="keyword" size="40" placeholder="キーワード" class="text-box">
+								キーワード:<br> <input type="search" name="keyword" size="40"
+									placeholder="キーワード" class="text-box">
 							</p>
 							<p>
-								価格：<br>
-								<input type="number" name="searchPrice" size="40" placeholder="152" class="text-box" max="100000">
+								価格：<br> <input type="number" name="searchPrice" size="40"
+									placeholder="152" class="text-box" max="100000">
 							</p>
 							<p>カテゴリー：
 							<div class="select">
 								<select name="searchCategoryId" class="text-box">
 									<option value="1">BGM</option>
-									<option value="2">動画</option>
-									<option value="3">イラスト</option>
+									<option value="2">イラスト</option>
+									<option value="3">動画</option>
 								</select>
 							</div>
 							</p>
 							<p>
-								年齢制限：<br>
-								<input type="radio" name="SearchIsAdlut" value="adlut">
-								<label for="adlut">成人向け</label><br>
-								<input type="radio"  name="SearchIsAdlut" value="noadlut">
+								年齢制限：<br> <input type="radio" name="SearchIsAdlut"
+									value="1"> <label for="adlut">成人向け</label><br>
+								<input type="radio" name="SearchIsAdlut" value="0">
 								<label for="adlut">非成人向け</label>
 							</p>
+							<input type="submit" value="検索"><br>
 						</form>
+
 					</ul>
-					<div class="completion">
-						<input type="submit" class="btn-square-so-pop" value="検索"><br>
-					</div>
 				</div>
 			</div>
 		</div>

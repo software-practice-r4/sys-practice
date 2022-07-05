@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Search extends Material{
 
@@ -13,23 +14,40 @@ public class Search extends Material{
 	String searchPrice;
 	String searchIsAdult;
 
-    /*素材検索メソッド*/
-	public void getMaterial(String keyword, String searchCategoryId, String searchPrice, String searchIsAdult) throws Exception {
-   /*ータベースに接続*/
-	Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-	String url = "jdbc:mysql://localhost/sys_practice?characterEncoding=UTF-8"; //データベース名は適宜修正：文字エンコードはUTF-8
-	Connection conn = DriverManager.getConnection(url, "adomin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
+	/*awsに接続*/
+	private static Connection getRemoteConnection(String dbName) throws SQLException {
+		// JDBCドライバー読み込み
+		try {
+			System.out.println("Loading driver...");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded!");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find the driver in the classpath!", e);
+		}
 
-    num = 0;
-    String sql =
-    "SELECT * from Material WHERE materialName like ? AND categoryId=? AMD price=? AMD isAdult=?";
-    PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-    stmt.setMaxRows(100); //最大の数を制限
-    stmt.setString(1, "%"+keyword+"%");
-    stmt.setString(2, searchCategoryId);
-    stmt.setString(3, searchPrice);
-    stmt.setString(4, searchIsAdult);
-    ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+		String userName = "admin";
+		String password = "AraikenR4!";
+		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
+		String port = "3306";
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+				"?user=" + userName + "&password=" + password;
+		Connection con = DriverManager.getConnection(jdbcUrl);
+
+		return con;
+	  }
+
+    /*素材検索メソッド*/
+	public void getmaterial(String keyword, String searchCategoryId, String searchPrice, String searchIsAdult) throws Exception {
+		Connection conn = getRemoteConnection("sys_practice");
+		String sql
+		="SELECT * FROM material WHERE materialName like ? AND categoryId=? AND price=? AND isAdult=?";
+		PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
+        stmt.setMaxRows(100); //最大の数を制限
+        stmt.setString(1, "%"+keyword+"%");
+        stmt.setString(2, searchCategoryId);
+        stmt.setString(3, searchPrice);
+        stmt.setString(4, searchIsAdult);
+        ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
 
     /*結果の取り出しと表示 */
 	num = 0;
@@ -41,7 +59,7 @@ public class Search extends Material{
 		this.price[num] = rs.getInt("price");
 		this.categoryId[num] = rs.getInt("categoryId");
 		this.providerId[num] = rs.getInt("providerId");
-		this.isAdult[num] = rs.getBoolean("isAdult");
+		this.isAdult[num] = rs.getInt("isAdult");
 		num++;
 	}
         /* 2.1.4 データベースからの切断 */

@@ -26,9 +26,9 @@
 
     /*素材検索メソッド */
     try {
-        search.getMaterial(keyword, searchCategoryId, searchPrice, searchIsAdult);
+        search.getmaterial(keyword, searchCategoryId, searchPrice, searchIsAdult);
 %>
-<jsp:forward page="List.jsp" />
+<jsp:forward page="Sandbox.jsp" />
 <%
 } catch (Exception e) {
 %>
@@ -43,9 +43,7 @@
         <header>
             <h1>エラーの表示</h1>
         </header>
-        <article>
-            データベースに接続できませんでした。
-        </article>
+           <%=e %>
     </body>
 </html>
 

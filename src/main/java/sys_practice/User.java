@@ -96,7 +96,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {
-			return 00;
+			return 0;
 		}
 	}
 
@@ -104,7 +104,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return email[i];
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -112,7 +112,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return password[i];
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -120,7 +120,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return questionId[i];
 		} else {
-			return 00;
+			return "";
 		}
 	}
 
@@ -128,7 +128,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return questionAnswer[i];
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -136,7 +136,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return displayName[i];
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -144,7 +144,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return explanation[i];
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -152,7 +152,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return icon[i];
 		} else {
-			return null;
+			return "";
 		}
 		}
 
@@ -160,7 +160,7 @@ public class User {
 		if (i >= 0 && num > i) {
 			return wallet[i];
 		} else {
-			return 000;
+			return 0;
 		}
 	}
 

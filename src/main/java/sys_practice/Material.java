@@ -15,7 +15,7 @@ public class Material {
 	protected int[] price = new int[100];
 	protected int[] categoryId = new int[100];
 	protected int[] providerId = new int[100];
-	protected boolean[] isAdult = new boolean[100];
+	protected int[] isAdult = new int[100];
 	protected int num;
 
 	public void listMaterial() throws Exception { //エラー処理が必要にする
