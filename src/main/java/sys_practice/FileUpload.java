@@ -2,104 +2,165 @@ package sys_practice;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.tomcat.util.http.fileupload.FileItem;
-import org.apache.tomcat.util.http.fileupload.RequestContext;
 import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-public class UploadFile extends HttpServlet{
+@WebServlet("fileupload")
 
-	private String materialName = ""; //タイトル
-	private int price; //価格
-	private String thumbnail = ""; //サムネイル
-	private int categoryId; //カテゴリID
-	private int providerId; //プロバイダID
-	private String explanation = ""; //説明文
-	private String category = ""; //カテゴリ
-	private String fileName = ""; // ファイル名
+public class FileUpload extends HttpServlet {
 
-	private final String dataDir = "/sys-practice/src/main/webapp/sys-practice/img"; //保存先のパス
-	private final Upload file = new Upload();
+	/*
+	 * post-materila.jspから、素材情報を取得
+	 * その後そのデータをRDSに格納し、元ページへリダイレクトする
+	 * */
+	@Override
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		//文字コード等 基本設定
+		response.setContentType("text/html; charset=UTF-8");
+		request.setCharacterEncoding("UTF-8");
+
+		// 保存先ファイルの設定		S
+		String dataDir = getServletContext().getRealPath("sys-practice/content");
+		File dataDirFile = new File(dataDir);
+		DiskFileItemFactory factory = new DiskFileItemFactory();
+		factory.setRepository(dataDirFile);
+		factory.setSizeThreshold(1024);
+		ServletFileUpload upload = new ServletFileUpload(factory);
+		upload.setHeaderEncoding("UTF-8");
+		upload.setSizeMax(-1);
+
+		// 素材情報を格納
+		ArrayList<String> content = new ArrayList<>();
+		String filename = getRandomString(20);
+		boolean uploaded= false;
+
+
+		try {
+			// アップロードされたファイル情報をFileItemオブジェクトのリストとして取得
+			List<FileItem> objLst = new ServletFileUpload(factory).parseRequest(new ServletRequestContext(request));
+			Iterator<FileItem> objItr = objLst.iterator();
+
+			// フォームの情報を取得
+			for (FileItem uploadItem : objLst) {
+				if (uploadItem.isFormField()) {
+					content.add(uploadItem.getString("UTF-8"));
+				}
+			}
+			// ファイルデータの読み込み
+			while (objItr.hasNext()) {
+				FileItem objFi = (FileItem) objItr.next();
+				//ファイルじゃない時
+				if (!objFi.isFormField()) {
+					String prev_filename = objFi.getName();
+					if(prev_filename.length() <= 0) {
+						break;
+					}
+					filename = filename + prev_filename.substring(prev_filename.lastIndexOf("."));
+					if (filename != null && !filename.equals("")) {
+						objFi.write(new File(dataDir + "/" + filename));
+						uploaded = true;
+					}
+				}
+			}
+			// 情報が欠如していた場合に、エラー情報を付与し、リダイレクトする
+			if(filename.equals("") || content.get(0).equals("") || content.get(1).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/post-materila.jsp?is_success=false");
+				return;
+			}
+
+			// DB接続
+			AWS aws = new AWS();
+			Connection con = aws.getRemoteConnection();
+
+			// SQL文発行
+			Upload uploadMaterial = new Upload();
+			uploadMaterial.uploadMaterial(content.get(1), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), dataDir + filename, filename);
+
+			try {
+				Cookie cookie[] = request.getCookies();
+				String user_id = null;
+				if (cookie != null){
+				    for (int i = 0 ; i < cookie.length ; i++){
+				      if (cookie[i].getName().equals("user_id"))
+				        user_id = cookie[i].getValue();
+				    }
+				}
+				System.err.println(content.get(0)+", "+content.get(1));
+				int index = aws.addProduction(content.get(0), content.get(1), filename, Integer.valueOf(user_id));
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			// ファイル名をデータベースに登録する
+			if (!uploaded)
+				processRequest(request, response); //エラー表示
+			else {
+				// 次の一覧表示ページへ転送する
+;				response.sendRedirect("/sys-practice/sys-practice/jsp/post-material.jsp?is_successed=true");
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-	throws ServletException, IOException {
+			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-}
 
-@Override
-public void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-      response.setContentType("text/html; charset=UTF-8");
-      request.setCharacterEncoding("UTF-8");
+		//エラーを表示するHTMLの出力
+		try (PrintWriter out = response.getWriter()) {
+			out.println("<html>");
+			out.println("<head><title>エラー表示 POST時のエラー</title></head>");
+		} catch (Exception e) {
+			PrintWriter out = response.getWriter();
+			out.println("<p>POST時のエラー</p>");
+			out.println("<p>" + e + "</p>");
+		} finally {
+			PrintWriter out = response.getWriter();
+			out.println("</html>");
+		}
+	}
 
-      // アップロードの可否
-      boolean uploaded = false;
+	static String getRandomString(int i)
+    {
+        String theAlphaNumericS;
+        StringBuilder builder;
 
-      // ファイル取得設定
-      File dataDirFile = new File("aws/img"); //保存先ディレクトリの設定
-      DiskFileItemFactory dfi = new DiskFileItemFactory();
-      dfi.setRepository(dataDirFile); // 一時ファイルの保存先フォルダ
-      dfi.setSizeThreshold(1024); // バッファサイズ
-      ServletFileUpload sfu = new ServletFileUpload(dfi);
-      sfu.setHeaderEncoding("UTF-8");
-      sfu.setSizeMax(-1); // アップロードファイルの最大サイズ
+        theAlphaNumericS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                    + "0123456789";
 
-      try {
-        List objLst = sfu.parseRequest((RequestContext) request);
-        Iterator objItr = objLst.iterator();
-        while (objItr.hasNext()) {
-          FileItem objFi = (FileItem) objItr.next();
-          if (objFi.isFormField()) {
-            String name = objFi.getFieldName();
-            String value = objFi.getString(request.getCharacterEncoding());
-            if(name.equals("materialname")) {
-            	materialName = value;
-            } else if(name.equals("explanation")) {
-            	explanation = value;
-            } else if(name.equals("price")) {
-            	price = Integer.parseInt(value);
-            } else if(name.equals("category")) {
-            	category = value;
-            } else if(name.equals("thumbnail")) {
-            	explanation = value;
-            } else if(name.equals("categoryId")) {
-            	categoryId = Integer.parseInt(value);
-            } else if(name.equals("providerId")) {
-            	providerId = Integer.parseInt(value);
-            }
-          } else {
-            fileName = objFi.getName();
-            fileName = fileName.replaceAll("^.*[^A-Za-z0-9_¥¥-¥¥.]", "");
-            if (fileName != null && !fileName.equals("")) {
-              uploaded = true;
-              objFi.write(new File(dataDir + "/" + fileName));
-            }
-          }
+        //create the StringBuffer
+        builder = new StringBuilder(i);
+
+        for (int m = 0; m < i; m++) {
+
+            // generate numeric
+            int myindex
+                = (int)(theAlphaNumericS.length()
+                        * Math.random());
+
+            // add the characters
+            builder.append(theAlphaNumericS
+                        .charAt(myindex));
         }
-        //ファイルをデータベースに登録する
-        file.uploadMaterial(materialName, explanation, price, category, thumbnail, fileName, categoryId, providerId);
 
-        //次のページへの移動
-        if (!uploaded) {
-          request.setAttribute("errorcode",1);
-        } else {
-          request.setAttribute("errorcode",0);
-        }
-        RequestDispatcher rd = request.getRequestDispatcher("post-material.jsp");
-        rd.forward(request, response);
-    } catch (Exception e) {
-      request.setAttribute("errorcode",1);
-      RequestDispatcher rd = request.getRequestDispatcher("post-material.jsp");
-      rd.forward(request, response);
+        return builder.toString();
     }
-  }
 }
