@@ -25,14 +25,14 @@ try {
                         </div>
                         <div class="material-card-wrapper">
                             <%
-                            for (int i = 0; i < file.getNum() ; i++) {
+                            for (int i = 0; i < file.getnumresults() ; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value=file.getmaterialId(i) />
-                                <jsp:param name="price" value=file.getprice(i) />
-                                <jsp:param name="thumbnail" value=file.getfileName(i) />
-                                <jsp:param name="category" value=file.getcategory(i) />
-                                <jsp:param name="title" value=file.getmaterialName(i) />
+                                <jsp:param name="materialId" value=<%=file.getmaterialId(i)%> />
+                                <jsp:param name="price" value=<%=file.getprice(i)%> />
+                                <jsp:param name="thumbnail" value=<%=file.getfileName(i)%> />
+                                <jsp:param name="category" value=<%=file.getcategory(i)%> />
+                                <jsp:param name="title" value=<%=file.getmaterialName(i)%> />
                             </jsp:include>
                             <%
                             }
