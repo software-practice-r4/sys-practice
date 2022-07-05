@@ -1,10 +1,8 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
-
 String email = "";
 String password = "";
-
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
@@ -12,11 +10,9 @@ try {
 	if (request.getParameter("password") != null) {
 		password = request.getParameter("password");
 	}
-
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
-
-	int err = user.signIn(email, password);
+	int err = sign.signIn(email, password);
 %>
 <%
 if (err != 0) {
@@ -33,10 +29,6 @@ if (request.getParameter("email") == null) {
 }
 if (request.getParameter("password") == null) {
 	err_flag = true;
-}
-%>
-
-<%
 }
 %>
 

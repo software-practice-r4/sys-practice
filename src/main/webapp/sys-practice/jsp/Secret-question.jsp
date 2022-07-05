@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
@@ -25,6 +26,24 @@ try {
 <jsp:forward page="Request-email.jsp" />
 <%
 }
+=======
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
+<%
+request.setCharacterEncoding("UTF-8");
+
+String email = "";
+
+try {
+	if (request.getParameter("email") != null) {
+		email = request.getParameter("email");
+	}
+
+	session.setAttribute("email", email);
+
+	int err = sign.requestSecretQuestion(email);
+
+if (err != 0) {
+>>>>>>> branch 'develop' of https://github.com/software-practice-r4/sys-practice.git
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -46,7 +65,12 @@ try {
 				</c:if>
 				<ul>
 					<p>
+<<<<<<< HEAD
 						<%=user.getQuestionTitle(0)%>
+=======
+						<%=sign.getQuestionTitle(0)%>
+						<%=sign.getQuestionAnswer(0)%>
+>>>>>>> branch 'develop' of https://github.com/software-practice-r4/sys-practice.git
 					</p>
 					<p>
 						解答：<br> <input type="text" name="questionAnswer" size="40"
@@ -71,6 +95,7 @@ try {
 </body>
 </html>
 
+<<<<<<< HEAD
 
 <%
 request.setCharacterEncoding("UTF-8");
@@ -117,4 +142,21 @@ if (request.getParameter("password") == null) {
 <%
 }
 %>
+=======
+<%
+}
+%>
+<%
+} catch (Exception e) {
+boolean err_flag = false;
+if (request.getParameter("email") == null) {
+	err_flag = true;
+}
+%>
+<jsp:forward page="Request-email.jsp" />
+<%
+}
+%>
+
+>>>>>>> branch 'develop' of https://github.com/software-practice-r4/sys-practice.git
 

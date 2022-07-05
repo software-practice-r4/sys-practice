@@ -1,7 +1,6 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
 public class Profile {
@@ -24,9 +23,8 @@ public class Profile {
 		try {
 			num = 0;
 			count = 0;
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "softd", "softd");
+			AWS aws = new AWS();
+			Connection conn = aws.getRemoteConnection();
 
 			String sql = "UPDATE user SET";
 			if (userId != null) {

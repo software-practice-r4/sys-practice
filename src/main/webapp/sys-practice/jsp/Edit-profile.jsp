@@ -32,7 +32,11 @@ try {
 	session.setAttribute("userId", userId);
 
 	/* Updateメソッドの実行 */
+<<<<<<< HEAD
 	int err = 1;//user.editProfile(email, displayName, explain, icon, userId);//ID+関数名()
+=======
+	int err = user.editProfile(email, displayName, explain, icon, userId);//ID+関数名()
+>>>>>>> branch 'develop' of https://github.com/software-practice-r4/sys-practice.git
 %>
 <%
 if (err != 0) {

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class AWS {
-	public Connection getRemoteConnection(String dbName) throws SQLException {
+	public Connection getRemoteConnection() throws SQLException {
 		// JDBCドライバー読み込み
 		try {
 			System.out.println("Loading driver...");
@@ -19,7 +19,7 @@ public class AWS {
 		String password = "AraikenR4!";
 		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
 		String port = "3306";
-		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + "sys_practice" +
 				"?user=" + userName + "&password=" + password;
 		Connection con = DriverManager.getConnection(jdbcUrl);
 

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <jsp:useBean id="user" scope="session" class="sys_practice.SignUp" />
 <%
 request.setCharacterEncoding("UTF-8");
@@ -28,6 +29,39 @@ try {
 	session.setAttribute("questionAnswer", questionAnswer);
 
 	int err = user.signUp(email, password, questionId, questionAnswer);//ID+関数名()
+=======
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignUp" />
+<%
+request.setCharacterEncoding("UTF-8");
+
+String email = "";
+String password = "";
+String questionAnswer = "";
+int questionId = 0;//受け取れてるか心配
+String dbName = "sys-practice";
+
+try {
+	if (request.getParameter("email") != null) {
+		email = request.getParameter("email");
+	}
+	if (request.getParameter("password") != null) {
+		password = request.getParameter("password");
+	}
+	if (request.getParameter("questionId") != null) {
+		questionId = Integer.parseInt(request.getParameter("questionId"));
+	}
+
+	if (request.getParameter("questionAnswer") != null) {
+		questionAnswer = request.getParameter("questionAnswer");
+	}
+
+	session.setAttribute("email", email);
+	session.setAttribute("password", password);
+	session.setAttribute("questionId", questionId);
+	session.setAttribute("questionAnswer", questionAnswer);
+
+	int err = sign.signUp(email, password, questionId, questionAnswer);
+>>>>>>> branch 'develop' of https://github.com/software-practice-r4/sys-practice.git
 %>
 <%
 if (err != 0) {
@@ -88,7 +122,11 @@ if (request.getParameter("password") == null) {
 						<option value="4">ほったいもいじんな</option>
 					</select>
 					<p>
+<<<<<<< HEAD
 						秘密の質問：<br> <input type="text" name="questionAnswer" size="40"
+=======
+						秘密の質問の解答：<br> <input type="text" name="questionAnswer" size="40"
+>>>>>>> branch 'develop' of https://github.com/software-practice-r4/sys-practice.git
 							placeholder="秘密の質問" class="text-box"><br>
 					</p>
 				</form>
