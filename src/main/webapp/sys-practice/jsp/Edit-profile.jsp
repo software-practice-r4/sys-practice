@@ -75,7 +75,7 @@ if (err != 0) {
 							</p>
 							<p>
 								メールアドレス：<br>
-								<input type="email" name="mail" size="40" placeholder="メールアドレス"
+								<input type="email" name="email" size="40" placeholder="メールアドレス"
 									class="text-box">
 							</p>
 							<p>
