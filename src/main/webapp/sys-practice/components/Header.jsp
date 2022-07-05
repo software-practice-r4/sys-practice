@@ -1,49 +1,15 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
-<%
-request.setCharacterEncoding("UTF-8");
-
-String email = "";
-String password = "";
-
-try {
-	if (request.getParameter("email") != null) {
-		email = request.getParameter("email");
-	}
-	if (request.getParameter("password") != null) {
-		password = request.getParameter("password");
-	}
-
-	session.setAttribute("email", email);
-	session.setAttribute("password", password);
-
-	int err = user.signIn(email, password);
-%>
-<%
-if (err != 0) {
-%>
-
-<%
-}
-%>
-<%
-} catch (Exception e) {
-%>
-<%
-}
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <%
 String title = "";
 String style = "";
 try {
-	title = request.getParameter("title");
-	style = request.getParameter("style");
-	if (title.equals(""))
-		throw new Exception("タイトルが入力されていません。");
+    title = request.getParameter("title");
+    style = request.getParameter("style");
+    if (title.equals(""))
+        throw new Exception("タイトルが入力されていません。");
 } catch (Exception e) {
-	e.printStackTrace();
+    e.printStackTrace();
 }
 %>
 
@@ -53,52 +19,42 @@ try {
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="screen"
-	href="../css/start/destroy.css" />
+    href="../css/start/destroy.css" />
 <link rel="stylesheet" type="text/css" media="screen"
-	href="../css/start/common.css" />
+    href="../css/start/common.css" />
 <%
 if (!style.equals(""))
 %><link rel="stylesheet" href=<%="../css/" + style + ".css"%>>
 <script src="https://kit.fontawesome.com/313a5a93b1.js"
-	crossorigin="anonymous"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    crossorigin="anonymous"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com/" />
+<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
 <link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
-	rel="stylesheet" />
+    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
+    rel="stylesheet" />
 <title><%=title + "　|　素材提供サイト"%></title>
 </head>
 <header>
-	<div class="inner">
-		<div class="head-all">
-			<div class="head-title">
-				<a href="../jsp/Home.jsp" class="link"> 素材提供サイト </a>
-			</div>
-			<div class="head-left">
-				<form method="GET" action="List.jsp" class="search">
-					<input id="sbox" id="s" name="s" type="search"
-						placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
-						value="検索" />
-				</form>
-			</div>
-			<div class="head-right">
-				<a href="../jsp/Cart.jsp" class="btn-text-3d"> <img
-					src="../img/shopping-cart_icon_1477-300x300.png"
-					style="width: 30px; height: 30px" />
-				</a>
-				<c:if test="${err != 0}">--%>
-				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
-						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
-					</a>
-				</c:if>
-				<c:if test="${err == 0}">
-					<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
-						class="fa fa-chevron-right"></i>ログイン
-					</a>
-				</c:if>
-			</div>
-		</div>
-	</div>
+    <div class="inner">
+        <div class="head-all">
+            <div class="head-title">
+                <a href="../jsp/Home.jsp" class="link"> 素材提供サイト </a>
+            </div>
+            <div class="head-left">
+                <form method="GET" action="List.jsp" class="search">
+                    <input id="sbox" id="s" name="s" type="search"
+                        placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
+                        value="検索" />
+                </form>
+            </div>
+            <div class="head-right">
+                <a href="../jsp/Cart.jsp" class="btn-text-3d"> <img
+                    src="../img/shopping-cart_icon_1477-300x300.png"
+                    style="width: 30px; height: 30px" />
+                </a>
+
+            </div>
+        </div>
+    </div>
 </header>
-<body></body>
-</html>
+<body>
