@@ -6,7 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class Upload{
+public class Update {
+	protected int materialId;
 	protected String[] materialName = new String[100]; //タイトル
 	protected int price; //価格
 	protected String[] thumbnail = new String[70]; //サムネイル
@@ -39,12 +40,12 @@ public class Upload{
 	  }
 
 
-	public void uploadMaterial(String materialName, String explanation, String price, String categoryId, String category, String providerId, String thumbnail, String fileName) throws Exception {
+	public void updateMaterial(int materialId, String materialName, String explanation, int price, String category, String thumbnail, String fileName,  int categoryId, int providerId) throws Exception {
 
-		Connection conn = getRemoteConnection("sys_practice");
+		Connection conn = getRemoteConnection("sys-practice");
 
 		/* categoryIdでその他が選択されているとき */
-		if(Integer.parseInt(categoryId) == 0) {
+		if(categoryId == 0) {
 
 		    /* categoryに新規カテゴリを追加 */
 		    String sql = "INSERT INTO category (categoryName) VALUES (?)";
@@ -60,21 +61,22 @@ public class Upload{
 		    PreparedStatement stmt2 = conn.prepareStatement(sql2);
 		    stmt2.setString(1, category);
 		    ResultSet rs = stmt2.executeQuery();
-		    categoryId = rs.getString("categoryId");
+		    categoryId = rs.getInt("categoryId");
 
 		    rs.close();
 		    stmt2.close();
 	    }
 
-		/* Materialへ素材を追加 */
-	    String sql = "INSERT INTO Material (materialName,price,thumbnail,categoryId,providerId,explanation) VALUES (?,?,?,?,?,?,?)";
+		/* Materialの素材を更新 */
+	    String sql = "UPDATE Material SET materialName=?, price =?, thumbnail=?, categoryId=?, providerId=?, explanation=? WHERE materialId=?";
 	    PreparedStatement stmt3 = conn.prepareStatement(sql);
 	    stmt3.setString(1, materialName);
-	    stmt3.setInt(2, Integer.parseInt(price));
+	    stmt3.setInt(2, price);
 	    stmt3.setString(3, thumbnail);
-	    stmt3.setInt(4, Integer.parseInt(categoryId));
-	    stmt3.setInt(5, Integer.parseInt(providerId));
+	    stmt3.setInt(4, categoryId);
+	    stmt3.setInt(5, providerId);
 	    stmt3.setString(6, explanation);
+	    stmt3.setInt(7, materialId);
 
 	    stmt3.executeUpdate();
 
