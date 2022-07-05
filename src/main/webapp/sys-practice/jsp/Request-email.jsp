@@ -33,5 +33,3 @@
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
-
-

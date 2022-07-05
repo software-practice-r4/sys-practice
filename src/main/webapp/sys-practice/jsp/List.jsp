@@ -3,7 +3,7 @@
 	<jsp:param name="title" value="一覧ページ" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
-
+<jsp:useBean id="search" scope="session" class="sys_practice.Search"/>
 <div id="main">
 	<div class="sidebar">
 		<h3>絞り込み検索</h3>
@@ -20,15 +20,15 @@
 			<h1>価格</h1>
 			<div class="select">
 				<select name="price" class="text-box">
-					<option value="A">～\500</option>
-					<option value="B">\500～\2000</option>
-					<option value="O">\2000～\5000</option>
-					<option value="AB">\5000～</option>
+					<option value="A">～&yen;500</option>
+					<option value="B">&yen;500～&yen;2000</option>
+					<option value="O">&yen;2000～&yen;5000</option>
+					<option value="AB">&yen;5000～</option>
 				</select>
 			</div>
 			<h1>年齢制限</h1>
 			<div class="select">
-				<select name="age" class="text-box">
+				<select name="isAdult" class="text-box">
 					<option value="A">---</option>
 					<option value="O">R-18</option>
 				</select>

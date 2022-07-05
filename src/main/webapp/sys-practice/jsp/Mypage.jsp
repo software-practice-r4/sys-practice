@@ -4,7 +4,7 @@
 <%
 /* データ一覧の取得 */
 try {
-  file.getTrend(session.getAttribute("userId", "ub"));
+  file.getTrend((int)session.getAttribute("userId"));
 %>
 
 <jsp:include page="./../components/Header.jsp">

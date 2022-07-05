@@ -1,6 +1,8 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.User"/>
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
+<jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="トップページ" />
 	<jsp:param name="style" value="home" />
@@ -13,6 +15,9 @@
 	</h1>
 </div>
 
+<form action="<%=request.getContextPath() %>/awss3" method="POST">
+	<input type="submit" value="送信">
+</form>
 <div class="recommend">
 	<div class="inner">
 		<div class="content">

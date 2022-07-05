@@ -1,15 +1,15 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
 String title = "";
 String style = "";
 try {
-    title = request.getParameter("title");
-    style = request.getParameter("style");
-    if (title.equals(""))
-        throw new Exception("タイトルが入力されていません。");
+	title = request.getParameter("title");
+	style = request.getParameter("style");
+	if (title.equals("") || style.equals(""))
+		throw new Exception("タイトルまたは、スタイルシートの名前が欠如しています。");
 } catch (Exception e) {
-    e.printStackTrace();
+	e.printStackTrace();
 }
 %>
 
@@ -19,19 +19,19 @@ try {
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" media="screen"
-    href="../css/start/destroy.css" />
+	href="../css/start/destroy.css" />
 <link rel="stylesheet" type="text/css" media="screen"
-    href="../css/start/common.css" />
+	href="../css/start/common.css" />
 <%
 if (!style.equals(""))
 %><link rel="stylesheet" href=<%="../css/" + style + ".css"%>>
 <script src="https://kit.fontawesome.com/313a5a93b1.js"
-    crossorigin="anonymous"></script>
+	crossorigin="anonymous"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com/" />
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin />
 <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
-    rel="stylesheet" />
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
+	rel="stylesheet" />
 <title><%=title + "　|　素材提供サイト"%></title>
 </head>
 <header>
@@ -52,7 +52,7 @@ if (!style.equals(""))
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
 				</a>
-<%-- 				<%if(err == 1) {%>
+				<%-- <%if(err == 1) {%>
 				<%}%>--%>
 				<c:if test="${err != 0}">--%>
 				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i

@@ -26,7 +26,7 @@
 
     /*素材検索メソッド */
     try {
-        search.getMaterial(keyword, searchCategoryId, searchPrice, searchIsAdult);
+        search.getMaterial(keyword, Integer.parseInt(searchCategoryId), Integer.parseInt(searchPrice), Integer.parseInt(searchIsAdult));
 %>
 <jsp:forward page="List.jsp" />
 <%
@@ -44,7 +44,7 @@
             <h1>エラーの表示</h1>
         </header>
         <article>
-            データベースに接続できませんでした。
+            <%=e %>
         </article>
     </body>
 </html>

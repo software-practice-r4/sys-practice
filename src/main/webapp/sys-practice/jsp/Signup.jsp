@@ -1,13 +1,11 @@
 <jsp:useBean id="sign" scope="session" class="sys_practice.SignUp" />
 <%
 request.setCharacterEncoding("UTF-8");
-
 String email = "";
 String password = "";
 String questionAnswer = "";
 int questionId = 0;//受け取れてるか心配
-String dbName = "sys-practice";
-
+String dbName = "sys_practice";
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
@@ -18,16 +16,13 @@ try {
 	if (request.getParameter("questionId") != null) {
 		questionId = Integer.parseInt(request.getParameter("questionId"));
 	}
-
 	if (request.getParameter("questionAnswer") != null) {
 		questionAnswer = request.getParameter("questionAnswer");
 	}
-
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
 	session.setAttribute("questionId", questionId);
 	session.setAttribute("questionAnswer", questionAnswer);
-
 	int err = sign.signUp(email, password, questionId, questionAnswer);
 %>
 <%
@@ -39,7 +34,7 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
-boolean err_flag = false;
+
 if (request.getParameter("questionAnswer") == null) {
 	err_flag = true;
 }
@@ -86,7 +81,7 @@ if (request.getParameter("password") == null) {
 						<option value="1">卒業した中学校は？</option>
 						<option value="2">卒業した小学校は？</option>
 						<option value="3">好きな食べ物は</option>
-						<option value="4">ほったいもいじんな</option>
+						<option value="4">小学校の時の夢は</option>
 					</select>
 					<p>
 						秘密の質問の解答：<br> <input type="text" name="questionAnswer" size="40"

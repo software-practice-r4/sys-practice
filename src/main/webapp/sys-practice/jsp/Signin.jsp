@@ -1,10 +1,9 @@
 <jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
-
 String email = "";
 String password = "";
-
+boolean err_flag = false;
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
@@ -12,10 +11,11 @@ try {
 	if (request.getParameter("password") != null) {
 		password = request.getParameter("password");
 	}
-
+	if(request.getParameter("email").equals("") || request.getParameter("password").equals("")){
+		throw new Exception("メールアドレスまたは、パスワードが入っていません。");
+	}
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
-
 	int err = sign.signIn(email, password);
 %>
 <%
@@ -27,15 +27,9 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
-boolean err_flag = false;
-if (request.getParameter("email") == null) {
-	err_flag = true;
-}
-if (request.getParameter("password") == null) {
-	err_flag = true;
-}
 %>
-
+<jsp:forward page="Signin.jsp?is_login=false" />
+<%} %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
@@ -52,7 +46,7 @@ if (request.getParameter("password") == null) {
 			<form action="" method="POST">
 				<div class="information">
 					<c:if test="${err_flag == true;}">
-						<p class="err-txt">入力してください</p>
+						<p class="err-txt">入力が足りません</p>
 					</c:if>
 					<ul>
 						<p>
@@ -77,7 +71,3 @@ if (request.getParameter("password") == null) {
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
-
-<%
-}
-%>
