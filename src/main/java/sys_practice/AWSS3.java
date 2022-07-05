@@ -27,7 +27,7 @@ public class AWSS3 extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 		
 		try {
-			log("アクセスされました!");
+			log("access");
 			final AmazonS3 s3 = AmazonS3ClientBuilder.standard().withRegion(Regions.AP_NORTHEAST_1).build();
 			List<Bucket> buckets = s3.listBuckets();
 			System.out.println("Your {S3} buckets are:");

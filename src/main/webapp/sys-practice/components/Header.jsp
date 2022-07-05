@@ -6,8 +6,8 @@ String style = "";
 try {
 	title = request.getParameter("title");
 	style = request.getParameter("style");
-	if (title.equals(""))
-		throw new Exception("タイトルが入力されていません。");
+	if (title.equals("") || style.equals(""))
+		throw new Exception("タイトルまたは、スタイルシートの名前が欠如しています。");
 } catch (Exception e) {
 	e.printStackTrace();
 }

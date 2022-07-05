@@ -8,38 +8,6 @@
 	<jsp:param name="style" value="home" />
 </jsp:include>
 
-<%@ page import="java.sql.*" %>
-<%
-  Connection conn = null;
-  Statement setupStatement = null;
-  Statement readStatement = null;
-  ResultSet resultSet = null;
-  String results = "";
-  int numresults = 0;
-  String statement = null;
-
-  /*
-  try {
-    conn = aws.getRemoteConnection("testdb");
-
-    setupStatement = conn.createStatement();
-    String createTable = "INSERT INTO user (name) VALUES ('テスト太郎')";
-    
-    setupStatement.addBatch(createTable);
-    setupStatement.executeBatch();
-    setupStatement.close();
-    
-  } catch (SQLException ex) {
-    // Handle any errors
-    System.out.println("SQLException: " + ex.getMessage());
-    System.out.println("SQLState: " + ex.getSQLState());
-    System.out.println("VendorError: " + ex.getErrorCode());
-  } finally {
-    System.out.println("Closing the connection.");
-    if (conn != null) try { conn.close(); } catch (SQLException ignore) {}
-  }*/
-%>
-
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
