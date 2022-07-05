@@ -1,12 +1,10 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-public class Upload {
+public class Upload{
 	protected String[] materialName = new String[100]; //タイトル
 	protected int price; //価格
 	protected String[] thumbnail = new String[70]; //サムネイル
@@ -16,35 +14,13 @@ public class Upload {
 	protected String[] category =  new String[10]; //カテゴリ
 	protected String[] fileName = new String[100]; //ファイル名
 
-	/* AWSの接続 */
-	private static Connection getRemoteConnection(String dbName) throws SQLException {
-		// JDBCドライバー読み込み
-		try {
-			System.out.println("Loading driver...");
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("Driver loaded!");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Cannot find the driver in the classpath!", e);
-		}
-
-		String userName = "admin";
-		String password = "AraikenR4!";
-		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
-		String port = "3306";
-		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
-				"?user=" + userName + "&password=" + password;
-		Connection con = DriverManager.getConnection(jdbcUrl);
-
-		return con;
-	  }
-
-
-	public void uploadMaterial(String materialName, String explanation, int price, String category, String thumbnail, String fileName,  int categoryId, int providerId) throws Exception {
-
-		Connection conn = getRemoteConnection("sys-practice");
+	public void uploadMaterial(String materialName, String explanation, String price, String categoryId, String category, String providerId, String thumbnail, String fileName) throws Exception {
+		
+		AWS aws = new AWS();
+		Connection conn = aws.getRemoteConnection();
 
 		/* categoryIdでその他が選択されているとき */
-		if(categoryId == 0) {
+		if(Integer.parseInt(categoryId) == 0) {
 
 		    /* categoryに新規カテゴリを追加 */
 		    String sql = "INSERT INTO category (categoryName) VALUES (?)";
@@ -60,7 +36,7 @@ public class Upload {
 		    PreparedStatement stmt2 = conn.prepareStatement(sql2);
 		    stmt2.setString(1, category);
 		    ResultSet rs = stmt2.executeQuery();
-		    categoryId = rs.getInt("categoryId");
+		    categoryId = rs.getString("categoryId");
 
 		    rs.close();
 		    stmt2.close();
@@ -70,10 +46,10 @@ public class Upload {
 	    String sql = "INSERT INTO Material (materialName,price,thumbnail,categoryId,providerId,explanation) VALUES (?,?,?,?,?,?,?)";
 	    PreparedStatement stmt3 = conn.prepareStatement(sql);
 	    stmt3.setString(1, materialName);
-	    stmt3.setInt(2, price);
+	    stmt3.setInt(2, Integer.parseInt(price));
 	    stmt3.setString(3, thumbnail);
-	    stmt3.setInt(4, categoryId);
-	    stmt3.setInt(5, providerId);
+	    stmt3.setInt(4, Integer.parseInt(categoryId));
+	    stmt3.setInt(5, Integer.parseInt(providerId));
 	    stmt3.setString(6, explanation);
 
 	    stmt3.executeUpdate();

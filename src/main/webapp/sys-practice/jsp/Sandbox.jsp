@@ -8,7 +8,6 @@
 
 <div class="intro">/
 	<span class="cover"></span>
-	<p><%=user.printHoge() %></p>
 	<h1>
 		あなたの好きをここに<br>クラフトボス最強
 	</h1>

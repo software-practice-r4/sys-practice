@@ -3,7 +3,7 @@
 	<jsp:param name="title" value="一覧ページ" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
-
+<jsp:useBean id="search" scope="session" class="sys_practice.Search"/>
 <div id="main">
 	<div class="sidebar">
 		<h3>絞り込み検索</h3>
@@ -28,7 +28,7 @@
 			</div>
 			<h1>年齢制限</h1>
 			<div class="select">
-				<select name="age" class="text-box">
+				<select name="isAdult" class="text-box">
 					<option value="A">---</option>
 					<option value="O">R-18</option>
 				</select>

@@ -3,7 +3,6 @@ package sys_practice;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,11 +13,16 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet("fileupload")
+
 public class FileUpload extends HttpServlet {
+
 	/*
 	 * post-materila.jspから、素材情報を取得
 	 * その後そのデータをRDSに格納し、元ページへリダイレクトする
@@ -27,7 +31,7 @@ public class FileUpload extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		//文字コード等　基本設定
+		//文字コード等 基本設定
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
@@ -40,13 +44,13 @@ public class FileUpload extends HttpServlet {
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		upload.setHeaderEncoding("UTF-8");
 		upload.setSizeMax(-1);
-		
+
 		// 素材情報を格納
 		ArrayList<String> content = new ArrayList<>();
 		String filename = getRandomString(20);
 		boolean uploaded= false;
-		
-		
+
+
 		try {
 			// アップロードされたファイル情報をFileItemオブジェクトのリストとして取得
 			List<FileItem> objLst = new ServletFileUpload(factory).parseRequest(new ServletRequestContext(request));
@@ -79,15 +83,12 @@ public class FileUpload extends HttpServlet {
 				response.sendRedirect("/sys-practice/sys-practice/jsp/post-materila.jsp?is_success=false");
 				return;
 			}
-			
+
 			// DB接続
-			AWS aws = new AWS();
-			Connection con = aws.getRemoteConnection();
-			
 			// SQL文発行
-			// 適宜なおしてくれ
-			
-			ProductionDB production = new ProductionDB();
+			Upload uploadMaterial = new Upload();
+			uploadMaterial.uploadMaterial(content.get(1), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), dataDir + filename, filename);
+
 			try {
 				Cookie cookie[] = request.getCookies();
 				String user_id = null;
@@ -98,7 +99,6 @@ public class FileUpload extends HttpServlet {
 				    }
 				}
 				System.err.println(content.get(0)+", "+content.get(1));
-				int index = production.addProduction(content.get(0), content.get(1), filename, Integer.valueOf(user_id));
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -114,11 +114,11 @@ public class FileUpload extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-	
+
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		response.setContentType("text/html;charset=UTF-8");
-		
+
 		//エラーを表示するHTMLの出力
 		try (PrintWriter out = response.getWriter()) {
 			out.println("<html>");
@@ -132,30 +132,30 @@ public class FileUpload extends HttpServlet {
 			out.println("</html>");
 		}
 	}
-	
-	static String getRandomString(int i) 
-    { 
+
+	static String getRandomString(int i)
+    {
         String theAlphaNumericS;
         StringBuilder builder;
-        
+
         theAlphaNumericS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                                    + "0123456789"; 
+                                    + "0123456789";
 
         //create the StringBuffer
-        builder = new StringBuilder(i); 
+        builder = new StringBuilder(i);
 
-        for (int m = 0; m < i; m++) { 
+        for (int m = 0; m < i; m++) {
 
             // generate numeric
-            int myindex 
-                = (int)(theAlphaNumericS.length() 
-                        * Math.random()); 
+            int myindex
+                = (int)(theAlphaNumericS.length()
+                        * Math.random());
 
             // add the characters
-            builder.append(theAlphaNumericS 
-                        .charAt(myindex)); 
-        } 
+            builder.append(theAlphaNumericS
+                        .charAt(myindex));
+        }
 
-        return builder.toString(); 
-    } 
+        return builder.toString();
+    }
 }

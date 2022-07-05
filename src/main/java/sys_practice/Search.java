@@ -13,20 +13,20 @@ public class Search extends Material {
 	String searchIsAdult;
 
 	/*素材検索メソッド*/
-	public void getMaterial(String keyword, String searchCategoryId, String searchPrice, String searchIsAdult)
+	public void getMaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult)
 			throws Exception {
-		/*ータベースに接続*/
+		/*データベースに接続*/
 		AWS aws = new AWS();
 		Connection conn = aws.getRemoteConnection();
 
 		num = 0;
-		String sql = "SELECT * from material WHERE materialName like ? AND categoryId=? AMD price=? AMD isAdult=?";
+		String sql = "SELECT * from material WHERE materialName like ? AND categoryId=? AND price=? AND isAdult=?";
 		PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
 		stmt.setMaxRows(100); //最大の数を制限
 		stmt.setString(1, "%" + keyword + "%");
-		stmt.setString(2, searchCategoryId);
-		stmt.setString(3, searchPrice);
-		stmt.setString(4, searchIsAdult);
+		stmt.setInt(2, searchCategoryId);
+		stmt.setInt(3, searchPrice);
+		stmt.setInt(4, searchIsAdult);
 		ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
 
 		/*結果の取り出しと表示 */
