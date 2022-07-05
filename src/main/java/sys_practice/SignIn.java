@@ -1,5 +1,6 @@
 package sys_practice;
 
+//SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -9,16 +10,17 @@ import java.sql.Statement;
 
 public class SignIn {
 
-	protected int[] userId = new int[100];//ユーザーID
-	protected String[] email = new String[50]; //eメール
-	protected String[] password = new String[20]; //パスワード
-	protected String[] displayName = new String[50];//表示名
+	/* 1. フィールドの定義 */
+	protected String[] userId = new String[100]; //ユーザーID
+	protected String[] email = new String[100]; //eメール
+	protected String[] passWord = new String[100]; //パスワード
+	protected String[] displayName = new String[100];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] questionTitle = new String[50];//秘密の質問の質問内容
-	protected String[] questionAnswer = new String[50];//秘密の質問に対する答え
-	protected String[] explanation = new String[100];//自己紹介文
-	protected String[] icon = new String[50]; //アイコン
+	protected String[] answer = new String[100];//秘密の質問の応え
+	protected String[] explain = new String[100];//自己紹介文
+	protected String[] icon = new String[100]; //アイコン
 	protected int[] wallet = new int[100]; //財布
+  
 	protected int num;//データ取得件数
 	protected int[] cnt = new int[100];
 
@@ -175,11 +177,14 @@ public class SignIn {
 		}
 	}
 
+	/* 3. アクセッサ */
+	/* 3.1 Getアクセッサ */
 	public int getUserId(int i) {
+
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {
-			return 0;
+			return "";
 		}
 	}
 
@@ -191,9 +196,9 @@ public class SignIn {
 		}
 	}
 
-	public String getPassword(int i) {
+	public String getPassWord(int i) {
 		if (i >= 0 && num > i) {
-			return password[i];
+			return passWord[i];
 		} else {
 			return "";
 		}
@@ -215,25 +220,17 @@ public class SignIn {
 		}
 	}
 
-	public String getQuestionTitle(int i) {
+	public String Answer(int i) {
 		if (i >= 0 && num > i) {
-			return questionTitle[i];
+			return answer[i];
 		} else {
 			return "";
 		}
 	}
 
-	public String getQuestionAnswer(int i) {
+	public String getExplain(int i) {
 		if (i >= 0 && num > i) {
-			return questionAnswer[i];
-		} else {
-			return "";
-		}
-	}
-
-	public String getExplanation(int i) {
-		if (i >= 0 && num > i) {
-			return explanation[i];
+			return explain[i];
 		} else {
 			return "";
 		}
@@ -256,7 +253,7 @@ public class SignIn {
 	}
 
 	public int getNum() {
-		return num;
+		return num; // データ件数
 	}
 
 }
