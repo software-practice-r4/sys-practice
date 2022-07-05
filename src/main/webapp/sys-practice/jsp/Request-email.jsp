@@ -1,37 +1,3 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignIn" />
-<%
-request.setCharacterEncoding("UTF-8");
-
-String email = "";
-
-try {
-	if (request.getParameter("email") != null) {
-		email = request.getParameter("email");
-	}
-
-	session.setAttribute("email", email);
-
-	int err = user.requestQuestionId(email);
-%>
-<%
-if (err != 0) {
-%>
-<jsp:forward page="Secret-question.jsp" />
-<%
-}
-%>
-<%
-} catch (Exception e) {
-boolean err_flag = false;
-if (request.getParameter("email") == null) {
-	err_flag = true;
-}
-%>
-<%--<jsp:forward page="Signin.jsp" />--%>
-<%
-}
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
@@ -48,7 +14,7 @@ if (request.getParameter("email") == null) {
 			<form action="" method="POST">
 				<div class="information">
 					<c:if test="${err_flag == true;}">
-						<p class="err-txt">入力が足りません</p>
+						<p class="err-txt">入力してください</p>
 					</c:if>
 					<ul>
 						<p>
@@ -67,3 +33,5 @@ if (request.getParameter("email") == null) {
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
+
+

@@ -1,10 +1,12 @@
 package sys_practice;
 
-//こっちはわからん
 //SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SignUp {
 
@@ -14,43 +16,86 @@ public class SignUp {
 	protected String[] passWord = new String[100]; //パスワード
 	protected String[] displayName = new String[100];//表示名
 	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] answer = new String[100];//秘密の質問の応え
-	protected String[] explain = new String[100];//自己紹介文
-	protected String[] icon = new String[100]; //アイコン
+	protected String[] questionAnswer = new String[50];//秘密の質問の応え
+	protected String[] explanation = new String[100];//自己紹介文
+	protected String[] icon = new String[50]; //アイコン
 	protected int[] wallet = new int[100]; //財布
-	protected int num;
+	protected int num;//データ取得件数
+	protected int[] cnt = new int[100];//実行回数
+
+	Connection conn = null;
+	Statement setupStatement = null;
+	Statement readStatement = null;
+	ResultSet resultSet = null;
+	String results = "";
+	String statement = null;
+
+	public Connection getRemoteConnection() throws SQLException {
+		try {
+			System.out.println("Loading driver...");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded!");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find the driver in the classpath!", e);
+		}
+
+		String userName = "admin";
+		String password = "AraikenR4!";
+		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
+		String port = "3306";
+		String dbName = "sys_practice";
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+				"?user=" + userName + "&password=" + password;
+		Connection con = DriverManager.getConnection(jdbcUrl);
+
+		return con;
+	}
 
 	/* サインアップ */
 	public int signUp(String userId, String email, String passWord) {
 		int count = 0; //登録件数のカウント
 		try {
-			/* 2.2.1 データベースに接続 */
-			Class.forName("com.mysql.jdbc.Driver").newInstance(); // SELECTの時と同じ
-			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "softd", "softd");
+			Connection conn = getRemoteConnection();
 
-			/* 2.2.2 INSERT文の実行 */
-			String sql = "INSERT INTO user (userId,email,passWord) VALUES (?,?,?)"; //SQL文の設定 INSERTはパラメータが必要なことが多い
-			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-			stmt.setString(1, userId); //1つ目の？に引数をセットする
-			stmt.setString(2, email);
-			stmt.setString(3, passWord);
+			setupStatement = conn.createStatement();
+			String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
 
-			/* 2.2.3 実行（UpdateやDeleteも同じメソッドを使う） */
-			count = stmt.executeUpdate();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, email);
+			ps.setString(2, password);
+			ps.setInt(3, questionId);
+			ps.setString(4, questionAnswer);
+			ps.addBatch(sql);
+			cnt = ps.executeBatch();
+			if(cnt != null) {
+				num = 1;
+			}
 
-			/* 2.2.4 データベースからの切断 */
-			stmt.close();
+			ps.close();
+			resultSet.close();
+			setupStatement.close();
 			conn.close();
-			return count;
-		} catch (Exception e) {
+
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+      
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
-	/* 3. アクセッサ */
-	/* 3.1 Getアクセッサ */
-	public String getUserId(int i) {
+	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {
@@ -92,7 +137,7 @@ public class SignUp {
 
 	public String Answer(int i) {
 		if (i >= 0 && num > i) {
-			return answer[i];
+			return questionAnswer[i];
 		} else {
 			return "";
 		}
@@ -125,5 +170,4 @@ public class SignUp {
 	public int getNum() {
 		return num; // データ件数
 	}
-
 }

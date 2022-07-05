@@ -35,26 +35,37 @@ if (!style.equals(""))
 <title><%=title + "　|　素材提供サイト"%></title>
 </head>
 <header>
-    <div class="inner">
-        <div class="head-all">
-            <div class="head-title">
-                <a href="../jsp/Home.jsp" class="link"> 素材提供サイト </a>
-            </div>
-            <div class="head-left">
-                <form method="GET" action="List.jsp" class="search">
-                    <input id="sbox" id="s" name="s" type="search"
-                        placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
-                        value="検索" />
-                </form>
-            </div>
-            <div class="head-right">
-                <a href="../jsp/Cart.jsp" class="btn-text-3d"> <img
-                    src="../img/shopping-cart_icon_1477-300x300.png"
-                    style="width: 30px; height: 30px" />
-                </a>
-
-            </div>
-        </div>
-    </div>
+	<div class="inner">
+		<div class="head-all">
+			<div class="head-title">
+				<a href="../jsp/Home.jsp" class="link"> 素材提供サイト </a>
+			</div>
+			<div class="head-left">
+				<form method="GET" action="List.jsp" class="search">
+					<input id="sbox" id="s" name="s" type="search"
+						placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
+						value="検索" />
+				</form>
+			</div>
+			<div class="head-right">
+				<a href="../jsp/Cart.jsp" class="btn-text-3d"> <img
+					src="../img/shopping-cart_icon_1477-300x300.png"
+					style="width: 30px; height: 30px" />
+				</a>
+<%-- 				<%if(err == 1) {%>
+				<%}%>--%>
+				<c:if test="${err != 0}">--%>
+				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
+						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
+					</a>
+				</c:if>
+				<c:if test="${err == 0}">
+					<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
+						class="fa fa-chevron-right"></i>ログイン
+					</a>
+				</c:if>
+			</div>
+		</div>
+	</div>
 </header>
 <body>

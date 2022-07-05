@@ -1,11 +1,12 @@
 package sys_practice;
 
-//こっちはわからん
 //SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class SignIn {
 
@@ -19,85 +20,167 @@ public class SignIn {
 	protected String[] explain = new String[100];//自己紹介文
 	protected String[] icon = new String[100]; //アイコン
 	protected int[] wallet = new int[100]; //財布
-	protected int num;
+  
+	protected int num;//データ取得件数
+	protected int[] cnt = new int[100];
 
-	/* 2. メソッド */
-	/* サインイン */
-	public int signIn(String email, String passWord) throws Exception { //エラー処理が必要にする throws Exception
-		/* 2.1.1 データベースに接続 */
-		num = 0; //取得件数の初期化
+	Connection conn = null;
+	Statement setupStatement = null;
+	Statement readStatement = null;
+	ResultSet resultSet = null;
+	String results = "";
+	int numresults = 0;
+	String statement = null;
+
+	private static Connection getRemoteConnection() throws SQLException {
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8"; //データベース名：文字エンコードはUTF-8
-			Connection conn = DriverManager.getConnection(url, "softd", "softd"); //上記URL設定でユーザ名とパスワードを使って接続
+			System.out.println("Loading driver...");
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			System.out.println("Driver loaded!");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Cannot find the driver in the classpath!", e);
+		}
 
-			/* 2.1.2 SELECT文の実行 */
-			String sql = "SELECT * FROM  user WHERE email Like ? AND passWord Like ?"; //SQL文の設定 ?などパラメータが必要がない場合は通常のStatementを利用
-			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
+		String userName = "admin";
+		String password = "AraikenR4!";
+		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
+		String port = "3306";
+		String dbName = "sys_practice";
+		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
+				"?user=" + userName + "&password=" + password;
+		Connection con = DriverManager.getConnection(jdbcUrl);
+
+		return con;
+	}
+
+	public int signIn(String email, String password) throws Exception {
+		num = 0;//取得件数の初期化
+		try {
+			conn = getRemoteConnection();
+			String sql = "SELECT * FROM user WHERE email Like ? and password Like ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setString(2, passWord);
+			stmt.setString(2, password);
 			stmt.setMaxRows(100); //最大の数を制限
-			ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+			resultSet = stmt.executeQuery();
 
-			/* 2.1.3 結果の取り出しと表示 */
-			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
-				this.userId[num] = rs.getString("userId");
-				this.email[num] = rs.getString("email");
-				this.passWord[num] = rs.getString("passWord");
-				this.displayName[num] = rs.getString("displayName");
-				this.questionId[num] = rs.getInt("questionId");
-				this.answer[num] = rs.getString("answer");
-				this.explain[num] = rs.getString("explain");
-				this.icon[num] = rs.getString("passWord");
-				this.wallet[num] = rs.getInt("wallet");
+			while (resultSet.next()) {
+				this.email[num] = resultSet.getString("email");
+				this.password[num] = resultSet.getString("password");
+				this.displayName[num] = resultSet.getString("displayName");
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.icon[num] = resultSet.getString("icon");
+				this.wallet[num] = resultSet.getInt("wallet");
 				num++;
 			}
 
-			/* 2.1.4 データベースからの切断 */
-			rs.close(); //開いた順に閉じる
 			stmt.close();
+			resultSet.close();
 			conn.close();
+
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
-	/*秘密の質問*/
-	public int resetPassWord(String email) throws Exception { //エラー処理が必要にする throws Exception
-		/* 2.1.1 データベースに接続 */
-		num = 0; //取得件数の初期化
+	public int requestSecretQuestion(String email) throws Exception {
+		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-			String url = "jdbc:mysql://localhost/softd4?characterEncoding=UTF-8"; //データベース名：文字エンコードはUTF-8
-			Connection conn = DriverManager.getConnection(url, "softd", "softd"); //上記URL設定でユーザ名とパスワードを使って接続
-
-			/* 2.1.2 SELECT文の実行 */
-			String sql = "SELECT answer FROM  user WHERE email Like ?"; //SQL文の設定 ?などパラメータが必要がない場合は通常のStatementを利用
-			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
+			conn = getRemoteConnection();
+			String sql = "SELECT user.questionId, user.questionAnswer, question.questionTitle FROM user FULL OUTER JOIN question ON user.questionId = question.questionId WHERE email Like ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setMaxRows(100); //最大の数を制限
-			ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+			resultSet = stmt.executeQuery();
 
-			/* 2.1.3 結果の取り出しと表示 */
-			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
-				this.answer[num] = rs.getString("answer");
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
 				num++;
 			}
 
-			/* 2.1.4 データベースからの切断 */
-			rs.close(); //開いた順に閉じる
 			stmt.close();
+			resultSet.close();
 			conn.close();
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+
+	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
+		int num = 0;//取得件数の初期化
+		try {
+			Connection conn = getRemoteConnection();
+
+			setupStatement = conn.createStatement();
+			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
+
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, password);
+			ps.setString(2, questionAnswer);
+			ps.setString(3, email);
+			ps.addBatch(sql);
+			cnt = ps.executeBatch();
+			if (cnt != null) {
+				num = 1;
+			}
+
+			ps.close();
+			resultSet.close();
+			setupStatement.close();
+			conn.close();
+
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
 	/* 3. アクセッサ */
 	/* 3.1 Getアクセッサ */
-	public String getUserId(int i) {
+	public int getUserId(int i) {
+
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {

@@ -1,11 +1,12 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.SignUp" />
+<jsp:useBean id="sign" scope="session" class="sys_practice.SignUp" />
 <%
 request.setCharacterEncoding("UTF-8");
 
 String email = "";
 String password = "";
 String questionAnswer = "";
-int questionId = 0;//多分取り方が合ってない
+int questionId = 0;//受け取れてるか心配
+String dbName = "sys-practice";
 
 try {
 	if (request.getParameter("email") != null) {
@@ -27,7 +28,7 @@ try {
 	session.setAttribute("questionId", questionId);
 	session.setAttribute("questionAnswer", questionAnswer);
 
-	int err = user.signUp(email, password, questionId, questionAnswer);//ID+関数名()
+	int err = sign.signUp(email, password, questionId, questionAnswer);
 %>
 <%
 if (err != 0) {
@@ -88,7 +89,7 @@ if (request.getParameter("password") == null) {
 						<option value="4">ほったいもいじんな</option>
 					</select>
 					<p>
-						秘密の質問：<br> <input type="text" name="questionAnswer" size="40"
+						秘密の質問の解答：<br> <input type="text" name="questionAnswer" size="40"
 							placeholder="秘密の質問" class="text-box"><br>
 					</p>
 				</form>
