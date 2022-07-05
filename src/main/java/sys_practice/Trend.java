@@ -127,7 +127,7 @@ public class Trend {
 		}
 		}
 
-		public int getNum() {
+		public int getnumresults() {
 		return numresults; // データ件数
 		}
 
