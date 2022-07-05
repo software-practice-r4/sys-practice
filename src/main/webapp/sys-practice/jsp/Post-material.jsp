@@ -17,12 +17,12 @@
                         </div>
                         <div class="information">
                             <ul>
-                               <%if(request.getAttribute("errorcode") == 1) {%>
-                               <p>
-                               素材のアップロードに失敗しました
-                               </p>
-                               <%} %>
-                                <form action="/sys-practice/src/main/java/sys_practice/UploadFile.java" enctype="multipart/form-data" method="post">
+                                <%if(Integer.parseInt(request.getAttribute("errorcode")) == 1) {%>
+                                <p>
+                                素材のアップロードに失敗しました
+                                </p>
+                                <%} %>
+                                <form action="sys-practice/UploadFile" enctype="multipart/form-data" method="post">
                                     <p>
                                         タイトル：<br><input type="text" name="materialName" size="40" placeholder="タイトル" class="text-box">
                                     </p>
@@ -48,7 +48,7 @@
                                     </p>
                                     <p>
                                         アップロードファイル：<br><input type="file" name="name" size="40" placeholder="画像" class="text-box">
-                                        <br><input type="hidden" name="providerId" value=session.getAttribute("userId", "ub")>
+                                        <br><input type="hidden" name="providerId" value=<%=session.getAttribute("userId")%>>
                                     </p>
                                 </form>
                             </ul>
