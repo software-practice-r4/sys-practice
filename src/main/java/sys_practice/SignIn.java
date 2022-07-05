@@ -31,7 +31,6 @@ public class SignIn {
 	String statement = null;
 
 	private static Connection getRemoteConnection() throws SQLException {
-		// JDBCドライバー読み込み
 		try {
 			System.out.println("Loading driver...");
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -144,7 +143,6 @@ public class SignIn {
 			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
-
 			ps.setString(1, password);
 			ps.setString(2, questionAnswer);
 			ps.setString(3, email);

@@ -89,7 +89,7 @@ if (request.getParameter("password") == null) {
 						<option value="4">ほったいもいじんな</option>
 					</select>
 					<p>
-						秘密の質問：<br> <input type="text" name="questionAnswer" size="40"
+						秘密の質問の解答：<br> <input type="text" name="questionAnswer" size="40"
 							placeholder="秘密の質問" class="text-box"><br>
 					</p>
 				</form>

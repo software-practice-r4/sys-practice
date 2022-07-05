@@ -29,7 +29,6 @@ public class SignUp {
 	String statement = null;
 
 	public Connection getRemoteConnection() throws SQLException {
-		// JDBCドライバー読み込み
 		try {
 			System.out.println("Loading driver...");
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -167,5 +166,4 @@ public class SignUp {
 	public int getNum() {
 		return num;
 	}
-
 }
