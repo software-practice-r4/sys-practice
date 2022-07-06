@@ -42,6 +42,14 @@ System.err.println(e);
 }
 %>
 
+
+
+<%
+request.setCharacterEncoding("UTF-8");
+try {
+	sign.detaloadQuestion();
+%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
@@ -93,3 +101,9 @@ System.err.println(e);
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
+
+<%
+} catch (Exception e) {
+
+}
+%>
