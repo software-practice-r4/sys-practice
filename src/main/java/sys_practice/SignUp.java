@@ -1,6 +1,5 @@
 package sys_practice;
 
-//SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,21 +9,20 @@ import java.sql.Statement;
 
 public class SignUp {
 
-	/* 1. フィールドの定義 */
-	protected String[] userId = new String[100]; //ユーザーID
-	protected String[] email = new String[100]; //eメール
-	protected String[] passWord = new String[100]; //パスワード
-	protected String[] displayName = new String[100];//表示名
-	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] questionAnswer = new String[50];//秘密の質問の応え
-	protected String[] explanation = new String[100];//自己紹介文
-	protected String[] icon = new String[50]; //アイコン
-	protected int[] wallet = new int[100]; //財布
+	protected int[] userId = new int[100];
+	protected String[] email = new String[50];
+	protected String[] password = new String[20];
+	protected String[] displayName = new String[50];
+	protected int[] questionId = new int[100];
+	protected String[] questionTitle = new String[50];
+	protected String[] questionAnswer = new String[50];
+	protected String[] explanation = new String[100];
+	protected String[] icon = new String[50];
+	protected int[] wallet = new int[100];
 	protected int num;//データ取得件数
 	protected int[] cnt = new int[100];//実行回数
 
 	Connection conn = null;
-	Statement setupStatement = null;
 	Statement readStatement = null;
 	ResultSet resultSet = null;
 	String results = "";
@@ -51,13 +49,11 @@ public class SignUp {
 		return con;
 	}
 
-	/* サインアップ */
-	public int signUp(String userId, String email, String passWord) {
-		int count = 0; //登録件数のカウント
+	public int signUp(String email, String password, int questionId, String questionAnswer) {
+		int num = 0;//取得件数の初期化
 		try {
 			Connection conn = getRemoteConnection();
 
-			setupStatement = conn.createStatement();
 			String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -67,13 +63,12 @@ public class SignUp {
 			ps.setString(4, questionAnswer);
 			ps.addBatch(sql);
 			cnt = ps.executeBatch();
-			if(cnt != null) {
+			if (cnt != null) {
 				num = 1;
 			}
 
 			ps.close();
 			resultSet.close();
-			setupStatement.close();
 			conn.close();
 
 			return num;
@@ -83,8 +78,44 @@ public class SignUp {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-      
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+
+	public void detaloadQuestion() throws Exception {
+		num = 0;//取得件数の初期化
+		try {
+			conn = getRemoteConnection();
+			String sql = "SELECT * FROM question";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -99,7 +130,7 @@ public class SignUp {
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {
-			return "";
+			return 0;
 		}
 	}
 
@@ -111,9 +142,9 @@ public class SignUp {
 		}
 	}
 
-	public String getPassWord(int i) {
+	public String getPassword(int i) {
 		if (i >= 0 && num > i) {
-			return passWord[i];
+			return password[i];
 		} else {
 			return "";
 		}
@@ -135,7 +166,7 @@ public class SignUp {
 		}
 	}
 
-	public String Answer(int i) {
+	public String getQuestionAnswer(int i) {
 		if (i >= 0 && num > i) {
 			return questionAnswer[i];
 		} else {
@@ -143,9 +174,17 @@ public class SignUp {
 		}
 	}
 
-	public String getExplain(int i) {
+	public String getQuestionTitle(int i) {
 		if (i >= 0 && num > i) {
-			return explain[i];
+			return questionTitle[i];
+		} else {
+			return "";
+		}
+	}
+
+	public String getExplanation(int i) {
+		if (i >= 0 && num > i) {
+			return explanation[i];
 		} else {
 			return "";
 		}
@@ -168,6 +207,6 @@ public class SignUp {
 	}
 
 	public int getNum() {
-		return num; // データ件数
+		return num;
 	}
 }

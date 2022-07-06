@@ -1,9 +1,9 @@
 <jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
-
 String email = "";
 String password = "";
+boolean errFlag = false;
 
 try {
 	if (request.getParameter("email") != null) {
@@ -12,10 +12,11 @@ try {
 	if (request.getParameter("password") != null) {
 		password = request.getParameter("password");
 	}
-
+	if (request.getParameter("email").equals("") || request.getParameter("password").equals("")) {
+		throw new Exception("メールアドレスまたは、パスワードが入っていません。");
+	}
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
-
 	int err = sign.signIn(email, password);
 %>
 <%
@@ -27,12 +28,7 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
-boolean err_flag = false;
-if (request.getParameter("email") == null) {
-	err_flag = true;
-}
-if (request.getParameter("password") == null) {
-	err_flag = true;
+System.err.println(e);
 }
 %>
 
@@ -51,8 +47,8 @@ if (request.getParameter("password") == null) {
 		<div class="inner">
 			<form action="" method="POST">
 				<div class="information">
-					<c:if test="${err_flag == true;}">
-						<p class="err-txt">入力してください</p>
+					<c:if test="${errFlag == true;}">
+						<p class="err-txt">入力が足りません</p>
 					</c:if>
 					<ul>
 						<p>
@@ -62,12 +58,16 @@ if (request.getParameter("password") == null) {
 						<p>
 							パスワード：<br> <input type="password" name="password" size="40"
 								placeholder="パスワード" class="text-box"><br> <a
-								href="Request-email.jsp" class="link"><h3>パスワードをお忘れですか？</h3></a>
+								href="Request-email.jsp" class="link">
+								<h3>パスワードをお忘れですか？</h3>
+							</a>
 						</p>
 					</ul>
 					<div class="completion">
 						<input type="submit" class="btn-square-so-pop" value="完了"><br>
-						<a href="Signup.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
+						<a href="Signup.jsp" class="link">
+							<h4>アカウントをお持ちですか？</h4>
+						</a>
 					</div>
 				</div>
 			</form>
@@ -77,7 +77,3 @@ if (request.getParameter("password") == null) {
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
-
-<%
-}
-%>

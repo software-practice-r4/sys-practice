@@ -1,6 +1,5 @@
 package sys_practice;
 
-//SQLに関連したクラスライブラリをインポート
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,26 +9,23 @@ import java.sql.Statement;
 
 public class SignIn {
 
-	/* 1. フィールドの定義 */
-	protected String[] userId = new String[100]; //ユーザーID
-	protected String[] email = new String[100]; //eメール
-	protected String[] passWord = new String[100]; //パスワード
-	protected String[] displayName = new String[100];//表示名
-	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] answer = new String[100];//秘密の質問の応え
-	protected String[] explain = new String[100];//自己紹介文
-	protected String[] icon = new String[100]; //アイコン
-	protected int[] wallet = new int[100]; //財布
-  
+	protected int[] userId = new int[100];
+	protected String[] email = new String[50];
+	protected String[] password = new String[20];
+	protected String[] displayName = new String[50];
+	protected int[] questionId = new int[100];
+	protected String[] questionTitle = new String[50];
+	protected String[] questionAnswer = new String[50];
+	protected String[] explanation = new String[100];
+	protected String[] icon = new String[50];
+	protected int[] wallet = new int[100];
 	protected int num;//データ取得件数
-	protected int[] cnt = new int[100];
+	protected int[] cnt = new int[100];//実行回数
 
 	Connection conn = null;
-	Statement setupStatement = null;
 	Statement readStatement = null;
 	ResultSet resultSet = null;
 	String results = "";
-	int numresults = 0;
 	String statement = null;
 
 	private static Connection getRemoteConnection() throws SQLException {
@@ -141,7 +137,6 @@ public class SignIn {
 		try {
 			Connection conn = getRemoteConnection();
 
-			setupStatement = conn.createStatement();
 			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -156,7 +151,6 @@ public class SignIn {
 
 			ps.close();
 			resultSet.close();
-			setupStatement.close();
 			conn.close();
 
 			return num;
@@ -177,14 +171,11 @@ public class SignIn {
 		}
 	}
 
-	/* 3. アクセッサ */
-	/* 3.1 Getアクセッサ */
 	public int getUserId(int i) {
-
 		if (i >= 0 && num > i) {
 			return userId[i];
 		} else {
-			return "";
+			return 0;
 		}
 	}
 
@@ -196,9 +187,9 @@ public class SignIn {
 		}
 	}
 
-	public String getPassWord(int i) {
+	public String getPassword(int i) {
 		if (i >= 0 && num > i) {
-			return passWord[i];
+			return password[i];
 		} else {
 			return "";
 		}
@@ -220,17 +211,25 @@ public class SignIn {
 		}
 	}
 
-	public String Answer(int i) {
+	public String getQuestionTitle(int i) {
 		if (i >= 0 && num > i) {
-			return answer[i];
+			return questionTitle[i];
 		} else {
 			return "";
 		}
 	}
 
-	public String getExplain(int i) {
+	public String getQuestionAnswer(int i) {
 		if (i >= 0 && num > i) {
-			return explain[i];
+			return questionAnswer[i];
+		} else {
+			return "";
+		}
+	}
+
+	public String getExplanation(int i) {
+		if (i >= 0 && num > i) {
+			return explanation[i];
 		} else {
 			return "";
 		}
@@ -253,7 +252,7 @@ public class SignIn {
 	}
 
 	public int getNum() {
-		return num; // データ件数
+		return num;
 	}
 
 }

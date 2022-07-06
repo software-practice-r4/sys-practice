@@ -1,12 +1,11 @@
 <jsp:useBean id="sign" scope="session" class="sys_practice.SignUp" />
 <%
 request.setCharacterEncoding("UTF-8");
-
 String email = "";
 String password = "";
 String questionAnswer = "";
-int questionId = 0;//受け取れてるか心配
-String dbName = "sys-practice";
+int questionId = 0;
+boolean errFlag = false;
 
 try {
 	if (request.getParameter("email") != null) {
@@ -18,17 +17,17 @@ try {
 	if (request.getParameter("questionId") != null) {
 		questionId = Integer.parseInt(request.getParameter("questionId"));
 	}
-
 	if (request.getParameter("questionAnswer") != null) {
 		questionAnswer = request.getParameter("questionAnswer");
 	}
-
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
-	session.setAttribute("questionId", questionId);
-	session.setAttribute("questionAnswer", questionAnswer);
 
 	int err = sign.signUp(email, password, questionId, questionAnswer);
+	if (request.getParameter("email").equals("password") ||
+	request.getParameter("questionId").equals("questionAnswer")) {
+		throw new Exception("いずかのパラメーターが不足しています。");
+	}
 %>
 <%
 if (err != 0) {
@@ -39,22 +38,17 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
-boolean err_flag = false;
-if (request.getParameter("questionAnswer") == null) {
-	err_flag = true;
-}
-if (request.getParameter("email") == null) {
-	err_flag = true;
-}
-if (request.getParameter("password") == null) {
-	err_flag = true;
+System.err.println(e);
 }
 %>
+
+
 
 <%
-}
+request.setCharacterEncoding("UTF-8");
+try {
+	sign.detaloadQuestion();
 %>
-
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -71,7 +65,7 @@ if (request.getParameter("password") == null) {
 		<div class="information">
 			<ul>
 				<form action="" method="post">
-					<c:if test="${err_flag == true;}">
+					<c:if test="${errFlag == true;}">
 						<p class="err-txt">入力ミス</p>
 					</c:if>
 					<p>
@@ -83,14 +77,17 @@ if (request.getParameter("password") == null) {
 							placeholder="パスワード" class="text-box"><br>
 					</p>
 					<select name="questionId" id="question">
-						<option value="1">卒業した中学校は？</option>
-						<option value="2">卒業した小学校は？</option>
-						<option value="3">好きな食べ物は</option>
-						<option value="4">ほったいもいじんな</option>
+						<%
+						for (int i = 0; i < 4; i++) {
+						%>
+						<option value="<%=sign.getQuestionId(i)%>">sign.getQuestionTitle(i)</option>
+						<%
+						}
+						%>
 					</select>
 					<p>
-						秘密の質問の解答：<br> <input type="text" name="questionAnswer" size="40"
-							placeholder="秘密の質問" class="text-box"><br>
+						秘密の質問の解答：<br> <input type="text" name="questionAnswer"
+							size="40" placeholder="秘密の質問" class="text-box"><br>
 					</p>
 				</form>
 			</ul>
@@ -104,3 +101,9 @@ if (request.getParameter("password") == null) {
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
+
+<%
+} catch (Exception e) {
+
+}
+%>
