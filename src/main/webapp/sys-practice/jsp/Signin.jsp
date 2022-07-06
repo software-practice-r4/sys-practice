@@ -3,7 +3,8 @@
 request.setCharacterEncoding("UTF-8");
 String email = "";
 String password = "";
-boolean err_flag = false;
+boolean errFlag = false;
+
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
@@ -11,7 +12,7 @@ try {
 	if (request.getParameter("password") != null) {
 		password = request.getParameter("password");
 	}
-	if(request.getParameter("email").equals("") || request.getParameter("password").equals("")){
+	if (request.getParameter("email").equals("") || request.getParameter("password").equals("")) {
 		throw new Exception("メールアドレスまたは、パスワードが入っていません。");
 	}
 	session.setAttribute("email", email);
@@ -27,9 +28,10 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
+System.err.println(e);
+}
 %>
-<jsp:forward page="Signin.jsp?is_login=false" />
-<%} %>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
@@ -45,7 +47,7 @@ if (err != 0) {
 		<div class="inner">
 			<form action="" method="POST">
 				<div class="information">
-					<c:if test="${err_flag == true;}">
+					<c:if test="${errFlag == true;}">
 						<p class="err-txt">入力が足りません</p>
 					</c:if>
 					<ul>
@@ -56,12 +58,16 @@ if (err != 0) {
 						<p>
 							パスワード：<br> <input type="password" name="password" size="40"
 								placeholder="パスワード" class="text-box"><br> <a
-								href="Request-email.jsp" class="link"><h3>パスワードをお忘れですか？</h3></a>
+								href="Request-email.jsp" class="link">
+								<h3>パスワードをお忘れですか？</h3>
+							</a>
 						</p>
 					</ul>
 					<div class="completion">
 						<input type="submit" class="btn-square-so-pop" value="完了"><br>
-						<a href="Signup.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
+						<a href="Signup.jsp" class="link">
+							<h4>アカウントをお持ちですか？</h4>
+						</a>
 					</div>
 				</div>
 			</form>
