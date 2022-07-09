@@ -28,7 +28,7 @@ if (err != 0) {
 <%
 } catch (Exception e) {
 %>
-<jsp:forward page="Signin.jsp?is_login=false" />
+	System.out.println(e);
 <%} %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -55,13 +55,16 @@ if (err != 0) {
 						</p>
 						<p>
 							パスワード：<br> <input type="password" name="password" size="40"
-								placeholder="パスワード" class="text-box"><br> <a
-								href="Request-email.jsp" class="link"><h3>パスワードをお忘れですか？</h3></a>
+								placeholder="パスワード" class="text-box"><br>
+								<a href="Request-email.jsp" class="link">
+								<h3>パスワードをお忘れですか？</h3></a>
 						</p>
 					</ul>
 					<div class="completion">
 						<input type="submit" class="btn-square-so-pop" value="完了"><br>
-						<a href="Signup.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
+						<a href="Signup.jsp" class="link">
+							<h4>アカウントをお持ちですか？</h4>
+						</a>
 					</div>
 				</div>
 			</form>

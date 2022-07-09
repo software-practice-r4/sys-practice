@@ -4,8 +4,9 @@ request.setCharacterEncoding("UTF-8");
 String email = "";
 String password = "";
 String questionAnswer = "";
-int questionId = 0;//受け取れてるか心配
-String dbName = "sys_practice";
+int questionId = 0;
+boolean errFlag = false;
+
 try {
 	if (request.getParameter("email") != null) {
 		email = request.getParameter("email");
@@ -21,9 +22,14 @@ try {
 	}
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
-	session.setAttribute("questionId", questionId);
-	session.setAttribute("questionAnswer", questionAnswer);
+
+	if(request.getParameter("email") .equals("password") || 
+			request.getParameter("questionId") .equals("questionAnswer")){
+		errFlag = true;
+		throw new Exception("いずかのパラメーターが不足しています。");
+	}
 	int err = sign.signUp(email, password, questionId, questionAnswer);
+	
 %>
 <%
 if (err != 0) {
@@ -34,19 +40,7 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
-
-if (request.getParameter("questionAnswer") == null) {
-	err_flag = true;
-}
-if (request.getParameter("email") == null) {
-	err_flag = true;
-}
-if (request.getParameter("password") == null) {
-	err_flag = true;
-}
-%>
-
-<%
+	System.out.println(e);
 }
 %>
 
