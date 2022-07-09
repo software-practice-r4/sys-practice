@@ -5,7 +5,7 @@
 boolean isLogout = false;
 
 if(request.getParameter("isLogout") != null){
-	isLogout = Boolean.valueOf(request.getParameter("isLogout"));	
+	isLogout = Boolean.valueOf(request.getParameter("isLogout"));
 }
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
