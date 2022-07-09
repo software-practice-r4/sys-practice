@@ -49,21 +49,21 @@ if (err != 0) {
 						<p class="err-txt">入力が足りません</p>
 					</c:if>
 					<ul>
-						<p>
+						<li>
 							メールアドレス：<br> <input type="email" name="email" size="40"
 								placeholder="メールアドレス" class="text-box">
-						</p>
-						<p>
+						</li>
+						<li>
 							パスワード：<br> <input type="password" name="password" size="40"
 								placeholder="パスワード" class="text-box"><br>
 								<a href="Request-email.jsp" class="link">
-								<h3>パスワードをお忘れですか？</h3></a>
-						</p>
+								パスワードをお忘れですか？</a>
+						</li>
 					</ul>
 					<div class="completion">
 						<input type="submit" class="btn-square-so-pop" value="完了"><br>
 						<a href="Signup.jsp" class="link">
-							<h4>アカウントをお持ちですか？</h4>
+							アカウントをお持ちですか？
 						</a>
 					</div>
 				</div>

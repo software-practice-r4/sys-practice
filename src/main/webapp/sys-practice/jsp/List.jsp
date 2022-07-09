@@ -5,6 +5,7 @@ int category = -1; // -1で全検索をかける
 String price = "Z"; // A-Dの値が返ってくるため、エラー処理用にzを格納
 int isAdult = 0; // 全年齢をデフォルト値
 
+
 if (request.getParameter("keyword") != null) {
 	keyword = request.getParameter("keyword");
 }
@@ -17,6 +18,7 @@ if (request.getParameter("price") != null) {
 if (request.getParameter("isAdult") != null) {
 	keyword = request.getParameter("isAdult");
 }
+
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
@@ -68,7 +70,7 @@ if (request.getParameter("isAdult") != null) {
 				for (int i = 0; i < 10; i++) {
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="id" value="3039202" />
+					<jsp:param name="materialId" value="3039202" />
 					<jsp:param name="price" value="500" />
 					<jsp:param name="thumbnail" value="./../img/106.jpg" />
 					<jsp:param name="category" value="BGM" />

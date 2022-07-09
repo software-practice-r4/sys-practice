@@ -8,7 +8,7 @@
 	<jsp:param name="style" value="home" />
 </jsp:include>
 
-<div class="intro">/
+<div class="intro">
 	<span class="cover"></span>
 	<h1>
 		あなたの好きをここに<br>クラフトボス最強
@@ -30,7 +30,7 @@
 					for (int i = 0; i < 10; i++) {
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
+						<jsp:param name="materialId" value="3039202" />
 						<jsp:param name="price" value="500" />
 						<jsp:param name="thumbnail" value="./../img/106.jpg" />
 						<jsp:param name="category" value="BGM" />
@@ -54,7 +54,7 @@
 					for (int i = 0; i < 10; i++) {
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
+						<jsp:param name="materialId" value="3039202" />
 						<jsp:param name="price" value="500" />
 						<jsp:param name="thumbnail" value="./../img/106.jpg" />
 						<jsp:param name="category" value="BGM" />

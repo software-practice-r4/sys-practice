@@ -42,9 +42,8 @@ if (!style.equals(""))
 			</div>
 			<div class="head-left">
 				<form method="GET" action="List.jsp" class="search">
-					<input id="sbox" id="s" name="s" type="search"
-						placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
-						value="検索" />
+					<input id="sbox" id="s" name="s" type="search" placeholder="キーワードを入力" />
+					<input id="sbtn" type="submit" value="検索" />
 				</form>
 			</div>
 			<div class="head-right">
@@ -69,3 +68,19 @@ if (!style.equals(""))
 	</div>
 </header>
 <body>
+
+<script>
+	const sbox = document.getElementById("sbox");
+	const sbtn = document.getElementById("sbtn");
+	
+	window.addEventListener("load", ()=>{
+		sbtn.style.pointerEvents="none";
+	})
+	
+	sbox.addEventListener("change", ()=>{
+		if(sbox.value.length == 0)
+			sbtn.style.pointerEvents="none";
+		else
+			sbtn.style.pointerEvents="auto";
+	})
+</script>
