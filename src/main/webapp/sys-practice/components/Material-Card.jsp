@@ -6,12 +6,14 @@
 	String thumbnail = "";
 	String category = "";
 	String title = "";
+	
 	try{
 		materialId = request.getParameter("materialId");
 		price = request.getParameter("price");
 		thumbnail = request.getParameter("thumbnail");
 		category = request.getParameter("category");
 		title = request.getParameter("title");
+		
 		if(materialId.equals(""))
 			throw new Exception("materialIdが入力されていません。");
 		if(price.equals(""))
@@ -31,7 +33,7 @@
 	}
 %>
 
-<a href=<%="Material-detail.jsp?materialId=" + price %> class="material-card link">
+<a href=<%="Material-detail.jsp?materialId=" + materialId %> class="material-card link">
 	<div class="card-top">
 		<img src="<%=thumbnail %>">
 		<span class="card-price">

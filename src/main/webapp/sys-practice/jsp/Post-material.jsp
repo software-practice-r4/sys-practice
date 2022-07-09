@@ -17,7 +17,7 @@
                         </div>
                         <div class="information">
                             <ul>
-                                <%if(Integer.parseInt(request.getAttribute("errorcode")) == 1) {%>
+                                <%if((boolean)request.getAttribute("is_sucessed")) {%>
                                 <p>
                                 素材のアップロードに失敗しました
                                 </p>

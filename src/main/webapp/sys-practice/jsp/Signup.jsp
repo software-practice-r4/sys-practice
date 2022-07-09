@@ -23,11 +23,13 @@ try {
 	session.setAttribute("email", email);
 	session.setAttribute("password", password);
 
-	int err = sign.signUp(email, password, questionId, questionAnswer);
-	if (request.getParameter("email").equals("password") ||
-	request.getParameter("questionId").equals("questionAnswer")) {
+	if(request.getParameter("email") .equals("password") || 
+			request.getParameter("questionId") .equals("questionAnswer")){
+		errFlag = true;
 		throw new Exception("いずかのパラメーターが不足しています。");
 	}
+	int err = sign.signUp(email, password, questionId, questionAnswer);
+	
 %>
 <%
 if (err != 0) {
@@ -38,17 +40,10 @@ if (err != 0) {
 %>
 <%
 } catch (Exception e) {
-System.err.println(e);
+	System.out.println(e);
 }
 %>
 
-
-
-<%
-request.setCharacterEncoding("UTF-8");
-try {
-	sign.detaloadQuestion();
-%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -65,7 +60,7 @@ try {
 		<div class="information">
 			<ul>
 				<form action="" method="post">
-					<c:if test="${errFlag == true;}">
+					<c:if test="${err_flag == true;}">
 						<p class="err-txt">入力ミス</p>
 					</c:if>
 					<p>
@@ -77,17 +72,14 @@ try {
 							placeholder="パスワード" class="text-box"><br>
 					</p>
 					<select name="questionId" id="question">
-						<%
-						for (int i = 0; i < 4; i++) {
-						%>
-						<option value="<%=sign.getQuestionId(i)%>">sign.getQuestionTitle(i)</option>
-						<%
-						}
-						%>
+						<option value="1">卒業した中学校は？</option>
+						<option value="2">卒業した小学校は？</option>
+						<option value="3">好きな食べ物は</option>
+						<option value="4">小学校の時の夢は</option>
 					</select>
 					<p>
-						秘密の質問の解答：<br> <input type="text" name="questionAnswer"
-							size="40" placeholder="秘密の質問" class="text-box"><br>
+						秘密の質問の解答：<br> <input type="text" name="questionAnswer" size="40"
+							placeholder="秘密の質問" class="text-box"><br>
 					</p>
 				</form>
 			</ul>
@@ -101,9 +93,3 @@ try {
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
-
-<%
-} catch (Exception e) {
-
-}
-%>

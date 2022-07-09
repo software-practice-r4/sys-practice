@@ -1,54 +1,52 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-public class Search extends Material{
+public class Search extends Material {
 
-    /*フィールド定義*/
+	/*フィールド定義*/
 	String keyword;
 	String searchCategoryId;
 	String searchPrice;
 	String searchIsAdult;
 
-    /*素材検索メソッド*/
-	public void getMaterial(String keyword, String searchCategoryId, String searchPrice, String searchIsAdult) throws Exception {
-   /*ータベースに接続*/
-	Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-	String url = "jdbc:mysql://localhost/sys_practice?characterEncoding=UTF-8"; //データベース名は適宜修正：文字エンコードはUTF-8
-	Connection conn = DriverManager.getConnection(url, "adomin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
+	/*素材検索メソッド*/
+	public void getMaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult)
+			throws Exception {
+		/*データベースに接続*/
+		AWS aws = new AWS();
+		Connection conn = aws.getRemoteConnection();
 
-    num = 0;
-    String sql =
-    "SELECT * from Material WHERE materialName like ? AND categoryId=? AMD price=? AMD isAdult=?";
-    PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-    stmt.setMaxRows(100); //最大の数を制限
-    stmt.setString(1, "%"+keyword+"%");
-    stmt.setString(2, searchCategoryId);
-    stmt.setString(3, searchPrice);
-    stmt.setString(4, searchIsAdult);
-    ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+		num = 0;
+		String sql = "SELECT * from material WHERE materialName like ? AND categoryId=? AND price=? AND isAdult=?";
+		PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
+		stmt.setMaxRows(100); //最大の数を制限
+		stmt.setString(1, "%" + keyword + "%");
+		stmt.setInt(2, searchCategoryId);
+		stmt.setInt(3, searchPrice);
+		stmt.setInt(4, searchIsAdult);
+		ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
 
-    /*結果の取り出しと表示 */
-	num = 0;
-	while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
-		this.materialName[num] = rs.getString("materialName");
-		this.thumbnail[num] = rs.getString("thumbnail");
-		this.explanation[num] = rs.getString("explanation");
-		this.materialId[num] = rs.getInt("materialId");
-		this.price[num] = rs.getInt("price");
-		this.categoryId[num] = rs.getInt("categoryId");
-		this.providerId[num] = rs.getInt("providerId");
-		this.isAdult[num] = rs.getBoolean("isAdult");
-		num++;
+		/*結果の取り出しと表示 */
+		num = 0;
+		while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
+			this.materialName[num] = rs.getString("materialName");
+			this.thumbnail[num] = rs.getString("thumbnail");
+			this.explanation[num] = rs.getString("explanation");
+			this.materialId[num] = rs.getInt("materialId");
+			this.price[num] = rs.getInt("price");
+			this.categoryId[num] = rs.getInt("categoryId");
+			this.providerId[num] = rs.getInt("providerId");
+			this.isAdult[num] = rs.getBoolean("isAdult");
+			num++;
+		}
+		/* 2.1.4 データベースからの切断 */
+		rs.close(); //開いた順に閉じる
+		stmt.close();
+		conn.close();
 	}
-        /* 2.1.4 データベースからの切断 */
-        rs.close(); //開いた順に閉じる
-        stmt.close();
-        conn.close();
-    }
 
 	/*ゲッター*/
 	public String getMaterialName(int i) {
@@ -76,42 +74,42 @@ public class Search extends Material{
 	}
 
 	public int getMaterialId(int i) {
-		if(i>=0 && num>i) {
+		if (i >= 0 && num > i) {
 			return materialId[i];
-		}else {
+		} else {
 			return 0;
 		}
 	}
 
 	public int getPrice(int i) {
-		if(i>=0 && num>i) {
+		if (i >= 0 && num > i) {
 			return price[i];
-		}else {
-		return 0;
+		} else {
+			return 0;
 		}
 	}
 
 	public int getCategoryId(int i) {
-		if(i>=0 && num>i) {
+		if (i >= 0 && num > i) {
 			return categoryId[i];
-		}else {
-		return 0;
+		} else {
+			return 0;
 		}
 	}
 
 	public int getProviderId(int i) {
-		if(i>=0 && num>i) {
+		if (i >= 0 && num > i) {
 			return providerId[i];
-		}else {
-		return 0;
+		} else {
+			return 0;
 		}
 	}
 
 	public boolean getIsAdult(int i) {
-		if(i>=0 && num>i) {
+		if (i >= 0 && num > i) {
 			return isAdult[i];
-		}else {
-		return false;
+		} else {
+			return false;
 		}
 	}
 
@@ -119,4 +117,3 @@ public class Search extends Material{
 		return num;
 	}
 }
-

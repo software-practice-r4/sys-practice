@@ -1,5 +1,5 @@
 #C {
-    min-height:500px;
+    min-height:calc(100vh - 230px);
     height:auto;
     width:100%; 
     background-color:#D5D5D5;
@@ -100,7 +100,8 @@ ul{
 }
 
 .information{
-    
+    max-width: 500px;
+    margin: 0 auto;
 }
 
 .text-box{

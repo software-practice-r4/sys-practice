@@ -1,18 +1,23 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.User"/>
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
+<jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="トップページ" />
 	<jsp:param name="style" value="home" />
 </jsp:include>
 
-<div class="intro">/
+<div class="intro">
 	<span class="cover"></span>
 	<h1>
 		あなたの好きをここに<br>クラフトボス最強
 	</h1>
 </div>
 
+<form action="<%=request.getContextPath() %>/awss3" method="POST">
+	<input type="submit" value="送信">
+</form>
 <div class="recommend">
 	<div class="inner">
 		<div class="content">
@@ -25,7 +30,7 @@
 					for (int i = 0; i < 10; i++) {
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
+						<jsp:param name="materialId" value="3039202" />
 						<jsp:param name="price" value="500" />
 						<jsp:param name="thumbnail" value="./../img/106.jpg" />
 						<jsp:param name="category" value="BGM" />
@@ -49,7 +54,7 @@
 					for (int i = 0; i < 10; i++) {
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
+						<jsp:param name="materialId" value="3039202" />
 						<jsp:param name="price" value="500" />
 						<jsp:param name="thumbnail" value="./../img/106.jpg" />
 						<jsp:param name="category" value="BGM" />
