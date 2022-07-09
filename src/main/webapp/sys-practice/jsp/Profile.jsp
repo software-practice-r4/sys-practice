@@ -1,31 +1,25 @@
-<%--
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 <%
-/* エンコード */
-request.setCharacterEncoding("UTF-8");
+int userId = -1;
+Cookie cookie[] = request.getCookies();
 
-/* 変数の宣言　*/
-String userId = "";
-
-/* パラメータの取得 */
-try {
-	if (request.getParameter("userId") != null) {
-		userId = request.getParameter("userId");
+for(int i=0;i<cookie.length;i++){
+	if(cookie[i].getName().equals("userId")){
+		userId = Integer.parseInt(cookie[i].getValue());
 	}
+}
+String displayName = user.getDisplayNameById(userId);;
+String pageTitle = displayName + "さんのプロフィール";
 
-	session.setAttribute("userId", userId);
+user.dataloadById(userId);
+material.getMaterialByUserId(userId);
 
-	/* Updateメソッドの実行 */
-	int err = user.dataload(userId);//ID+関数名()
 %>
-<%
-if (err != 0) {
-%>
---%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="○○さんのプロフィール" />
+	<jsp:param name="title" value="<%=pageTitle%>" />
 	<jsp:param name="style" value="profile" />
 </jsp:include>
 
@@ -33,13 +27,17 @@ if (err != 0) {
 	<div class="inner">
 		<div class="intro">
 			<div class="intro-top">
-				<img src="./../img/288627_m.jpg">
+			<%
+				String iconUrl = "./../img/" + user.getIcon(0);
+
+			%>
+				<img src="<%=iconUrl%>">
 			</div>
 			<div class="intro-bottom">
 				<div class="user-information">
 					<div class="lead-ttl">
 						<h3>
-							<%--<%= user.getDisplayName(0)%>--%>テスト太郎さん
+							<%=user.getDisplayName(0) %>
 						    <a href="Dm-detail.jsp" class="btn-circle-border-double">
 								<i class="fa fa-envelope-o"></i>
 							</a>
@@ -47,7 +45,7 @@ if (err != 0) {
 					</div>
 				</div>
 				<p class="txt" style="margin-top: 40px;">
-					<%-- <%= user.getExplain(0)%>--%>テキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
+					<%=user.getExplanation(0) %>
 				</p>
 			</div>
 		</div>
@@ -59,14 +57,15 @@ if (err != 0) {
 			</div>
 			<div class="material-card-wrapper">
 				<%
-				for (int i = 0; i < 10; i++) {
+
+				for (int i = 0; i < material.getNum(); i++) {
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="id" value="3039202" />
-					<jsp:param name="price" value="500" />
-					<jsp:param name="thumbnail" value="./../img/106.jpg" />
-					<jsp:param name="category" value="BGM" />
-					<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+					<jsp:param name="materialId" value="<%=material.getMaterialId(i) %>" />
+					<jsp:param name="price" value="<%=material.getPrice(i) %>" />
+					<jsp:param name="thumbnail" value="<%=material.getThumbnail(i)%>" />
+					<jsp:param name="category" value="<%=material.getCategoryName(i) %>" />
+					<jsp:param name="title" value="<%=material.getMaterialName(i) %>" />
 				</jsp:include>
 				<%
 				}

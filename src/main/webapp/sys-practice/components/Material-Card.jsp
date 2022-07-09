@@ -35,7 +35,7 @@
 
 <a href=<%="Material-detail.jsp?materialId=" + materialId %> class="material-card link">
 	<div class="card-top">
-		<img src="<%=thumbnail %>">
+		<img src="./../img/<%=thumbnail%>">
 		<span class="card-price">
 			&yen;<%=price %>
 		</span>

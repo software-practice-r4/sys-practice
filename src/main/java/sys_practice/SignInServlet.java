@@ -3,6 +3,7 @@ package sys_practice;
 import java.io.IOException;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,6 +25,9 @@ public class SignInServlet extends HttpServlet {
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		
+		User user = new User();
+
+		
 		// メールアドレスまたはパスワードが入っていなかったときにマイページにリダイレクト
 		if(email == null || password == null) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signin.jsp?isNull=true");
@@ -38,8 +42,14 @@ public class SignInServlet extends HttpServlet {
 			e.printStackTrace();
 		} 
 		
+		// ユーザーIDと表示名をセッションで保持
+		int userId = user.getUserIdByEmail(email);
+
 		// 正常時処理
 		if(err != 0) {
+			Cookie cookie = new Cookie("userId", String.valueOf(userId));
+			cookie.setMaxAge(-1);
+			response.addCookie(cookie);
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Mypage.jsp");
 			return;
 		}

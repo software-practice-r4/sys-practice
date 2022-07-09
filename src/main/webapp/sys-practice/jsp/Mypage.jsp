@@ -6,7 +6,6 @@
 	<jsp:param name="style" value="mypage" />
 </jsp:include>
 
-        <jsp:include page="./../components/header-after.jsp" />
         <div class="main">
             <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
@@ -43,7 +42,7 @@
                             </h2>
                         </div>
                         <div class="samune">
-                            <a href="post-material.jsp" class="btn-square">投稿画面へ</a>
+                            <a href="Post-material.jsp" class="btn-square">投稿画面へ</a>
                         </div>
                     </div>
                     <div class="post">
@@ -57,7 +56,7 @@
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -82,7 +81,7 @@
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />

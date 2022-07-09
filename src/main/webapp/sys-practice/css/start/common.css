@@ -37,6 +37,29 @@ body {
 	align-items:center;
 	margin-top: 20px;
 }
+.timeout{
+	/*animation: fadeOut 1s; */
+	position: absolute;
+	top: 50px;
+	left: 50%;
+ 	transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    z-index: 998;
+}
+.no-margin{
+	margin: 0;
+}
+
+@keyframes fadeOut{
+	from{
+		opacity: 1;
+	}
+	
+	to{
+		opacity: 0;
+	}
+}
 /* ヘッダー */
 header {
     width: 100%;
