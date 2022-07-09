@@ -1,12 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="file" scope="session" class="sys_practice.Trend" />
 
-<%
-/* データ一覧の取得 */
-try {
-  file.getTrend((int)session.getAttribute("userId"));
-%>
-
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="マイページトップ" />
 	<jsp:param name="style" value="mypage" />
@@ -28,11 +22,11 @@ try {
                             for (int i = 0; i < file.getnumresults() ; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value=<%=file.getmaterialId(i)%> />
-                                <jsp:param name="price" value=<%=file.getprice(i)%> />
-                                <jsp:param name="thumbnail" value=<%=file.getfileName(i)%> />
-                                <jsp:param name="category" value=<%=file.getcategory(i)%> />
-                                <jsp:param name="title" value=<%=file.getmaterialName(i)%> />
+                                <jsp:param name="materialId" value="<%=file.getmaterialId(i)%>" />
+                                <jsp:param name="price" value="<%=file.getprice(i)%>" />
+                                <jsp:param name="thumbnail" value="<%=file.getfileName(i)%>" />
+                                <jsp:param name="category" value="<%=file.getcategory(i)%>" />
+                                <jsp:param name="title" value="<%=file.getmaterialName(i)%>" />
                             </jsp:include>
                             <%
                             }
@@ -108,11 +102,3 @@ try {
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
-
-<%
-} catch (Exception e) {
- %>
-
-<%
-}
-%>

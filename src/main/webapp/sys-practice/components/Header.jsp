@@ -1,16 +1,28 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
-String title = "";
-String style = "";
+String title = ""; // ページタイトル格納
+String style = ""; // ページのスタイルシート名(拡張子無し)を格納
+
+int userId = -1; // ログイン時のユーザーIDを格納
+
 try {
+	/* jsp:parameterの取得 */
 	title = request.getParameter("title");
 	style = request.getParameter("style");
 	if (title.equals("") || style.equals(""))
 		throw new Exception("タイトルまたは、スタイルシートの名前が欠如しています。");
+	
+	/* ログインしていた場合にユーザーIDを格納 */
+	if(session.isNew()){
+		System.out.println("hogehogehogehogehogehoge");
+		//userId = Integer.parsetInt(session.getAttribute("userId"));
+	}
+	
 } catch (Exception e) {
 	e.printStackTrace();
 }
+
 %>
 
 <!DOCTYPE html>
@@ -51,18 +63,15 @@ if (!style.equals(""))
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
 				</a>
-				<%-- <%if(err == 1) {%>
-				<%}%>--%>
-				<c:if test="${err != 0}">--%>
-				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
+				<%if(userId != -1) {%>
+				<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
 						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
 					</a>
-				</c:if>
-				<c:if test="${err == 0}">
-					<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
+				<%}else{ %>
+					<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
 						class="fa fa-chevron-right"></i>ログイン
 					</a>
-				</c:if>
+				<%} %>
 			</div>
 		</div>
 	</div>

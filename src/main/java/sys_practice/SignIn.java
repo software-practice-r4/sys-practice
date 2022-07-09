@@ -1,140 +1,155 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class SignIn {
 
-	protected int[] userId = new int[100];//ユーザーID
-	protected String[] email = new String[50]; //eメール
-	protected String[] password = new String[20]; //パスワード
-	protected String[] displayName = new String[50];//表示名
-	protected int[] questionId = new int[100]; //秘密の質問ID
-	protected String[] questionTitle = new String[50];//秘密の質問の質問内容
-	protected String[] questionAnswer = new String[50];//秘密の質問に対する答え
-	protected String[] explanation = new String[100];//自己紹介文
-	protected String[] icon = new String[50]; //アイコン
-	protected int[] wallet = new int[100]; //財布
+	protected int[] userId = new int[100];
+	protected String[] email = new String[50];
+	protected String[] password = new String[20];
+	protected String[] displayName = new String[50];
+	protected int[] questionId = new int[100];
+	protected String[] questionTitle = new String[50];
+	protected String[] questionAnswer = new String[50];
+	protected String[] explanation = new String[100];
+	protected String[] icon = new String[50];
+	protected int[] wallet = new int[100];
 	protected int num;//データ取得件数
+	protected int[] cnt = new int[100];//実行回数
+
+	Connection conn = null;
+	ResultSet resultSet = null;
+	String results = "";
+	String statement = null;
 
 	public int signIn(String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
-
-			String sql = "SELECT * FROM  user WHERE email Like ? AND password Like ?";
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM user WHERE email Like ? and password Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setString(2, password);
-			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
 
-			while (rs.next()) {
-				this.userId[num] = rs.getInt("userId");
-				this.email[num] = rs.getString("email");
-				this.password[num] = rs.getString("password");
-				this.displayName[num] = rs.getString("displayName");
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionAnswer[num] = rs.getString(" questionAnswer");
-				this.explanation[num] = rs.getString("explanation");
-				this.icon[num] = rs.getString("passWord");
-				this.wallet[num] = rs.getInt("wallet");
+			while (resultSet.next()) {
+				this.email[num] = resultSet.getString("email");
+				this.password[num] = resultSet.getString("password");
+				this.displayName[num] = resultSet.getString("displayName");
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.icon[num] = resultSet.getString("icon");
+				this.wallet[num] = resultSet.getInt("wallet");
 				num++;
 			}
 
-			rs.close();
 			stmt.close();
+			resultSet.close();
 			conn.close();
+
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
-	public int requestQuestionId(String email) throws Exception {
+	public int requestSecretQuestion(String email) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
-
-			String sql = "SELECT questionId,questionAnswer FROM  user WHERE email Like ?";
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT user.questionId, user.questionAnswer, question.questionTitle FROM user FULL OUTER JOIN question ON user.questionId = question.questionId WHERE email Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
-			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
 
-			while (rs.next()) {
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionAnswer[num] = rs.getString("questionAnswer");
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
 				num++;
 			}
 
-			rs.close();
 			stmt.close();
+			resultSet.close();
 			conn.close();
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
-		}
-	}
-
-	public int requestQuestionTitle(int questionId) throws Exception {
-		num = 0;//取得件数の初期化
-		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
-
-			String sql = "SELECT * FROM  question WHERE questionId Like ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, questionId);
-			stmt.setMaxRows(100);
-			ResultSet rs = stmt.executeQuery();
-
-			while (rs.next()) {
-				this.questionId[num] = rs.getInt("questionId");
-				this.questionTitle[num] = rs.getString("questionTitle");
-				num++;
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-			return num;
-		} catch (Exception e) {
-			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
 	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
-		num = 0;//取得件数の初期化
+		int num = 0;//取得件数の初期化
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			String url = "jdbc:mysql:/              characterEncoding=UTF-8";
-			Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!");
+			AWS aws = new AWS();
+			Connection conn = aws.getRemoteConnection();
 
 			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, password);
-			stmt.setString(2, questionAnswer);
-			stmt.setString(3, email);
-			stmt.setMaxRows(100);
-			stmt.executeUpdate();
 
-			stmt.close();
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setString(1, password);
+			ps.setString(2, questionAnswer);
+			ps.setString(3, email);
+			ps.addBatch(sql);
+			cnt = ps.executeBatch();
+			if (cnt != null) {
+				num = 1;
+			}
+
+			ps.close();
+			resultSet.close();
 			conn.close();
+
 			return num;
-		} catch (Exception e) {
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
 	}
 
-	/* アクセッサ */
 	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];
