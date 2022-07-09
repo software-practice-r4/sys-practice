@@ -41,7 +41,7 @@
                             </h2>
                         </div>
                         <div class="samune">
-                            <a href="post-material.jsp" class="btn-square">投稿画面へ</a>
+                            <a href="Post-material.jsp" class="btn-square">投稿画面へ</a>
                         </div>
                     </div>
                     <div class="post">

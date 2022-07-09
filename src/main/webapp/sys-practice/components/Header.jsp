@@ -6,24 +6,32 @@ String style = ""; // ページのスタイルシート名(拡張子無し)を�
 
 int userId = -1; // ログイン時のユーザーIDを格納
 
+String displayName = "";
+
+
+Cookie cookie[] = request.getCookies();
+
 try {
 	/* jsp:parameterの取得 */
 	title = request.getParameter("title");
 	style = request.getParameter("style");
 	if (title.equals("") || style.equals(""))
 		throw new Exception("タイトルまたは、スタイルシートの名前が欠如しています。");
-	
+
 	/* ログインしていた場合にユーザーIDを格納 */
-	System.out.println(session.getAttribute("userId"));
-	if(session.getAttribute("userId") != null){
-		userId = ((Integer)(session.getAttribute("userId"))).intValue();
-		System.out.println(userId);
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			// userIdが空出ないとき
+			if(!cookie[i].getValue().equals(""))
+				userId = Integer.parseInt(cookie[i].getValue());
+		}
 	}
-	
+
+	displayName = user.getDisplayNameById(userId);
+	System.out.println(userId);
 } catch (Exception e) {
 	e.printStackTrace();
 }
-
 %>
 
 <!DOCTYPE html>
@@ -65,8 +73,7 @@ if (!style.equals(""))
 					style="width: 30px; height: 30px" />
 				</a>
 				<%if(userId != -1) {%>
-				<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
-						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
+				<a href="../jsp/Mypage.jsp" class="btn-flat-logo"><%=displayName%>さん
 					</a>
 				<%}else{ %>
 					<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
@@ -82,11 +89,11 @@ if (!style.equals(""))
 <script>
 	const sbox = document.getElementById("sbox");
 	const sbtn = document.getElementById("sbtn");
-	
+
 	window.addEventListener("load", ()=>{
 		sbtn.style.pointerEvents="none";
 	})
-	
+
 	sbox.addEventListener("change", ()=>{
 		if(sbox.value.length == 0)
 			sbtn.style.pointerEvents="none";
