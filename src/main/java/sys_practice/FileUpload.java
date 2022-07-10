@@ -77,7 +77,7 @@ public class FileUpload extends HttpServlet {
 			}
 			// 情報が欠如していた場合に、エラー情報を付与し、リダイレクトする
 			if(filename.equals("") || content.get(0).equals("") || content.get(1).equals("") || content.get(2).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/post-materila.jsp?isNull=true");
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-materila.jsp?isNull=true");
 				return;
 			}
 
@@ -103,7 +103,7 @@ public class FileUpload extends HttpServlet {
 				processRequest(request, response); //エラー表示
 			else {
 				// 次の一覧表示ページへ転送する
-;				response.sendRedirect("/sys-practice/sys-practice/jsp/post-material.jsp");
+;				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp");
 				return;
 			}
 		} catch (Exception e) {
@@ -154,3 +154,4 @@ public class FileUpload extends HttpServlet {
 
         return builder.toString();
     }
+}

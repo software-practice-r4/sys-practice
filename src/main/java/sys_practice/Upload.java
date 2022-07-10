@@ -1,10 +1,8 @@
-
+package sys_practice;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import sys_practice.AWS;
 
 public class Upload{
 	protected String[] materialName = new String[100];
@@ -44,7 +42,7 @@ public class Upload{
 	    }
 
 		/* Materialへ素材を追加 */
-	    String sql = "INSERT INTO material (materialName,price,thumbnail,categoryId,providerId,explanation,isAdult) VALUES (?,?,?,?,?,?)";
+	    String sql = "INSERT INTO material (materialName,price,thumbnail,categoryId,providerId,explanation,isAdult) VALUES (?,?,?,?,?,?,?)";
 	    PreparedStatement stmt3 = conn.prepareStatement(sql);
 	    stmt3.setString(1, materialName);
 	    stmt3.setInt(2, Integer.parseInt(price));
