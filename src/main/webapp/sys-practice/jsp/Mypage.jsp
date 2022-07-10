@@ -1,10 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="file" scope="session" class="sys_practice.Trend" />
+<jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
 
 <%
-/* データ一覧の取得 */
-try {
-  file.getTrend(session.getAttribute("userId", "ub"));
+/* 傾向の取得 */
+  trend.getTrend(1);
 %>
 
 <jsp:include page="./../components/Header.jsp">
@@ -25,14 +24,19 @@ try {
                         </div>
                         <div class="material-card-wrapper">
                             <%
-                            for (int i = 0; i < file.getnumresults() ; i++) {
+                            for (int i = 0; i < trend.getNumResults() ; i++) {
+                            	int id = trend.getMaterialId(i);
+                            	int price = trend.getPrice(i);
+                            	String thumbnail = trend.getThumbnail(i);
+                            	String category = trend.getCategory(i);
+                            	String title = trend.getMaterialName(i);
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value=<%=file.getmaterialId(i)%> />
-                                <jsp:param name="price" value=<%=file.getprice(i)%> />
-                                <jsp:param name="thumbnail" value=<%=file.getfileName(i)%> />
-                                <jsp:param name="category" value=<%=file.getcategory(i)%> />
-                                <jsp:param name="title" value=<%=file.getmaterialName(i)%> />
+                                <jsp:param name="materialId" value="<%=id%>" />
+                                <jsp:param name="price" value="<%=price%>" />
+                                <jsp:param name="thumbnail" value="<%=thumbnail%>" />
+                                <jsp:param name="category" value="<%=category%>" />
+                                <jsp:param name="title" value="<%=title%>" />
                             </jsp:include>
                             <%
                             }
@@ -63,7 +67,7 @@ try {
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -88,7 +92,7 @@ try {
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -108,11 +112,3 @@ try {
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
-
-<%
-} catch (Exception e) {
- %>
-
-<%
-}
-%>
