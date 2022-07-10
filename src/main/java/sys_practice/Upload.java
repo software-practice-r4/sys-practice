@@ -1,47 +1,23 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Upload{
-	protected String[] materialName = new String[100]; //タイトル
-	protected int price; //価格
-	protected String[] thumbnail = new String[70]; //サムネイル
-	protected int categoryId; //カテゴリID
-	protected int providerId; //プロバイダID
-	protected String[] explanation = new String[300]; //説明文
-	protected String[] category =  new String[10]; //カテゴリ
-	protected String[] fileName = new String[100]; //ファイル名
+	protected String[] materialName = new String[100];
+	protected int price;
+	protected String[] thumbnail = new String[70];
+	protected int categoryId;
+	protected int providerId;
+	protected String[] explanation = new String[300];
+	protected String[] categoryName =  new String[10];
+	protected int[] isAdult;
 
-	/* AWSの接続 */
-	private static Connection getRemoteConnection(String dbName) throws SQLException {
-		// JDBCドライバー読み込み
-		try {
-			System.out.println("Loading driver...");
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("Driver loaded!");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Cannot find the driver in the classpath!", e);
-		}
+	public void uploadMaterial(String materialName, String explanation, String price, String categoryId, String categoryName, String isAdult, String providerId, String thumbnail) throws Exception {
 
-		String userName = "admin";
-		String password = "AraikenR4!";
-		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
-		String port = "3306";
-		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
-				"?user=" + userName + "&password=" + password;
-		Connection con = DriverManager.getConnection(jdbcUrl);
-
-		return con;
-	  }
-
-
-	public void uploadMaterial(String materialName, String explanation, String price, String categoryId, String category, String providerId, String thumbnail, String fileName) throws Exception {
-
-		Connection conn = getRemoteConnection("sys_practice");
+		AWS aws = new AWS();
+		Connection conn = aws.getRemoteConnection();
 
 		/* categoryIdでその他が選択されているとき */
 		if(Integer.parseInt(categoryId) == 0) {
@@ -49,7 +25,7 @@ public class Upload{
 		    /* categoryに新規カテゴリを追加 */
 		    String sql = "INSERT INTO category (categoryName) VALUES (?)";
 		    PreparedStatement stmt1 = conn.prepareStatement(sql);
-		    stmt1.setString(1, category);
+		    stmt1.setString(1, categoryName);
 		    stmt1.executeUpdate();
 
 		    stmt1.close();
@@ -58,7 +34,7 @@ public class Upload{
 		    /* 新規カテゴリのIDをcategoryから取り出し */
 		    String sql2 = "SELECT categoryId FROM category WHERE categoryName = ?";
 		    PreparedStatement stmt2 = conn.prepareStatement(sql2);
-		    stmt2.setString(1, category);
+		    stmt2.setString(1, categoryName);
 		    ResultSet rs = stmt2.executeQuery();
 		    categoryId = rs.getString("categoryId");
 
@@ -67,7 +43,7 @@ public class Upload{
 	    }
 
 		/* Materialへ素材を追加 */
-	    String sql = "INSERT INTO Material (materialName,price,thumbnail,categoryId,providerId,explanation) VALUES (?,?,?,?,?,?,?)";
+	    String sql = "INSERT INTO material (materialName,price,thumbnail,categoryId,providerId,explanation,isAdult) VALUES (?,?,?,?,?,?)";
 	    PreparedStatement stmt3 = conn.prepareStatement(sql);
 	    stmt3.setString(1, materialName);
 	    stmt3.setInt(2, Integer.parseInt(price));
@@ -75,6 +51,7 @@ public class Upload{
 	    stmt3.setInt(4, Integer.parseInt(categoryId));
 	    stmt3.setInt(5, Integer.parseInt(providerId));
 	    stmt3.setString(6, explanation);
+	    stmt3.setInt(7, Integer.parseInt(isAdult));
 
 	    stmt3.executeUpdate();
 

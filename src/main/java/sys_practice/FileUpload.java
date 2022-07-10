@@ -3,7 +3,6 @@ package sys_practice;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,13 +13,10 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.apache.tomcat.util.http.fileupload.servlet.ServletRequestContext;
 
 import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-@WebServlet("fileupload")
 
 public class FileUpload extends HttpServlet {
 
@@ -80,30 +76,25 @@ public class FileUpload extends HttpServlet {
 				}
 			}
 			// 情報が欠如していた場合に、エラー情報を付与し、リダイレクトする
-			if(filename.equals("") || content.get(0).equals("") || content.get(1).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/post-materila.jsp?is_success=false");
+			if(filename.equals("") || content.get(0).equals("") || content.get(1).equals("") || content.get(2).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/post-materila.jsp?isNull=true");
 				return;
 			}
 
-			// DB接続
-			AWS aws = new AWS();
-			Connection con = aws.getRemoteConnection();
-
 			// SQL文発行
 			Upload uploadMaterial = new Upload();
-			uploadMaterial.uploadMaterial(content.get(1), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), dataDir + filename, filename);
+			uploadMaterial.uploadMaterial(content.get(0), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), content.get(6), filename);
 
 			try {
 				Cookie cookie[] = request.getCookies();
 				String user_id = null;
 				if (cookie != null){
 				    for (int i = 0 ; i < cookie.length ; i++){
-				      if (cookie[i].getName().equals("user_id"))
+				      if (cookie[i].getName().equals("userId"))
 				        user_id = cookie[i].getValue();
 				    }
 				}
 				System.err.println(content.get(0)+", "+content.get(1));
-				int index = aws.addProduction(content.get(0), content.get(1), filename, Integer.valueOf(user_id));
 			} catch (Exception e) {
 				System.out.println(e);
 			}
@@ -112,7 +103,7 @@ public class FileUpload extends HttpServlet {
 				processRequest(request, response); //エラー表示
 			else {
 				// 次の一覧表示ページへ転送する
-;				response.sendRedirect("/sys-practice/sys-practice/jsp/post-material.jsp?is_successed=true");
+;				response.sendRedirect("/sys-practice/sys-practice/jsp/post-material.jsp");
 				return;
 			}
 		} catch (Exception e) {
