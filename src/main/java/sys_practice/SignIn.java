@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 /*
  * @author keita
  * @version 1.0
@@ -110,6 +109,7 @@ public class SignIn {
 			stmt.close();
 			resultSet.close();
 			conn.close();
+
 			return num;
 
 		} catch (SQLException ex) {
@@ -117,7 +117,47 @@ public class SignIn {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+
+	public int requestSecretQuestion(String email) throws Exception {
+		num = 0;//取得件数の初期化
+		try {
+			conn = getRemoteConnection();
+			String sql = "SELECT user.questionId, user.questionAnswer, question.questionTitle FROM user FULL OUTER JOIN question ON user.questionId = question.questionId WHERE email Like ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+      
 			return -1;
+      
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)

@@ -12,6 +12,8 @@ if (request.getParameter("isErr") != null) {
 }
 %>
 
+
+
 <%
 request.setCharacterEncoding("UTF-8");
 try {
@@ -38,6 +40,7 @@ try {
 					<%if (isErr) {%>
 					    <p class="err-txt">既にアカウントがあります。</p>
 					<%}%>
+
 					<p>
 						メールアドレス：<br> <input type="email" name="email" size="40"
 							placeholder="メールアドレス" class="text-box">
@@ -64,6 +67,7 @@ try {
 						<input type="submit" class="btn-square-so-pop" value="完了"></input><br>
 						<a href="Signin.jsp" class="link">アカウントをお持ちですか？</a>
 					</div>
+
 				</form>
 			</ul>
 		</div>
@@ -79,3 +83,4 @@ try {
 System.err.println(e);
 }
 %>
+

@@ -5,12 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 /*
  * @author keita
  * @version 1.0
  * */
-
 public class SignUp {
 
 	protected int[] userId = new int[100];
@@ -67,7 +65,9 @@ public class SignUp {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
+      
 			return -1;
+      
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -87,6 +87,7 @@ public class SignUp {
 		try {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
+      
 			String sql = "SELECT * FROM question";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
