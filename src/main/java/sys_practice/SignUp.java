@@ -10,6 +10,7 @@ import java.sql.Statement;
  * @author keita
  * @version 1.0
  * */
+
 public class SignUp {
 
 	protected int[] userId = new int[100];
@@ -19,9 +20,6 @@ public class SignUp {
 	protected int[] questionId = new int[100];
 	protected String[] questionTitle = new String[50];
 	protected String[] questionAnswer = new String[50];
-	protected String[] explanation = new String[100];
-	protected String[] icon = new String[50];
-	protected int[] wallet = new int[100];
 	protected int num;//データ取得件数
 	protected int[] cnt = new int[100];//実行回数
 
@@ -33,37 +31,33 @@ public class SignUp {
 
 	/*
 	 * ユーザーIDと合致する表示名を取得する
-	 * @author shuya
 	 * @param String email
 	 * @param String password
 	 * @param int questionId
 	 * @param String questionAnswer
-	 * @return 実行できたかをを返却  1→成功  0→失敗
+	 * @return 挿入された行数を返却 エラー時には-1返す
 	 * */
 	public int signUp(String email, String password, int questionId, String questionAnswer) {
 		int num = 0;//取得件数の初期化
 		try {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-			String sql = "INSERT INTO user (email,password,questionId,questionAnswer) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO user (email,password,displayName,questionId,questionAnswer,wallet)"
+					+ "VALUES (?,?,?,?,?,?)";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
 			ps.setString(1, email);
 			ps.setString(2, password);
-			ps.setInt(3, questionId);
-			ps.setString(4, questionAnswer);
-			ps.addBatch(sql);
+			ps.setString(3, email);
+			ps.setInt(4, questionId);
+			ps.setString(5, questionAnswer);
+			ps.setInt(6, 0); // wallet
 
-			System.out.println(questionId);
+			num = ps.executeUpdate();
 
-			resultSet = ps.executeQuery();
-			//cnt = ps.executeBatch();
-			if (resultSet != null) {
-				num = 1;
-			}
+			System.out.println("num" + num);
 
 			ps.close();
-			resultSet.close();
 			conn.close();
 
 			return num;
@@ -73,7 +67,7 @@ public class SignUp {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+			return -1;
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -110,7 +104,9 @@ public class SignUp {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+
+			return -1;
+
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -174,30 +170,6 @@ public class SignUp {
 			return questionTitle[i];
 		} else {
 			return "";
-		}
-	}
-
-	public String getExplanation(int i) {
-		if (i >= 0 && num > i) {
-			return explanation[i];
-		} else {
-			return "";
-		}
-	}
-
-	public String getIcon(int i) {
-		if (i >= 0 && num > i) {
-			return icon[i];
-		} else {
-			return "";
-		}
-	}
-
-	public int getWallet(int i) {
-		if (i >= 0 && num > i) {
-			return wallet[i];
-		} else {
-			return 0;
 		}
 	}
 
