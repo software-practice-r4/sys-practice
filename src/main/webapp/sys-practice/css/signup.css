@@ -101,8 +101,12 @@ ul{
 /*    text-align: center;*/
 }
 
-.link{
+.completion .link{
     margin-top: 10px;
+    padding-top: 10px;
+/*    text-align: right;*/
+    font-size: 18px;
+    color: blue;
 }
 
 h4{
@@ -111,5 +115,23 @@ h4{
 }
 
 .information{
-    
+
+}
+
+.question{
+
+	padding-top:20px;
+
+}
+
+.questionform p{
+	padding-top:10px;
+}
+
+.message{
+	padding-top: 2px;
+}
+
+.title{
+	display: flex;
 }

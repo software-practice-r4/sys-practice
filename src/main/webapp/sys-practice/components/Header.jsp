@@ -2,13 +2,34 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
-String title = "";
-String style = "";
+String title = ""; // ページタイトル格納
+String style = ""; // ページのスタイルシート名(拡張子無し)を格納
+
+int userId = -1; // ログイン時のユーザーIDを格納
+
+String displayName = "";
+
+
+Cookie cookie[] = request.getCookies();
+
 try {
+	/* jsp:parameterの取得 */
 	title = request.getParameter("title");
 	style = request.getParameter("style");
 	if (title.equals("") || style.equals(""))
 		throw new Exception("タイトルまたは、スタイルシートの名前が欠如しています。");
+
+	/* ログインしていた場合にユーザーIDを格納 */
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			// userIdが空出ないとき
+			if(!cookie[i].getValue().equals(""))
+				userId = Integer.parseInt(cookie[i].getValue());
+		}
+	}
+
+	displayName = user.getDisplayNameById(userId);
+	System.out.println(userId);
 } catch (Exception e) {
 	e.printStackTrace();
 }
@@ -43,9 +64,8 @@ if (!style.equals(""))
 			</div>
 			<div class="head-left">
 				<form method="GET" action="List.jsp" class="search">
-					<input id="sbox" id="s" name="s" type="search"
-						placeholder="キーワードを入力" /> <input id="sbtn" type="submit"
-						value="検索" />
+					<input id="sbox" id="s" name="s" type="search" placeholder="キーワードを入力" />
+					<input id="sbtn" type="submit" value="検索" />
 				</form>
 			</div>
 			<div class="head-right">
@@ -53,20 +73,32 @@ if (!style.equals(""))
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
 				</a>
-				<%-- <%if(err == 1) {%>
-				<%}%>--%>
-				<c:if test="${err != 0}">--%>
-				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
-						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
+				<%if(userId != -1) {%>
+				<a href="../jsp/Mypage.jsp" class="btn-flat-logo"><%=displayName%>さん
 					</a>
-				</c:if>
-				<c:if test="${err == 0}">
-					<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
+				<%}else{ %>
+					<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
 						class="fa fa-chevron-right"></i>ログイン
 					</a>
-				</c:if>
+				<%} %>
 			</div>
 		</div>
 	</div>
 </header>
 <body>
+
+<script>
+	const sbox = document.getElementById("sbox");
+	const sbtn = document.getElementById("sbtn");
+
+	window.addEventListener("load", ()=>{
+		sbtn.style.pointerEvents="none";
+	})
+
+	sbox.addEventListener("change", ()=>{
+		if(sbox.value.length == 0)
+			sbtn.style.pointerEvents="none";
+		else
+			sbtn.style.pointerEvents="auto";
+	})
+</script>

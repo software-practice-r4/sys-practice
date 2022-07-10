@@ -1,9 +1,11 @@
 #C {
-/*    min-height: 800px;*/
     height: auto;
     width: 100%;
     background-color: #d5d5d5;
-/*    padding-bottom: 20px;*/
+
+}
+.main{
+    display: flex;
 }
 
 .inner{

@@ -1,44 +1,14 @@
-<jsp:useBean id="sign" scope="session" class="sys_practice.SignUp" />
+<jsp:useBean id="signup" scope="session" class="sys_practice.SignUp" />
 <%
 request.setCharacterEncoding("UTF-8");
-String email = "";
-String password = "";
-String questionAnswer = "";
-int questionId = 0;
-boolean errFlag = false;
+boolean isNull = false;
+boolean isErr = false;
 
-try {
-	if (request.getParameter("email") != null) {
-		email = request.getParameter("email");
-	}
-	if (request.getParameter("password") != null) {
-		password = request.getParameter("password");
-	}
-	if (request.getParameter("questionId") != null) {
-		questionId = Integer.parseInt(request.getParameter("questionId"));
-	}
-	if (request.getParameter("questionAnswer") != null) {
-		questionAnswer = request.getParameter("questionAnswer");
-	}
-	session.setAttribute("email", email);
-	session.setAttribute("password", password);
-
-	int err = sign.signUp(email, password, questionId, questionAnswer);
-	if (request.getParameter("email").equals("password") ||
-	request.getParameter("questionId").equals("questionAnswer")) {
-		throw new Exception("いずかのパラメーターが不足しています。");
-	}
-%>
-<%
-if (err != 0) {
-%>
-<jsp:forward page="Mypage.jsp" />
-<%
+if (request.getParameter("isNull") != null) {
+	isNull = Boolean.valueOf(request.getParameter("isNull"));
 }
-%>
-<%
-} catch (Exception e) {
-System.err.println(e);
+if (request.getParameter("isErr") != null) {
+	isErr = Boolean.valueOf(request.getParameter("isErr"));
 }
 %>
 
@@ -47,11 +17,10 @@ System.err.println(e);
 <%
 request.setCharacterEncoding("UTF-8");
 try {
-	sign.detaloadQuestion();
+	int questionData = signup.detaloadQuestion();
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="サインアップページ" />
 	<jsp:param name="style" value="signup" />
@@ -64,10 +33,14 @@ try {
 		</div>
 		<div class="information">
 			<ul>
-				<form action="" method="post">
-					<c:if test="${errFlag == true;}">
-						<p class="err-txt">入力ミス</p>
-					</c:if>
+				<form action="<%=request.getContextPath()%>/signup" method="Post">
+					<%if (isNull) {%>
+					    <p class="err-txt">どちらかの値が空です。</p>
+					<%}%>
+					<%if (isErr) {%>
+					    <p class="err-txt">既にアカウントがあります。</p>
+					<%}%>
+
 					<p>
 						メールアドレス：<br> <input type="email" name="email" size="40"
 							placeholder="メールアドレス" class="text-box">
@@ -76,26 +49,29 @@ try {
 						パスワード：<br> <input type="password" name="password" size="40"
 							placeholder="パスワード" class="text-box"><br>
 					</p>
-					<select name="questionId" id="question">
-						<%
-						for (int i = 0; i < 4; i++) {
-						%>
-						<option value="<%=sign.getQuestionId(i)%>">sign.getQuestionTitle(i)</option>
-						<%
-						}
-						%>
-					</select>
-					<p>
-						秘密の質問の解答：<br> <input type="text" name="questionAnswer"
-							size="40" placeholder="秘密の質問" class="text-box"><br>
-					</p>
+					<div class="question">
+						<div class="title">
+							<div class="message">秘密の質問の解答：</div>
+							<select name="questionId" id="question">
+								<%for (int i = 0; i < questionData; i++) {%>
+								    <option value="<%=signup.getQuestionId(i)%>"><%=signup.getQuestionTitle(i)%></option>
+								<%}%>
+							</select>
+						</div>
+						<div class="questionform">
+							<input type="text" name="questionAnswer" size="40"
+								placeholder="秘密の質問への解答" class="text-box"><br>
+						</div>
+					</div>
+					<div class="completion">
+						<input type="submit" class="btn-square-so-pop" value="完了"></input><br>
+						<a href="Signin.jsp" class="link">アカウントをお持ちですか？</a>
+					</div>
+
 				</form>
 			</ul>
 		</div>
-		<div class="completion">
-			<input type="submit" class="btn-square-so-pop" value="完了"></input><br>
-			<a href="Signin.jsp" class="link"><h4>アカウントをお持ちですか？</h4></a>
-		</div>
+
 	</div>
 </div>
 <jsp:include page="./../components/Footer.jsp" />
@@ -104,6 +80,7 @@ try {
 
 <%
 } catch (Exception e) {
-
+System.err.println(e);
 }
 %>
+

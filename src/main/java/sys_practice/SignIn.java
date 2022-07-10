@@ -1,12 +1,13 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-
+/*
+ * @author keita
+ * @version 1.0
+ * */
 public class SignIn {
 
 	protected int[] userId = new int[100];
@@ -23,36 +24,23 @@ public class SignIn {
 	protected int[] cnt = new int[100];//実行回数
 
 	Connection conn = null;
-	Statement readStatement = null;
 	ResultSet resultSet = null;
 	String results = "";
 	String statement = null;
 
-	private static Connection getRemoteConnection() throws SQLException {
-		try {
-			System.out.println("Loading driver...");
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			System.out.println("Driver loaded!");
-		} catch (ClassNotFoundException e) {
-			throw new RuntimeException("Cannot find the driver in the classpath!", e);
-		}
-
-		String userName = "admin";
-		String password = "AraikenR4!";
-		String hostname = "syspractice.crew3xxz5di7.ap-northeast-1.rds.amazonaws.com";
-		String port = "3306";
-		String dbName = "sys_practice";
-		String jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
-				"?user=" + userName + "&password=" + password;
-		Connection con = DriverManager.getConnection(jdbcUrl);
-
-		return con;
-	}
-
+	/*
+	 * @author shuya
+	 * @author keita
+	 * eメール・パスワードと合致するユーザー情報を取得する
+	 * @param String email
+	 * @param String password
+	 * @return データの取得件数を返却 エラー時には-1返す
+	 * */
 	public int signIn(String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
-			conn = getRemoteConnection();
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
 			String sql = "SELECT * FROM user WHERE email Like ? and password Like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
@@ -69,6 +57,52 @@ public class SignIn {
 				this.explanation[num] = resultSet.getString("explanation");
 				this.icon[num] = resultSet.getString("icon");
 				this.wallet[num] = resultSet.getInt("wallet");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+
+	/*(未実装)
+	 * @author keita
+	 * eメールから自身の秘密の質問の情報(Id,Title,Answer)を取得する
+	 * @param String email
+	 * @return データの取得件数を返却 エラー時には-1返す
+	 * */
+	public int requestSecretQuestion(String email) throws Exception {
+		num = 0;//取得件数の初期化
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT user.questionId, user.questionAnswer, question.questionTitle FROM user FULL OUTER JOIN question ON user.questionId = question.questionId WHERE email Like ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
 				num++;
 			}
 
@@ -121,7 +155,9 @@ public class SignIn {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+      
+			return -1;
+      
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -132,10 +168,19 @@ public class SignIn {
 		}
 	}
 
+	/*(未実装)
+	 * @author keita
+	 * eメール・秘密の質問の解答から自身のパスワードを更新する
+	 * @param String questionAnswer
+	 * @param String email
+	 * @param String password
+	 * @return 成功時1を返却 エラー時には-1返す
+	 * */
 	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
 		int num = 0;//取得件数の初期化
 		try {
-			Connection conn = getRemoteConnection();
+			AWS aws = new AWS();
+			Connection conn = aws.getRemoteConnection();
 
 			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
 

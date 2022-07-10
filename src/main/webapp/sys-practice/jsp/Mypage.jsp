@@ -1,18 +1,10 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="file" scope="session" class="sys_practice.Trend" />
 
-<%
-/* データ一覧の取得 */
-try {
-  file.getTrend((int)session.getAttribute("userId"));
-%>
-
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="マイページトップ" />
 	<jsp:param name="style" value="mypage" />
 </jsp:include>
-
-        <jsp:include page="./../components/header-after.jsp" />
         <div class="main">
             <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
@@ -28,11 +20,11 @@ try {
                             for (int i = 0; i < file.getnumresults() ; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value=<%=file.getmaterialId(i)%> />
-                                <jsp:param name="price" value=<%=file.getprice(i)%> />
-                                <jsp:param name="thumbnail" value=<%=file.getfileName(i)%> />
-                                <jsp:param name="category" value=<%=file.getcategory(i)%> />
-                                <jsp:param name="title" value=<%=file.getmaterialName(i)%> />
+                                <jsp:param name="materialId" value="<%=file.getmaterialId(i)%>" />
+                                <jsp:param name="price" value="<%=file.getprice(i)%>" />
+                                <jsp:param name="thumbnail" value="<%=file.getfileName(i)%>" />
+                                <jsp:param name="category" value="<%=file.getcategory(i)%>" />
+                                <jsp:param name="title" value="<%=file.getmaterialName(i)%>" />
                             </jsp:include>
                             <%
                             }
@@ -49,7 +41,7 @@ try {
                             </h2>
                         </div>
                         <div class="samune">
-                            <a href="post-material.jsp" class="btn-square">投稿画面へ</a>
+                            <a href="Post-material.jsp" class="btn-square">投稿画面へ</a>
                         </div>
                     </div>
                     <div class="post">
@@ -63,7 +55,7 @@ try {
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -88,7 +80,7 @@ try {
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -108,11 +100,3 @@ try {
         <jsp:include page="./../components/Footer.jsp" />
     </body>
 </html>
-
-<%
-} catch (Exception e) {
- %>
-
-<%
-}
-%>

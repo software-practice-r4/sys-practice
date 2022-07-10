@@ -1,6 +1,13 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
 
+<%
+boolean isLogout = false;
+
+if(request.getParameter("isLogout") != null){
+	isLogout = Boolean.valueOf(request.getParameter("isLogout"));
+}
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <jsp:include page="./../components/Header.jsp">
@@ -8,7 +15,10 @@
 	<jsp:param name="style" value="home" />
 </jsp:include>
 
-<div class="intro">/
+<%if(isLogout){ %>
+	<p class="err-txt timeout no-margin">ログアウトしました</p>
+<%} %>
+<div class="intro">
 	<span class="cover"></span>
 	<h1>
 		あなたの好きをここに<br>クラフトボス最強
@@ -30,7 +40,7 @@
 					for (int i = 0; i < 10; i++) {
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
+						<jsp:param name="materialId" value="3039202" />
 						<jsp:param name="price" value="500" />
 						<jsp:param name="thumbnail" value="./../img/106.jpg" />
 						<jsp:param name="category" value="BGM" />
@@ -54,7 +64,7 @@
 					for (int i = 0; i < 10; i++) {
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="id" value="3039202" />
+						<jsp:param name="materialId" value="3039202" />
 						<jsp:param name="price" value="500" />
 						<jsp:param name="thumbnail" value="./../img/106.jpg" />
 						<jsp:param name="category" value="BGM" />
