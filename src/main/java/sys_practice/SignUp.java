@@ -54,6 +54,8 @@ public class SignUp {
 			ps.setString(4, questionAnswer);
 			ps.addBatch(sql);
 
+			System.out.println(questionId);
+
 			resultSet = ps.executeQuery();
 			//cnt = ps.executeBatch();
 			if (resultSet != null) {
@@ -82,7 +84,7 @@ public class SignUp {
 		}
 	}
 
-	public void detaloadQuestion() throws Exception {
+	public int detaloadQuestion() throws Exception {
 		num = 0;//取得件数の初期化
 		try {
 			AWS aws = new AWS();
@@ -102,12 +104,13 @@ public class SignUp {
 			resultSet.close();
 			conn.close();
 
+			return num;
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-
+			return 0;
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)

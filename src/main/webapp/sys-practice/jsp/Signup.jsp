@@ -15,7 +15,7 @@ if (request.getParameter("isErr") != null) {
 <%
 request.setCharacterEncoding("UTF-8");
 try {
-	sign.detaloadQuestion();
+	int questionData = sign.detaloadQuestion();
 %>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -31,7 +31,7 @@ try {
 		</div>
 		<div class="information">
 			<ul>
-				<form action="<%=request.getContextPath()%>/signup" method="post">
+				<form action="<%=request.getContextPath() %>/signup" method="Post">
 					<%
 					if (isNull) {
 					%>
@@ -53,7 +53,7 @@ try {
 							<select name="questionId" id="question">
 
 								<%
-								for (int i = 0; i < 5; i++) {
+								for (int i = 0; i < questionData; i++) {
 								%>
 								<option value="<%=sign.getQuestionId(i)%>"><%=sign.getQuestionTitle(i)%></option>
 								<%

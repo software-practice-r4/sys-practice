@@ -28,12 +28,12 @@ public class SignUpServlet extends HttpServlet {
 		String questionAnswer = request.getParameter("questionAnswer");
 
 		// メールアドレスまたはパスワードまたは秘密の質問が入っていなかったときにマイページにリダイレクト
-		if(email == null || password == null|| questionId == 0|| questionAnswer == null) {
+		if(email == null || password == null || questionId == 0 || questionAnswer == null) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
 			return;
 		}
 		SignUp sign = new SignUp();
-		int err = 0;// 合致したデータ行の格納行番号を格納
+		int err = 0;// データの格納を判定
 
 		try {
 			err = sign.signUp(email, password, questionId, questionAnswer);
