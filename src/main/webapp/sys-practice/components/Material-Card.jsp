@@ -26,8 +26,10 @@
 			throw new Exception("タイトルが入力されていません。");
 		
 		// 文字が制限を超えた時の丸め処理
-		title = title.substring(0, 20);
-		title += "...";
+		if(title.length() > 20){
+			title = title.substring(0, 20);
+			title += "...";
+		}
 	}catch(Exception e){
 		e.printStackTrace();
 	}

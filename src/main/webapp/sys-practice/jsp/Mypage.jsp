@@ -1,11 +1,25 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="file" scope="session" class="sys_practice.Trend" />
+<jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
+
+<%
+	int userId = -1; // ログイン時のユーザーIDを格納
+	Cookie cookie[] = request.getCookies();
+	
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			// userIdが空出ないとき
+			if(!cookie[i].getValue().equals(""))
+				userId = Integer.parseInt(cookie[i].getValue());
+		}
+	}
+	/* 傾向の取得 */
+  	trend.getTrend(userId);
+%>
 
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="マイページトップ" />
 	<jsp:param name="style" value="mypage" />
 </jsp:include>
-
         <div class="main">
             <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
@@ -18,14 +32,20 @@
                         </div>
                         <div class="material-card-wrapper">
                             <%
-                            for (int i = 0; i < file.getnumresults() ; i++) {
-                            %>
+                            System.out.println("getNum" + ":" + trend.getNumResults());
+                            for (int i = 0; i < trend.getNumResults() ; i++) {
+                            	int id = trend.getMaterialId(i);
+                        		int price = trend.getPrice(i);
+                            	String thumbnail = trend.getThumbnail(i);
+                            	String category = trend.getCategoryName(i);
+                            	String title = trend.getMaterialName(i);
+                   			%>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value="<%=file.getmaterialId(i)%>" />
-                                <jsp:param name="price" value="<%=file.getprice(i)%>" />
-                                <jsp:param name="thumbnail" value="<%=file.getfileName(i)%>" />
-                                <jsp:param name="category" value="<%=file.getcategory(i)%>" />
-                                <jsp:param name="title" value="<%=file.getmaterialName(i)%>" />
+                                <jsp:param name="materialId" value="<%=id%>" />
+                                <jsp:param name="price" value="<%=price%>" />
+                                <jsp:param name="thumbnail" value="<%=thumbnail%>" />
+                                <jsp:param name="category" value="<%=category%>" />
+                                <jsp:param name="title" value="<%=title%>" />
                             </jsp:include>
                             <%
                             }
@@ -42,7 +62,7 @@
                             </h2>
                         </div>
                         <div class="samune">
-                            <a href="Post-material.jsp" class="btn-square">投稿画面へ</a>
+                            <a href="post-material.jsp" class="btn-square">投稿画面へ</a>
                         </div>
                     </div>
                     <div class="post">

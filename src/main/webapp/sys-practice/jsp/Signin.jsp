@@ -1,4 +1,3 @@
-<jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
 <%
 request.setCharacterEncoding("UTF-8");
 boolean isNull = false;

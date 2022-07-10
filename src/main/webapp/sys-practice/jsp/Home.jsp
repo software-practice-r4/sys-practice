@@ -50,10 +50,6 @@ if(request.getParameter("isLogout") != null){
 					}
 					%>
 				</div>
-				<!--  <div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
-				</div>
-				-->
 			</div>
 			<div class="post">
 				<div class="centering-ttl-box">

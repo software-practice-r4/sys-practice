@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+ * @author shusaku
+ * */
 public class Material {
 
 	/* 1. フィールドの定義 */
@@ -17,6 +20,7 @@ public class Material {
 	protected int[] categoryId = new int[100];
 	protected String[] categoryName = new String[100];
 	protected int[] providerId = new int[100];
+	protected String[] displayName = new String[100]; // 提供者の名前を格納
 	protected boolean[] isAdult = new boolean[100];
 	protected int num;
 
@@ -58,6 +62,11 @@ public class Material {
 		conn.close();
 	}
 	
+	/*
+	 * ユーザーIDと合致する素材を取得する
+	 * @author shuya
+	 * @param int userId
+	 * */
 	public void getMaterialByUserId(int userId) {
 		num = 0; // 取得したデータの量を格納
 		try {
@@ -79,7 +88,6 @@ public class Material {
 				this.categoryId[num] = resultSet.getInt("categoryId");
 				this.categoryName[num] = resultSet.getString("categoryName");
 				this.providerId[num] = resultSet.getInt("providerId");
-				this.isAdult[num] = resultSet.getBoolean("isAdult");
 				num++;
 			}
 		
@@ -102,6 +110,171 @@ public class Material {
 		}
 
 	}
+	
+	/*
+	 * 素材IDと合致する素材を取得する
+	 * @author shuya
+	 * @param int userId
+	 * @return 取得したデータ数 0 <= num <= 100
+	 * */
+	public int getMaterialByMaterialId(int materialId) {
+		num = 0; // 取得したデータの量を格納
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM material INNER JOIN user ON material.providerId = user.userId "
+					+ "INNER JOIN category on material.categoryId = category.categoryId WHERE materialId = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, materialId);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+			
+
+			while (resultSet.next()) {
+				this.materialId[num] = resultSet.getInt("materialId");
+				this.materialName[num] = resultSet.getString("materialName");
+				this.thumbnail[num] = resultSet.getString("thumbnail");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.price[num] = resultSet.getInt("price");
+				this.providerId[num] = resultSet.getInt("providerId");
+				this.categoryId[num] = resultSet.getInt("categoryId");
+				this.categoryName[num] = resultSet.getString("categoryName");
+				this.displayName[num] = resultSet.getString("displayName");
+				num++;
+			}
+		
+			stmt.close();
+			resultSet.close();
+			conn.close();
+			
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+
+	}
+	
+	/*
+	 * 投稿者が同じ素材を取得
+	 * @author shuya
+	 * @param int userId
+	 * @return 取得したデータ数 0 <= num <= 10
+	 * */
+	public int getProviderMaterial(int userId) {
+		num = 0; // 取得したデータの量を格納
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM material INNER JOIN user ON material.providerId = user.userId "
+					+ "INNER JOIN category on material.categoryId = category.categoryId WHERE providerId = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
+			stmt.setMaxRows(10); //最大の数を制限
+			resultSet = stmt.executeQuery();
+			
+
+			while (resultSet.next()) {
+				this.materialId[num] = resultSet.getInt("materialId");
+				this.materialName[num] = resultSet.getString("materialName");
+				this.thumbnail[num] = resultSet.getString("thumbnail");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.price[num] = resultSet.getInt("price");
+				this.providerId[num] = resultSet.getInt("providerId");
+				this.categoryId[num] = resultSet.getInt("categoryId");
+				this.categoryName[num] = resultSet.getString("categoryName");
+				this.displayName[num] = resultSet.getString("displayName");
+				num++;
+			}
+		
+			stmt.close();
+			resultSet.close();
+			conn.close();
+			
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+
+	}
+	
+	/*
+	 * カテゴリーIDが同じ素材をランダムに取得
+	 * @author shuya
+	 * @param int userId
+	 * @return 取得したデータ数 0 <= num <= 10
+	 * */
+	public int getSameCategoryMaterial(int categoryId) {
+		num = 0; // 取得したデータの量を格納
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId "
+					+ "inner join user on material.providerid = user.userId WHERE material.categoryId = ? ORDER BY RAND() limit 10;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, categoryId);
+			stmt.setMaxRows(10); //最大の数を制限
+			resultSet = stmt.executeQuery();
+			
+			while (resultSet.next()) {
+				this.materialId[num] = resultSet.getInt("materialId");
+				this.materialName[num] = resultSet.getString("materialName");
+				this.thumbnail[num] = resultSet.getString("thumbnail");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.price[num] = resultSet.getInt("price");
+				this.providerId[num] = resultSet.getInt("providerId");
+				this.categoryId[num] = resultSet.getInt("categoryId");
+				this.categoryName[num] = resultSet.getString("categoryName");
+				this.displayName[num] = resultSet.getString("displayName");
+				num++;
+			}
+		
+			stmt.close();
+			resultSet.close();
+			conn.close();
+			
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+
+	}
+	
 	public String getMaterialName(int i) {
 		if (i >= 0) {
 			return materialName[i];
@@ -169,7 +342,15 @@ public class Material {
 		return 0;
 		}
 	}
-
+	
+	public String getDisplayName(int i) {
+		if (i >= 0) {
+			return displayName[i];
+		} else {
+			return "";
+		}
+	}
+	
 	public boolean getIsAdult(int i) {
 		if(i>=0) {
 			return isAdult[i];

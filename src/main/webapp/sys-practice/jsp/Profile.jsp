@@ -1,14 +1,8 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 <%
-int userId = -1;
-Cookie cookie[] = request.getCookies();
 
-for(int i=0;i<cookie.length;i++){
-	if(cookie[i].getName().equals("userId")){
-		userId = Integer.parseInt(cookie[i].getValue());
-	}
-}
+
 String displayName = user.getDisplayNameById(userId);;
 String pageTitle = displayName + "さんのプロフィール";
 

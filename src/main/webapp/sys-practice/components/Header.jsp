@@ -27,15 +27,9 @@ try {
 	}
 	
 	displayName = user.getDisplayNameById(userId);
-	System.out.println(userId);
 } catch (Exception e) {
 	e.printStackTrace();
 }
-
-System.out.println(title);
-System.out.println(style);
-System.out.println(userId);
-System.out.println(displayName);
 %>
 
 <!DOCTYPE html>

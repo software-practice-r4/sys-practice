@@ -25,7 +25,7 @@
    <url-pattern>/signin</url-pattern>
  </servlet-mapping>
  
-   <servlet>
+<servlet>
    <servlet-name>signout</servlet-name>
    <servlet-class>sys_practice.Signout</servlet-class>
  </servlet>
@@ -33,4 +33,14 @@
    <servlet-name>signout</servlet-name>
    <url-pattern>/signout</url-pattern>
  </servlet-mapping>
+ 
+ <servlet>
+   <servlet-name>signup</servlet-name>
+   <servlet-class>sys_practice.SignUpServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+   <servlet-name>signup</servlet-name>
+   <url-pattern>/signup</url-pattern>
+ </servlet-mapping>
+ 
  </web-app>
