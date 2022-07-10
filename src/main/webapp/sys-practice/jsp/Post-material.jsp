@@ -3,7 +3,7 @@
 <%
 request.setCharacterEncoding("UTF-8");
 boolean isNull = false;
-if (request.getParameter("isErr") != null) {
+if (request.getParameter("isNull") != null) {
 	isNull = Boolean.valueOf(request.getParameter("isNull"));
 }
 
