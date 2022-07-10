@@ -15,7 +15,6 @@ public class Upload{
 	protected int[] isAdult;
 
 	public void uploadMaterial(String materialName, String explanation, String price, String categoryId, String categoryName, String isAdult, String providerId, String thumbnail) throws Exception {
-
 		AWS aws = new AWS();
 		Connection conn = aws.getRemoteConnection();
 
