@@ -1,8 +1,10 @@
-package sys_practice;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import sys_practice.AWS;
 
 public class Upload{
 	protected String[] materialName = new String[100];
