@@ -78,6 +78,10 @@ public class SignUp {
 		}
 	}
 
+	/*
+	 * 秘密の質問を取得する
+	 * @return 取得された件数を返却 エラー時には-1返す
+	 * */
 	public int detaloadQuestion() throws Exception {
 		num = 0;//取得件数の初期化
 		try {

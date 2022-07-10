@@ -8,7 +8,10 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-
+/*
+ * @author shuya
+ * @version 1.0
+ * */
 public class SignInServlet extends HttpServlet {
 
 	@Override

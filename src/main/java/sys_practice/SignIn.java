@@ -5,6 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+ * @author keita
+ * @version 1.0
+ * */
 public class SignIn {
 
 	protected int[] userId = new int[100];
@@ -25,6 +29,14 @@ public class SignIn {
 	String results = "";
 	String statement = null;
 
+	/*
+	 * @author shuya
+	 * @author keita
+	 * eメール・パスワードと合致するユーザー情報を取得する
+	 * @param String email
+	 * @param String password
+	 * @return データの取得件数を返却 エラー時には-1返す
+	 * */
 	public int signIn(String email, String password) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
@@ -71,6 +83,12 @@ public class SignIn {
 		}
 	}
 
+	/*(未実装)
+	 * @author keita
+	 * eメールから自身の秘密の質問の情報(Id,Title,Answer)を取得する
+	 * @param String email
+	 * @return データの取得件数を返却 エラー時には-1返す
+	 * */
 	public int requestSecretQuestion(String email) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
@@ -99,7 +117,7 @@ public class SignIn {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+			return -1;
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -110,6 +128,14 @@ public class SignIn {
 		}
 	}
 
+	/*(未実装)
+	 * @author keita
+	 * eメール・秘密の質問の解答から自身のパスワードを更新する
+	 * @param String questionAnswer
+	 * @param String email
+	 * @param String password
+	 * @return 成功時1を返却 エラー時には-1返す
+	 * */
 	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
 		int num = 0;//取得件数の初期化
 		try {

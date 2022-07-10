@@ -32,20 +32,12 @@ try {
 		<div class="information">
 			<ul>
 				<form action="<%=request.getContextPath()%>/signup" method="Post">
-					<%
-					if (isNull) {
-					%>
-					<p class="err-txt">どちらかの値が空です。</p>
-					<%
-					}
-					%>
-					<%
-					if (isErr) {
-					%>
-					<p class="err-txt">既にアカウントがあります。</p>
-					<%
-					}
-					%>
+					<%if (isNull) {%>
+					    <p class="err-txt">どちらかの値が空です。</p>
+					<%}%>
+					<%if (isErr) {%>
+					    <p class="err-txt">既にアカウントがあります。</p>
+					<%}%>
 					<p>
 						メールアドレス：<br> <input type="email" name="email" size="40"
 							placeholder="メールアドレス" class="text-box">
@@ -58,13 +50,9 @@ try {
 						<div class="title">
 							<div class="message">秘密の質問の解答：</div>
 							<select name="questionId" id="question">
-								<%
-								for (int i = 0; i < questionData; i++) {
-								%>
-								<option value="<%=signup.getQuestionId(i)%>"><%=signup.getQuestionTitle(i)%></option>
-								<%
-								}
-								%>
+								<%for (int i = 0; i < questionData; i++) {%>
+								    <option value="<%=signup.getQuestionId(i)%>"><%=signup.getQuestionTitle(i)%></option>
+								<%}%>
 							</select>
 						</div>
 						<div class="questionform">
