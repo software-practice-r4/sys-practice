@@ -2,8 +2,16 @@
 <jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
 
 <%
+int userId = -1;
+Cookie cookie[] = request.getCookies();
+for(int i=0;i<cookie.length;i++){
+	if(cookie[i].getName().equals("userId")){
+		userId = Integer.parseInt(cookie[i].getValue());
+	}
+}
+
 /* 傾向の取得 */
-  trend.getTrend(1);
+  trend.getTrend(userId);
 %>
 
 <jsp:include page="./../components/Header.jsp">
