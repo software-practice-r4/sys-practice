@@ -76,10 +76,23 @@ public class FileUpload extends HttpServlet {
 				}
 			}
 			// 情報が欠如していた場合に、エラー情報を付与し、リダイレクトする
-			if(filename.equals("") || content.get(0).equals("") || content.get(1).equals("") || content.get(2).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-materila.jsp?isNull=true");
+			if(filename.equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?fileisNull=true");
+				return;
+			} else if (content.get(0).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?materialNameisNull=true");
+				return;
+			} else if (content.get(1).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?explanationisNull=true");
+				return;
+			} else if (content.get(2).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?priceisNull=true");
+				return;
+			} else if (content.get(6).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp");
 				return;
 			}
+
 
 			// SQL文発行
 			Upload uploadMaterial = new Upload();
@@ -100,10 +113,11 @@ public class FileUpload extends HttpServlet {
 			}
 			// ファイル名をデータベースに登録する
 			if (!uploaded)
-				processRequest(request, response); //エラー表示
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
+				//processRequest(request, response); //エラー表示
 			else {
 				// 次の一覧表示ページへ転送する
-;				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp");
+;				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isSuccessed=true");
 				return;
 			}
 		} catch (Exception e) {
@@ -117,6 +131,7 @@ public class FileUpload extends HttpServlet {
 
 		//エラーを表示するHTMLの出力
 		try (PrintWriter out = response.getWriter()) {
+
 			out.println("<html>");
 			out.println("<head><title>エラー表示 POST時のエラー</title></head>");
 		} catch (Exception e) {

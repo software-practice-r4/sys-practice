@@ -2,12 +2,32 @@
 
 <%
 request.setCharacterEncoding("UTF-8");
-boolean isNull = false;
-if (request.getParameter("isNull") != null) {
-	isNull = Boolean.valueOf(request.getParameter("isNull"));
+boolean fileisNull = false;
+boolean materialNameisNull = false;
+boolean explanationisNull = false;
+boolean priceisNull = false;
+boolean isSuccessed = false;
+boolean isFailed = false;
+if (request.getParameter("fileisNull") != null) {
+	fileisNull = Boolean.valueOf(request.getParameter("fileisNull"));
+}
+if (request.getParameter("materialNameisNull") != null) {
+	materialNameisNull = Boolean.valueOf(request.getParameter("materialNameisNull"));
+}
+if (request.getParameter("explanationisNull") != null) {
+	explanationisNull = Boolean.valueOf(request.getParameter("explanationisNull"));
+}
+if (request.getParameter("priceisNull") != null) {
+	priceisNull = Boolean.valueOf(request.getParameter("priceisNull"));
+}
+if (request.getParameter("isSuccessed") != null) {
+	isSuccessed = Boolean.valueOf(request.getParameter("isSuccessed"));
+}
+if (request.getParameter("isFailed") != null) {
+	isFailed = Boolean.valueOf(request.getParameter("isFailed"));
 }
 
-int userId = 1;
+int userId = -1;
 //Cookie cookie[] = request.getCookies();
 //for(int i=0;i<cookie.length;i++){
 //	if(cookie[i].getName().equals("userId")){
@@ -31,8 +51,23 @@ int userId = 1;
 				</div>
 				<form action="<%=request.getContextPath() %>/fileupload" enctype="multipart/form-data" method="post">
 					<div class="information">
-						<%if (isNull) {%>
-							<p class="err-txt">素材のアップロードに失敗しました。</p>
+						<%if (userId == -1) {%>
+							<p class="err-txt">ユーザ情報の取得に失敗しました。再度ログインしてください。</p>
+						<%}	%>
+						<%if (fileisNull) {%>
+							<p class="err-txt">アップロードする素材を選択してください。</p>
+						<%}	%>
+						<%if (materialNameisNull) {%>
+							<p class="err-txt">素材の名前を入力してください。</p>
+						<%}	%>
+						<%if (explanationisNull) {%>
+							<p class="err-txt">素材の説明を入力してください。</p>
+						<%}	%>
+						<%if (priceisNull) {%>
+							<p class="err-txt">素材の価格を入力してください。</p>
+						<%}	%>
+						<%if (isSuccessed) {%>
+							<p class="err-txt">素材のアップロードに成功しました。</p>
 						<%}	%>
 						<ul>
 							<p>
