@@ -27,7 +27,7 @@ if (request.getParameter("isFailed") != null) {
 	isFailed = Boolean.valueOf(request.getParameter("isFailed"));
 }
 
-int userId = -1;
+int userId = 1;
 //Cookie cookie[] = request.getCookies();
 //for(int i=0;i<cookie.length;i++){
 //	if(cookie[i].getName().equals("userId")){
@@ -113,6 +113,7 @@ int userId = -1;
 						<div class="completion">
                         	<input type="submit" class="btn-square-so-pop" value="アップロード"><br>
                     	</div>
+                    	<img src="<%=request.getServletContext().getRealPath("sys-practice/content") %>/PYQIRGVUB1T9EH9Q5I95.jpg">
                 	</div>
                 </form>
 			</div>

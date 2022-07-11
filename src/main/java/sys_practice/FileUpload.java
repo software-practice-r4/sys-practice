@@ -34,6 +34,7 @@ public class FileUpload extends HttpServlet {
 
 		// 保存先ファイルの設定		S
 		String dataDir = getServletContext().getRealPath("sys-practice/content");
+		System.out.println(dataDir);
 		File dataDirFile = new File(dataDir);
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setRepository(dataDirFile);
@@ -89,7 +90,7 @@ public class FileUpload extends HttpServlet {
 				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?priceisNull=true");
 				return;
 			} else if (content.get(6).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp");
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
 				return;
 			}
 
@@ -100,11 +101,11 @@ public class FileUpload extends HttpServlet {
 
 			try {
 				Cookie cookie[] = request.getCookies();
-				String user_id = null;
+				String userId = null;
 				if (cookie != null){
 				    for (int i = 0 ; i < cookie.length ; i++){
 				      if (cookie[i].getName().equals("userId"))
-				        user_id = cookie[i].getValue();
+				        userId = cookie[i].getValue();
 				    }
 				}
 				System.err.println(content.get(0)+", "+content.get(1));
