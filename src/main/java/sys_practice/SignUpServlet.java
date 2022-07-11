@@ -22,23 +22,34 @@ public class SignUpServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		String email = request.getParameter("email");
+		System.out.println("hogehogehogheghoehgoehgoehgoehgo");
+;		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		int questionId = Integer.parseInt(request.getParameter("questionId"));
 		String questionAnswer = request.getParameter("questionAnswer");
+
+
 
 		// メールアドレスまたはパスワードまたは秘密の質問が入っていなかったときにサインアップページにリダイレクト
 		if (email == null || password == null || questionId == 0 || questionAnswer == null) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
 			return;
 		}
+
 		SignUp signup = new SignUp();
-		SignIn signin = new SignIn();
 		int err = 0;// データの格納を判定
 		int acount = 0;// アカウントが既に存在するかを判定
 
+		/* データが空だったときの処理 */
+		// TODO:
+		if (email.equals("") || password.equals("") || questionId == 0 || questionAnswer.equals("")) {
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
+			return;
+		}
+
+		//入力されたemailに該当するテーブルがあるを判定
 		try {
-			acount = signin.signIn(email, password);
+			acount = signup.acountQuantity(email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -54,7 +65,6 @@ public class SignUpServlet extends HttpServlet {
 		User user = new User();
 		// ユーザーIDと表示名をセッションで保持
 		int userId = user.getUserIdByEmail(email);
-
 		System.out.println("err" + err);
 		// 正常時処理
 		if (err != 0 && acount == 0) {

@@ -18,6 +18,9 @@ public class SignUp {
 	protected int[] questionId = new int[100];
 	protected String[] questionTitle = new String[50];
 	protected String[] questionAnswer = new String[50];
+	protected String[] explanation = new String[100];
+	protected String[] icon = new String[50];
+	protected int[] wallet = new int[100];
 	protected int num;//データ取得件数
 	protected int[] cnt = new int[100];//実行回数
 
@@ -28,7 +31,7 @@ public class SignUp {
 	String statement = null;
 
 	/*
-	 * ユーザーIDと合致する表示名を取得する
+	 * ユーザーのアカウントを作成する
 	 * @param String email
 	 * @param String password
 	 * @param int questionId
@@ -65,9 +68,9 @@ public class SignUp {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-      
+
 			return -1;
-      
+
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -87,7 +90,7 @@ public class SignUp {
 		try {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-      
+
 			String sql = "SELECT * FROM question";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
@@ -119,6 +122,57 @@ public class SignUp {
 					conn.close();
 				} catch (SQLException ignore) {
 				}
+		}
+	}
+
+	/*
+	 * 入力されたemailに該当するアカウントを取得する
+	 * @param String email
+	 * @return ユーザーデータの個数を返却 正常時1or0 エラー時には-1返す
+	 * */
+	public int acountQuantity(String email) throws Exception {
+		num = 0;//取得件数の初期化
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM user WHERE email Like ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.email[num] = resultSet.getString("email");
+				this.password[num] = resultSet.getString("password");
+				this.displayName[num] = resultSet.getString("displayName");
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionAnswer[num] = resultSet.getString("questionAnswer");
+				this.explanation[num] = resultSet.getString("explanation");
+				this.icon[num] = resultSet.getString("icon");
+				this.wallet[num] = resultSet.getInt("wallet");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return -1;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+			}
 		}
 	}
 

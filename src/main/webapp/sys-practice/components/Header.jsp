@@ -3,7 +3,6 @@
 <%
 String title = ""; // ページタイトル格納
 String style = ""; // ページのスタイルシート名(拡張子無し)を格納
-
 int userId = -1; // ログイン時のユーザーIDを格納
 
 String displayName = "";
