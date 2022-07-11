@@ -1,14 +1,11 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
 String title = ""; // ページタイトル格納
 String style = ""; // ページのスタイルシート名(拡張子無し)を格納
-
 int userId = -1; // ログイン時のユーザーIDを格納
 
 String displayName = "";
-
 
 Cookie cookie[] = request.getCookies();
 

@@ -4,7 +4,7 @@
 	<jsp:param name="style" value="dm-detail" />
 </jsp:include>
 
-        <jsp:include page="./../components/header-after.jsp" />
+        <jsp:include page="./../components/Header.jsp" />
         <div id="main">
             <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
