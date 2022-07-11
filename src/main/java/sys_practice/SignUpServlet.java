@@ -22,13 +22,10 @@ public class SignUpServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		System.out.println("hogehogehogheghoehgoehgoehgoehgo");
 ;		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		int questionId = Integer.parseInt(request.getParameter("questionId"));
 		String questionAnswer = request.getParameter("questionAnswer");
-
-
 
 		// メールアドレスまたはパスワードまたは秘密の質問が入っていなかったときにサインアップページにリダイレクト
 		if (email == null || password == null || questionId == 0 || questionAnswer == null) {
