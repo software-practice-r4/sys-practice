@@ -12,8 +12,6 @@ if (request.getParameter("isErr") != null) {
 }
 %>
 
-
-
 <%
 request.setCharacterEncoding("UTF-8");
 try {
