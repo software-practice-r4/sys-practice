@@ -18,6 +18,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * @author kotaro
+ * @version 1.0
+ * */
+
 public class FileUpload extends HttpServlet {
 
 	/*
@@ -33,7 +38,7 @@ public class FileUpload extends HttpServlet {
 		request.setCharacterEncoding("UTF-8");
 
 		// 保存先ファイルの設定		S
-		String dataDir = getServletContext().getRealPath("sys-practice/content");
+		String dataDir = getServletContext().getRealPath("sys-practice/img");
 		System.out.println(dataDir);
 		File dataDirFile = new File(dataDir);
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -77,25 +82,38 @@ public class FileUpload extends HttpServlet {
 				}
 			}
 			// 情報が欠如していた場合に、エラー情報を付与し、リダイレクトする
-			if(filename.equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?fileisNull=true");
+			try {
+				if(filename.equals("")) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFileNull=true");
+					return;
+				} else if (content.get(0).equals("")) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isMaterialNameNull=true");
+					return;
+				} else if (content.get(1).equals("")) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isExplanationNull=true");
+					return;
+				} else if (content.get(2).equals("")) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isPriceNull=true");
+					return;
+				} else if (content.get(6).equals("")) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
+					return;
+				}
+				int i = Integer.parseInt(content.get(2));
+			}catch(NumberFormatException e) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isPriceNull=true");
 				return;
-			} else if (content.get(0).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?materialNameisNull=true");
-				return;
-			} else if (content.get(1).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?explanationisNull=true");
-				return;
-			} else if (content.get(2).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?priceisNull=true");
-				return;
-			} else if (content.get(6).equals("")) {
+			}
+
+			//userIdを確認するSQL文を発行
+			User hasUserIdOnDatabase = new User();
+			boolean hasUser = hasUserIdOnDatabase.hasUserIdOnDatabase(Integer.parseInt(content.get(6)));
+			if(!hasUser){
 				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
 				return;
 			}
 
-
-			// SQL文発行
+			// 素材アップロードのSQL文発行
 			Upload uploadMaterial = new Upload();
 			uploadMaterial.uploadMaterial(content.get(0), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), content.get(6), filename);
 

@@ -2,23 +2,23 @@
 
 <%
 request.setCharacterEncoding("UTF-8");
-boolean fileisNull = false;
-boolean materialNameisNull = false;
-boolean explanationisNull = false;
-boolean priceisNull = false;
+boolean isFileNull = false;
+boolean isMaterialNameNull = false;
+boolean isExplanationNull = false;
+boolean isPriceNull = false;
 boolean isSuccessed = false;
 boolean isFailed = false;
-if (request.getParameter("fileisNull") != null) {
-	fileisNull = Boolean.valueOf(request.getParameter("fileisNull"));
+if (request.getParameter("isFileNull") != null) {
+	isFileNull = Boolean.valueOf(request.getParameter("isFileNull"));
 }
-if (request.getParameter("materialNameisNull") != null) {
-	materialNameisNull = Boolean.valueOf(request.getParameter("materialNameisNull"));
+if (request.getParameter("isMaterialNameNull") != null) {
+	isMaterialNameNull = Boolean.valueOf(request.getParameter("isMaterialNameNull"));
 }
-if (request.getParameter("explanationisNull") != null) {
-	explanationisNull = Boolean.valueOf(request.getParameter("explanationisNull"));
+if (request.getParameter("isExplanationNull") != null) {
+	isExplanationNull = Boolean.valueOf(request.getParameter("isExplanationNull"));
 }
-if (request.getParameter("priceisNull") != null) {
-	priceisNull = Boolean.valueOf(request.getParameter("priceisNull"));
+if (request.getParameter("isPriceNull") != null) {
+	isPriceNull = Boolean.valueOf(request.getParameter("isPriceNull"));
 }
 if (request.getParameter("isSuccessed") != null) {
 	isSuccessed = Boolean.valueOf(request.getParameter("isSuccessed"));
@@ -27,13 +27,18 @@ if (request.getParameter("isFailed") != null) {
 	isFailed = Boolean.valueOf(request.getParameter("isFailed"));
 }
 
-int userId = 1;
-//Cookie cookie[] = request.getCookies();
-//for(int i=0;i<cookie.length;i++){
-//	if(cookie[i].getName().equals("userId")){
-//		userId = Integer.parseInt(cookie[i].getValue());
-//	}
-//}
+int userId = -1;
+
+try{
+	Cookie cookie[] = request.getCookies();
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			userId = Integer.parseInt(cookie[i].getValue());
+		}
+	}
+} catch(Exception e){
+	userId = -1;
+}
 %>
 
 <jsp:include page="./../components/Header.jsp">
@@ -53,17 +58,17 @@ int userId = 1;
 					<div class="information">
 						<%if (userId == -1) {%>
 							<p class="err-txt">ユーザ情報の取得に失敗しました。再度ログインしてください。</p>
-						<%}	%>
-						<%if (fileisNull) {%>
+						<%}	else {%>
+						<%if (isFileNull) {%>
 							<p class="err-txt">アップロードする素材を選択してください。</p>
 						<%}	%>
-						<%if (materialNameisNull) {%>
+						<%if (isMaterialNameNull) {%>
 							<p class="err-txt">素材の名前を入力してください。</p>
 						<%}	%>
-						<%if (explanationisNull) {%>
+						<%if (isExplanationNull) {%>
 							<p class="err-txt">素材の説明を入力してください。</p>
 						<%}	%>
-						<%if (priceisNull) {%>
+						<%if (isPriceNull) {%>
 							<p class="err-txt">素材の価格を入力してください。</p>
 						<%}	%>
 						<%if (isSuccessed) {%>
@@ -113,7 +118,7 @@ int userId = 1;
 						<div class="completion">
                         	<input type="submit" class="btn-square-so-pop" value="アップロード"><br>
                     	</div>
-                    	<img src="<%=request.getServletContext().getRealPath("sys-practice/content") %>/PYQIRGVUB1T9EH9Q5I95.jpg">
+                    	<%} %>
                 	</div>
                 </form>
 			</div>
