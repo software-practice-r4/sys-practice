@@ -35,18 +35,18 @@ public class SignUpServlet extends HttpServlet {
 		}
 
 		// メールアドレスまたはパスワードまたは秘密の質問が入っていなかったときにサインアップページにリダイレクト
-		if (email == null || password == null || questionId == 0|| questionAnswer == null) {
+		if (email == null || password == null || questionId == 0 || questionAnswer == null) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
 			return;
 		}
 
 		SignUp signup = new SignUp();
 		int err = 0;// データの格納を判定
-		int acount = 0;// アカウントが既に存在するかを判定
+		int acount = -1;// アカウントが既に存在するかを判定
 
 		/* データが空だったときの処理 */
 		// TODO:
-		if (email.equals("") || password.equals("") || questionId == 0 || questionAnswer.equals("")) {
+		if (email.equals("") || password.equals("") || questionAnswer.equals("")) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
 			return;
 		}
