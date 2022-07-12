@@ -29,7 +29,6 @@ public class Search extends Material {
 		} else {
 			return true;
 		}
-	}
 
 	public void getmaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult) throws Exception {
 		try {
@@ -38,9 +37,9 @@ public class Search extends Material {
 
 			/*入力フォームで検索*/
 			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId" +
-					" WHERE materialName like '%"+keyword+"%'";
+					" WHERE materialName like '%" + keyword + "%'";
 
-			/*-1==入力されていない -1!=入力済み*/
+			/*入力されている検索情報ごとに使用するSQLを変更*/
 			/*年齢制限だけ入力されている*/
 			if (!hasData(searchCategoryId) && !hasData(searchPrice) && hasData(searchIsAdult)) {
 				sql += " AND isAdult=" + searchIsAdult;
@@ -77,7 +76,7 @@ public class Search extends Material {
 
 			/*結果の取り出しと表示 */
 			num = 0;
-			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
+			while (rs.next()) {
 				this.materialId[num] = rs.getInt("materialId");
 				this.materialName[num] = rs.getString("materialName");
 				this.price[num] = rs.getInt("price");
@@ -153,7 +152,6 @@ public class Search extends Material {
 				} catch (SQLException ignore) {
 				}
 		}
-
 	}
 
 	/*ゲッター*/
@@ -181,15 +179,11 @@ public class Search extends Material {
 		}
 	}
 
-	public void setExplanation(String[] explanation) {
-		this.explanation = explanation;
-	}
-
 	public int getMaterialId(int i) {
-		if (0 <= i && i < num) {
+		if (i >= 0 && num > i) {
 			return materialId[i];
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 
@@ -197,7 +191,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return price[i];
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 
@@ -205,7 +199,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return categoryId[i];
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 
@@ -221,15 +215,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return providerId[i];
 		} else {
-			return 0;
-		}
-	}
-
-	public String getDisplayName(int i) {
-		if (0 <= i && i < num) {
-			return displayName[i];
-		} else {
-			return "";
+			return -1;
 		}
 	}
 
@@ -237,7 +223,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return isAdult[i];
 		} else {
-			return 0;
+			return -1;
 		}
 	}
 

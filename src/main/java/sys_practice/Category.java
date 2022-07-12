@@ -1,3 +1,4 @@
+
 package sys_practice;
 
 import java.sql.Connection;
@@ -6,7 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 /* 
  * @author shusaku
-*/
+ */
+
 public class Category {
 
 	protected int[] categoryId = new int[100];
@@ -17,6 +19,7 @@ public class Category {
 	 * return カテゴリー名、カテゴリーID
 	*/
 	public int dispCategory() {
+		num = 0;
 		try {
 			AWS aws = new AWS();
 			Connection conn = aws.getRemoteConnection();
@@ -27,21 +30,40 @@ public class Category {
 			ResultSet rs = stmt.executeQuery();
 
 			/*結果の取り出しと表示*/
-			num=0;
+			num = 0;
 			while (rs.next()) {
 				this.categoryId[num] = rs.getInt("categoryId");
 				this.categoryName[num] = rs.getString("categoryName");
 				num++;
 			}
-
-	        /* 2.1.4 データベースからの切断 */
-			rs.close();
-	        stmt.close();
-	        conn.close();
 			return num;
 		} catch (SQLException e) {
 			return 0;
-		}    
+		}
+	}
+
+	/* author shuya */
+	public String getCategoryNameById(int categoryId) {
+		num = 0;
+		try {
+			AWS aws = new AWS();
+			Connection conn = aws.getRemoteConnection();
+
+			String sql = "SELECT * FROM category";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setMaxRows(100);
+			ResultSet rs = stmt.executeQuery();
+
+			/*結果の取り出しと表示*/
+			while (rs.next()) {
+				this.categoryId[num] = rs.getInt("categoryId");
+				this.categoryName[num] = rs.getString("categoryName");
+				num++;
+			}
+			return categoryName[0];
+		} catch (SQLException e) {
+			return "";
+		}
 	}
 
 	public int getCategoryId(int i) {
@@ -53,15 +75,15 @@ public class Category {
 	}
 
 	public String getCategoryName(int i) {
-        if (i >= 0 && num > i) {
-            return categoryName[i];
-        } else {
-            return "";
-        }
+		if (i >= 0 && num > i) {
+			return categoryName[i];
+		} else {
+			return "";
+		}
 	}
 
 	public int getNum() {
-		return num;
+		return num; // データ件数
 	}
 
 }

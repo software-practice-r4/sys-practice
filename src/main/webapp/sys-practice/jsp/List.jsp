@@ -1,3 +1,25 @@
+<jsp:useBean id="search" scope="session" class="sys_practice.Search" />
+<%
+String keyword = "";
+int category = -1; // -1で全検索をかける
+String price = "Z"; // A-Dの値が返ってくるため、エラー処理用にzを格納
+int isAdult = 0; // 全年齢をデフォルト値
+
+
+if (request.getParameter("keyword") != null) {
+	keyword = request.getParameter("keyword");
+}
+if (request.getParameter("category") != null) {
+	keyword = request.getParameter("category");
+}
+if (request.getParameter("price") != null) {
+	keyword = request.getParameter("price");
+}
+if (request.getParameter("isAdult") != null) {
+	keyword = request.getParameter("isAdult");
+}
+
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="category" scope="session" class="sys_practice.Category" />
 

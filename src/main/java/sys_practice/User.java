@@ -4,10 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+
+/*
+ * @author shusaku
+ * @version 1.0
+ * */
 
 public class User {
 
-	/* 1. フィールドの定義 */
 	protected int[] userId = new int[100];
 	protected String[] email = new String[100];
 	protected String[] password = new String[100];
@@ -19,7 +24,56 @@ public class User {
 	protected int[] wallet = new int[100];
 	protected int num;//データ件数
 	int agmntUserId;//引数用のuserId
+	
 
+	Connection conn = null;
+	ResultSet resultSet = null;
+	String results = "";
+	String statement = null;
+	
+	
+	/*
+	 * ユーザーIDと合致する全データをロードする
+	 * @author shuya
+	 * @param int userId
+	 * */
+	public void dataloadById(int userId) {
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM user WHERE userId = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
+			resultSet = stmt.executeQuery();
+			
+			while (resultSet.next()) {
+				this.userId[0] = resultSet.getInt("userId");
+				this.email[0] = resultSet.getString("email");
+				this.displayName[0] = resultSet.getString("displayName");
+				this.explanation[0] = resultSet.getString("explanation");
+				this.icon[0] = resultSet.getString("icon");
+
+			}
+			System.err.println(this.icon[0]);
+			
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
 	/*agmntUserIdと一致したレコードを削除する*/
 	public void deleteUser(int agmntUserId) throws Exception {
 
@@ -56,9 +110,8 @@ public class User {
 		conn.close();
 	}
 
-	/*agmntUserIdと一致したレコードを削除する*/
+	/* ユーザーIDと合致するお金を取得する*/
 	public void getMoneybyId(int agmntUserId) throws Exception {
-
 		/*データベース接続*/
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
 		String url = "jdbc:mysql://localhost/softd2?characterEncoding=UTF-8"; //データベース名は適宜修正：文字エンコードはUTF-8
@@ -91,36 +144,126 @@ public class User {
 		stmt.close();
 		conn.close();
 	}
+	
+	/*
+	 * メールアドレスと合致するユーザーIDを取得する
+	 * @author shuya
+	 * @param String email @マークついたままのもの
+	 * @return メールアドレスと合致したユーザーIDを返却
+	 * */
+	public int getUserIdByEmail(String email) {
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT userId FROM user WHERE email = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, email);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+			
+			int[] userId = new int[100];
+			
+			while (resultSet.next()) {
+				userId[0] = resultSet.getInt("userId");
+			}
 
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			return userId[0];
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return 0;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+	
+
+	/*
+	 * ユーザーIDと合致する表示名を取得する
+	 * @author shuya
+	 * @param int userId
+	 * @return 合致したユーザーIDを返却
+	 * */
+	public String getDisplayNameById(int userId) {
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT displayName FROM user WHERE userId = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+			
+			String[] displayName = new String[100];
+			
+			while (resultSet.next()) {
+				displayName[0] = resultSet.getString("displayName");
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			return displayName[0];
+
+		// TODO: catch時のリターン値を決める
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return "";
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+	
 	public int getUserId(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return userId[i];
 		} else {
-			return 0;
+			return 00;
 		}
 	}
 
 	public String getEmail(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return email[i];
 		} else {
-			return "";
+			return null;
 		}
 	}
 
 	public String getPassword(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return password[i];
 		} else {
-			return "";
+			return null;
 		}
 	}
 
 	public int getQuestionId(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return questionId[i];
 		} else {
-			return "";
+			return 00;
 		}
 	}
 
@@ -128,39 +271,39 @@ public class User {
 		if (i >= 0 && num > i) {
 			return questionAnswer[i];
 		} else {
-			return "";
+			return null;
 		}
 	}
 
 	public String getDisplayName(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return displayName[i];
 		} else {
-			return "";
+			return null;
 		}
 	}
 
 	public String getExplanation(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return explanation[i];
 		} else {
-			return "";
+			return null;
 		}
 	}
 
 	public String getIcon(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return icon[i];
 		} else {
-			return "";
+			return null;
 		}
 		}
 
 	public int getWallet(int i) {
-		if (i >= 0 && num > i) {
+		if (i >= 0) {
 			return wallet[i];
 		} else {
-			return 0;
+			return 000;
 		}
 	}
 
