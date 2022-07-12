@@ -42,7 +42,7 @@ if (!style.equals(""))
 			</div>
 			<div class="head-left">
 				<form method="POST" action="<%=request.getContextPath()%>/sys-practice/jsp/HeaderSearch.jsp" class="search">
-					<input id="sbox" name="sbox" type="search" placeholder="キーワードを入力" />
+					<input id="sbox" name="sbox" type="search" placeholder="キーワードを入力" required/>
 					<input type="submit" value="検索" />
 				</form>
 			</div>

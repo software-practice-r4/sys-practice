@@ -12,22 +12,68 @@ public class Search extends Material {
 	int searchCategoryId;
 	int searchPrice;
 	int searchIsAdult;
+	int param;
 
-	/*素材検索メソッド*/
+	/*
+	 * 入力された情報(キーワード＝素材名の一部または全部、カテゴリーId, 価格,　年齢制限)から素材を検索する
+	 * @author shusaku
+	 * @param String keywoed
+	 * @param String searchCategoryId
+	 * @param String searchPrice
+	 * @param String searchIsAdult
+	 * */
+
+	public boolean hasData(int param) {
+		if (param == -1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
 	public void getmaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult) throws Exception {
 		try {
 			AWS aws = new AWS();
 			Connection conn = aws.getRemoteConnection();
 
-			String sql = "SELECT * FROM material inner join category ON material.categoryId = category.categoryId" +
-					" AND materialName like ? AND material.categoryId=? AND price=? AND isAdult=?";
-			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
+			/*入力フォームで検索*/
+			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId" +
+					" WHERE materialName like '%"+keyword+"%'";
+
+			/*-1==入力されていない -1!=入力済み*/
+			/*年齢制限だけ入力されている*/
+			if (!hasData(searchCategoryId) && !hasData(searchPrice) && hasData(searchIsAdult)) {
+				sql += " AND isAdult=" + searchIsAdult;
+			}
+			/*価格だけ入力されている*/
+			else if (!hasData(searchCategoryId) && hasData(searchPrice) && !hasData(searchIsAdult)) {
+				sql += " AND price=" + searchPrice;
+			}
+			/*価格と年齢制限が入力されている*/
+			else if (!hasData(searchCategoryId) && hasData(searchPrice) && hasData(searchIsAdult)) {
+				sql += " AND price=" + searchPrice + " AND isAdult=" + searchIsAdult;
+			}
+			/*カテゴリーIDだけ入力されている*/
+			else if (hasData(searchCategoryId) && !hasData(searchPrice) && !hasData(searchIsAdult)) {
+				sql += " AND categoryId=" + searchCategoryId;
+			}
+			/*カテゴリーIDと年齢制限が入力されている*/
+			else if (hasData(searchCategoryId) && !hasData(searchPrice) && hasData(searchIsAdult)) {
+				sql += " AND CategoryId=" + searchCategoryId + " AND idAdult=" + searchIsAdult;
+			}
+			/*カテゴリーIDと価格が入力されている*/
+			else if (hasData(searchCategoryId) && hasData(searchPrice) && !hasData(searchIsAdult)) {
+				sql += " AND categoryId=" + searchCategoryId + " AND price=" + searchPrice;
+			}
+			/*全ての情報が入力されている*/
+			else if (hasData(searchCategoryId) && hasData(searchPrice) && hasData(searchIsAdult)) {
+				sql += " AND categoryId=" + searchCategoryId + " AND price=" + searchPrice
+						+ " AND isAdult=" + searchIsAdult;
+			}
+			System.out.println(sql);
+			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
-			stmt.setString(1, "%" + keyword + "%");
-			stmt.setInt(2, searchCategoryId);
-			stmt.setInt(3, searchPrice);
-			stmt.setInt(4, searchIsAdult);
-			ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+			ResultSet rs = stmt.executeQuery();
 
 			/*結果の取り出しと表示 */
 			num = 0;
@@ -47,7 +93,6 @@ public class Search extends Material {
 			rs.close(); //開いた順に閉じる
 			stmt.close();
 			conn.close();
-
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
@@ -64,6 +109,7 @@ public class Search extends Material {
 
 	}
 
+	/*ヘッダーでの検索*/
 	public void getmaterial(String keyword) throws Exception {
 		try {
 			AWS aws = new AWS();

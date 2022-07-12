@@ -1,10 +1,60 @@
-<jsp:useBean id="category" scope="session" class="sys_practice.Category" />
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="category" scope="session" class="sys_practice.Category" />
+
+<%
+/* エンコード */
+request.setCharacterEncoding("UTF-8");
+/* データ一覧の取得メソッド */
+try {
+	category.dispCategory();
+} catch (Exception e) {
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>エラーの表示</title>
+</head>
+<body>
+	<header>
+		<h1>エラーの表示</h1>
+	</header>
+	<%=e%>
+</body>
+</html>
+<%
+}
+%>
+
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<%
+/* エンコード */
+request.setCharacterEncoding("UTF-8");
+/* データ一覧の取得メソッド */
+try {
+	material.listMaterial();
+} catch (Exception e) {
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>エラーの表示</title>
+</head>
+<body>
+	<header>
+		<h1>エラーの表示</h1>
+	</header>
+	<%=e%>
+</body>
+</html>
+<%
+}
+%>
+
+
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="検索結果を表示" />
+	<jsp:param name="title" value="一覧を表示" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
-
 <div id="main">
 	<div class="sidebar">
 		<h3>絞り込み検索</h3>
@@ -12,7 +62,9 @@
 			<h1>カテゴリー</h1>
 			<div class="select">
 				<select name="category" class="text-box">
-				<% for (int i = 0; i < category.getNum(); i++) {%>
+					<%
+					for (int i = 0; i < category.getNum(); i++) {
+					%>
 					<option value=<%=category.getCategoryId(i)%>><%=category.getCategoryName(i)%></option>
 					<%}%>
 				</select>
@@ -46,14 +98,14 @@
 			</div>
 			<div class="material-card-wrapper">
 				<%
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < material.getNum(); i++) {
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="materialId" value="3039202" />
-					<jsp:param name="price" value="500" />
+					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
+					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
 					<jsp:param name="thumbnail" value="./../img/106.jpg" />
-					<jsp:param name="category" value="BGM" />
-					<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
+					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
 				</jsp:include>
 				<%
 				}

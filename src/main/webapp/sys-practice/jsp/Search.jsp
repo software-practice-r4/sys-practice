@@ -43,7 +43,7 @@ try {
 						<form action="ReceiveInfo.jsp" method="post">
 							<p>
 								キーワード:<br> <input type="search" name="keyword" size="40"
-									placeholder="アザラシ" class="text-box">
+									placeholder="アザラシ" class="text-box" required>
 							</p>
 							<p>
 								価格：<br> <input type="number" name="searchPrice" size="40"
@@ -53,6 +53,7 @@ try {
 								カテゴリー：<br>
 							<div class="select">
 								<select name="searchCategoryId" class="text-box">
+									<option value="" selected>選択してください</option>
 									<%
 									for (int i = 0; i < category.getNum(); i++) {
 									%>
@@ -63,12 +64,16 @@ try {
 								</select>
 							</div>
 							<p>
-								年齢制限：<br> <input type="radio" name="searchIsAdult"
-									value="1"> <label for="adlut">R-18</label><br> <input
-									type="radio" name="searchIsAdult" value="0"> <label
-									for="adlut">全年齢</label>
-							</p>
-							<input type="submit" value="検索">
+								年齢制限：<br>
+							<div class="select">
+								<select name="searchIsAdult" class="text-box" size=>
+									<option value="" selected>選択してください</option>
+									<option value="0">全年齢</option>
+									<option value="1">R-18</option>
+								</select>
+							</div>
+							<p>
+								<input type="submit" value="検索">
 						</form>
 
 					</ul>

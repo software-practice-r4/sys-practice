@@ -7,32 +7,34 @@ request.setCharacterEncoding("UTF-8");
 
 /*変数の宣言*/
 String keyword = "";
-int searchCategoryId = 000;
-int searchPrice = 000;
-int searchIsAdult = 000;
+int searchCategoryId = 0;
+int searchPrice = 0;
+int searchIsAdult = 0;
 
 /* パラメータの取得 */
+/*値がnullじゃない場合はパラメータを代入、nullの場合-1を代入*/
 if (request.getParameter("keyword") != null) {
 	keyword = request.getParameter("keyword");
-	System.out.println(keyword);
 }
-if (request.getParameter("searchCategoryId") != null) {
+if (request.getParameter("searchCategoryId") != null && !request.getParameter("searchCategoryId").equals("")) {
 	searchCategoryId = Integer.parseInt(request.getParameter("searchCategoryId"));
-	System.out.println(searchCategoryId);
+} else {
+	searchCategoryId = -1;
 }
-if (request.getParameter("searchPrice") != null) {
+if (request.getParameter("searchPrice") != null && !request.getParameter("searchPrice").equals("")) {
 	searchPrice = Integer.parseInt(request.getParameter("searchPrice"));
-	System.out.println(searchPrice);
+} else {
+	searchPrice = -1;
 }
-if (request.getParameter("searchIsAdult") != null) {
+if (request.getParameter("searchIsAdult") != null && !request.getParameter("searchIsAdult").equals("")) {
 	searchIsAdult = Integer.parseInt(request.getParameter("searchIsAdult"));
-	System.out.println(searchIsAdult);
+} else {
+	searchIsAdult = -1;
 }
 
 /*素材検索メソッド */
 try {
 	search.getmaterial(keyword, searchCategoryId, searchPrice, searchIsAdult);
-	System.out.println("mesod call");
 %>
 <jsp:forward page="Search-result.jsp" />
 <%
