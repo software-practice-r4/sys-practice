@@ -5,6 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/*
+ * @author kotaro
+ * @version 1.0
+ * */
+
 public class Trend {
 	protected int[] materialId = new int[100000]; //素材ID
 	protected String[] materialName = new String[100]; //タイトル
@@ -13,8 +18,8 @@ public class Trend {
 	protected int[] categoryId = new int[100]; //カテゴリID
 	protected int[] providerId = new int[1000000]; //プロバイダID
 	protected String[] explanation = new String[300]; //説明文
-	protected String[] categoryName = new String[10]; //カテゴリ
-	protected boolean[] isAdult = new boolean[100];
+	protected String[] category = new String[10]; //カテゴリ
+	protected int[] isAdult = new int[100];
 	protected int numResults; //データ取得件数
 
 	public void getTrend(int providerId) throws Exception {
@@ -25,8 +30,8 @@ public class Trend {
 			numResults = 0;
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-			String getTrend = "select * from downloaded inner join material on downloaded.materialId = material.materialId right join category on material.categoryId = category.categoryId where providerId = ? order by downloaded desc limit"
-					+ " 10;";
+			String getTrend = "SELECT * FROM downloaded INNER JOIN material ON downloaded.materialId = material.materialId"
+					 + "RIGHT JOIN category ON material.categoryId = category.categoryId WHERE providerId = ? ORDER BY downloaded DESC LIMIT 10";
 			PreparedStatement stmt = conn.prepareStatement(getTrend);
 			stmt.setInt(1, providerId);
 			stmt.setMaxRows(10); //最大の数を制限
@@ -39,7 +44,7 @@ public class Trend {
 				this.price[numResults] = resultSet.getInt("price");
 				this.thumbnail[numResults] = resultSet.getString("thumbnail");
 				this.explanation[numResults] = resultSet.getString("explanation");
-				this.categoryName[numResults] = resultSet.getString("categoryName");
+				this.category[numResults] = resultSet.getString("categoryName");
 				numResults++;
 			}
 
@@ -104,9 +109,9 @@ public class Trend {
 		}
 	}
 
-	public String getCategoryName(int i) {
+	public String getCategory(int i) {
 		if (i >= 0 && numResults > i) {
-			return categoryName[i];
+			return category[i];
 		} else {
 			return "";
 		}

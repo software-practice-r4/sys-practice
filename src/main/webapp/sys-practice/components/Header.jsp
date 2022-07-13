@@ -1,22 +1,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
-String title = ""; // ページタイトル格納
-String style = ""; // ページのスタイルシート名(拡張子無し)を格納
-
-int userId = -1; // ログイン時のユーザーIDを格納
-String displayName = "";
-
-
-Cookie cookie[] = request.getCookies();
-
+String title = "";
+String style = "";
 try {
-	/* jsp:parameterの取得 */
 	title = request.getParameter("title");
 	style = request.getParameter("style");
 	if (title.equals("") || style.equals(""))
 		throw new Exception("タイトルまたは、スタイルシートの名前が欠如しています。");
-	
+
 	/* ログインしていた場合にユーザーIDを格納 */
 	for(int i=0;i<cookie.length;i++){
 		if(cookie[i].getName().equals("userId")){
@@ -25,7 +17,7 @@ try {
 				userId = Integer.parseInt(cookie[i].getValue());
 		}
 	}
-	
+
 	displayName = user.getDisplayNameById(userId);
 } catch (Exception e) {
 	e.printStackTrace();
@@ -60,9 +52,9 @@ if (!style.equals(""))
 				<a href="../jsp/Home.jsp" class="link"> 素材提供サイト </a>
 			</div>
 			<div class="head-left">
-				<form method="GET" action="List.jsp" class="search">
-					<input id="sbox" id="s" name="s" type="search" placeholder="キーワードを入力" />
-					<input id="sbtn" type="submit" value="検索" />
+				<form method="POST" action="<%=request.getContextPath()%>/sys-practice/jsp/HeaderSearch.jsp" class="search">
+					<input id="sbox" name="sbox" type="search" placeholder="キーワードを入力" required/>
+					<input type="submit" value="検索" />
 				</form>
 			</div>
 			<div class="head-right">
@@ -70,14 +62,18 @@ if (!style.equals(""))
 					src="../img/shopping-cart_icon_1477-300x300.png"
 					style="width: 30px; height: 30px" />
 				</a>
-				<%if(userId != -1) {%>
-				<a href="../jsp/Mypage.jsp" class="btn-flat-logo"><%=displayName%>さん
+				<%-- <%if(err == 1) {%>
+				<%}%>--%>
+				<c:if test="${err != 0}">--%>
+				<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
+						class="fa fa-chevron-right"></i><%=user.getDisplayName(0)%>さん
 					</a>
-				<%}else{ %>
-					<a href="../jsp/Signin.jsp" class="btn-flat-logo"> <i
+				</c:if>
+				<c:if test="${err == 0}">
+					<a href="../jsp/Profile.jsp" class="btn-flat-logo"> <i
 						class="fa fa-chevron-right"></i>ログイン
 					</a>
-				<%} %>
+				</c:if>
 			</div>
 		</div>
 	</div>
@@ -87,15 +83,17 @@ if (!style.equals(""))
 <script>
 	const sbox = document.getElementById("sbox");
 	const sbtn = document.getElementById("sbtn");
-	
+
 	window.addEventListener("load", ()=>{
 		sbtn.style.pointerEvents="none";
 	})
-	
+
 	sbox.addEventListener("change", ()=>{
+		console.log(sbox.value);
 		if(sbox.value.length == 0)
 			sbtn.style.pointerEvents="none";
 		else
 			sbtn.style.pointerEvents="auto";
 	})
+
 </script>

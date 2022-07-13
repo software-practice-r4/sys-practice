@@ -24,10 +24,10 @@ public class SignInServlet extends HttpServlet {
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
-		
+
 		User user = new User();
 
-		
+
 		// メールアドレスまたはパスワードが入っていなかったときにマイページにリダイレクト
 		if(email == null || password == null) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signin.jsp?isNull=true");
@@ -35,13 +35,13 @@ public class SignInServlet extends HttpServlet {
 		}
 		SignIn sign = new SignIn();
 		int err = 0;// 合致したデータ行の格納行番号を格納
-		
+
 		try {
 			err = sign.signIn(email, password);
 		} catch (Exception e) {
 			e.printStackTrace();
-		} 
-		
+		}
+
 		// ユーザーIDと表示名をセッションで保持
 		int userId = user.getUserIdByEmail(email);
 

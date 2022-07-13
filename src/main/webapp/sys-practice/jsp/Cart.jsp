@@ -33,7 +33,7 @@
                     </div>
                     <div class="amount">
                         <h4>合計金額 : </h4>
-                        <h5>20000000円</h5>
+                        <h5>20000000円</h>
                     </div>
                     <div class="add">
                         <a href="#" class="btn-gradient-radius">ダウンロードする</a>

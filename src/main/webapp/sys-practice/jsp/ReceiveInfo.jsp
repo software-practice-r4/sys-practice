@@ -13,16 +13,15 @@ int searchIsAdult = 0;
 
 /* パラメータの取得 */
 /*値がnullじゃない場合はパラメータを代入、nullの場合-1を代入*/
-
 if (request.getParameter("keyword") != null) {
 	keyword = request.getParameter("keyword");
 }
-if (request.getParameter("searchCategoryId") != "") {
+if (request.getParameter("searchCategoryId") != null && !request.getParameter("searchCategoryId").equals("")) {
 	searchCategoryId = Integer.parseInt(request.getParameter("searchCategoryId"));
 } else {
 	searchCategoryId = -1;
 }
-if (request.getParameter("searchPrice") != null) {
+if (request.getParameter("searchPrice") != null && !request.getParameter("searchPrice").equals("")) {
 	searchPrice = Integer.parseInt(request.getParameter("searchPrice"));
 } else {
 	searchPrice = -1;

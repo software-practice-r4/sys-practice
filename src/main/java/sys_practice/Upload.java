@@ -4,6 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+/*
+ * @author kotaro
+ * @version 1.0
+ * */
+
 public class Upload{
 	protected String[] materialName = new String[100];
 	protected int price;

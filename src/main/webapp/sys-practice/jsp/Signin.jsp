@@ -39,7 +39,7 @@ if(request.getParameter("isErr") != null){
 					<br>
 					<li>パスワード：<br> <input type="password" name="password"
 						size="40" placeholder="パスワード" class="text-box"> <br>
-						<a href="Request-email.jsp" class="link link-color-init" style="display: inline-block; margin-top: 20px;"> パスワードをお忘れですか？ </a>
+						<%-- <a href="Request-email.jsp" class="link link-color-init" style="display: inline-block; margin-top: 20px;"> パスワードをお忘れですか？ </a>--%>
 					</li>
 					<br>
 				</ul>

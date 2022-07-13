@@ -1,10 +1,15 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
+
 <%
 boolean isLogout = false;
+boolean isNull = false;//秘密の質問テーブルのデータが空だったとき
 
 if(request.getParameter("isLogout") != null){
-	isLogout = Boolean.valueOf(request.getParameter("isLogout"));	
+	isLogout = Boolean.valueOf(request.getParameter("isLogout"));
+}
+if(request.getParameter("isNull") != null){
+	isNull = Boolean.valueOf(request.getParameter("isNull"));
 }
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,7 +22,9 @@ if(request.getParameter("isLogout") != null){
 <%if(isLogout){ %>
 	<p class="err-txt timeout no-margin">ログアウトしました</p>
 <%} %>
-
+<%if(isNull){ %>
+	<p class="err-txt timeout no-margin">現在アカウントを作ることが出来ませんしました</p>
+<%} %>
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
@@ -50,6 +57,7 @@ if(request.getParameter("isLogout") != null){
 					}
 					%>
 				</div>
+
 			</div>
 			<div class="post">
 				<div class="centering-ttl-box">
