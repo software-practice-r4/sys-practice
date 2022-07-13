@@ -7,7 +7,7 @@ Cookie cookie[] = request.getCookies();
 
 for (int i = 0; i < cookie.length; i++) {
 	if (cookie[i].getName().equals("userId")) {
-		// userIdが空出ないとき
+		/* userIdが空出ないとき */
 		if (!cookie[i].getValue().equals(""))
 			userId = Integer.parseInt(cookie[i].getValue());
 	}
