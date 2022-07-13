@@ -29,6 +29,7 @@ public class Search extends Material {
 		} else {
 			return true;
 		}
+	}
 
 	public void getmaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult) throws Exception {
 		try {
@@ -37,9 +38,9 @@ public class Search extends Material {
 
 			/*入力フォームで検索*/
 			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId" +
-					" WHERE materialName like '%" + keyword + "%'";
+					" WHERE materialName like '%"+keyword+"%'";
 
-			/*入力されている検索情報ごとに使用するSQLを変更*/
+			/*-1==入力されていない -1!=入力済み*/
 			/*年齢制限だけ入力されている*/
 			if (!hasData(searchCategoryId) && !hasData(searchPrice) && hasData(searchIsAdult)) {
 				sql += " AND isAdult=" + searchIsAdult;
@@ -54,19 +55,19 @@ public class Search extends Material {
 			}
 			/*カテゴリーIDだけ入力されている*/
 			else if (hasData(searchCategoryId) && !hasData(searchPrice) && !hasData(searchIsAdult)) {
-				sql += " AND categoryId=" + searchCategoryId;
+				sql += " AND material.categoryId=" + searchCategoryId;
 			}
 			/*カテゴリーIDと年齢制限が入力されている*/
 			else if (hasData(searchCategoryId) && !hasData(searchPrice) && hasData(searchIsAdult)) {
-				sql += " AND CategoryId=" + searchCategoryId + " AND idAdult=" + searchIsAdult;
+				sql += " AND material.categoryId=" + searchCategoryId + " AND idAdult=" + searchIsAdult;
 			}
 			/*カテゴリーIDと価格が入力されている*/
 			else if (hasData(searchCategoryId) && hasData(searchPrice) && !hasData(searchIsAdult)) {
-				sql += " AND categoryId=" + searchCategoryId + " AND price=" + searchPrice;
+				sql += " AND material.categoryId=" + searchCategoryId + " AND price=" + searchPrice;
 			}
 			/*全ての情報が入力されている*/
 			else if (hasData(searchCategoryId) && hasData(searchPrice) && hasData(searchIsAdult)) {
-				sql += " AND categoryId=" + searchCategoryId + " AND price=" + searchPrice
+				sql += " AND material.categoryId=" + searchCategoryId + " AND price=" + searchPrice
 						+ " AND isAdult=" + searchIsAdult;
 			}
 			System.out.println(sql);
@@ -76,7 +77,7 @@ public class Search extends Material {
 
 			/*結果の取り出しと表示 */
 			num = 0;
-			while (rs.next()) {
+			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
 				this.materialId[num] = rs.getInt("materialId");
 				this.materialName[num] = rs.getString("materialName");
 				this.price[num] = rs.getInt("price");
@@ -152,6 +153,7 @@ public class Search extends Material {
 				} catch (SQLException ignore) {
 				}
 		}
+
 	}
 
 	/*ゲッター*/
@@ -179,11 +181,15 @@ public class Search extends Material {
 		}
 	}
 
+	public void setExplanation(String[] explanation) {
+		this.explanation = explanation;
+	}
+
 	public int getMaterialId(int i) {
-		if (i >= 0 && num > i) {
+		if (0 <= i && i < num) {
 			return materialId[i];
 		} else {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -191,7 +197,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return price[i];
 		} else {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -199,7 +205,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return categoryId[i];
 		} else {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -215,7 +221,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return providerId[i];
 		} else {
-			return -1;
+			return 0;
 		}
 	}
 
@@ -223,7 +229,7 @@ public class Search extends Material {
 		if (0 <= i && i < num) {
 			return isAdult[i];
 		} else {
-			return -1;
+			return 0;
 		}
 	}
 

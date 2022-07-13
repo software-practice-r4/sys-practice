@@ -103,7 +103,8 @@ try {
 				<jsp:include page="./../components/Material-Card.jsp">
 					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
 					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
-					<jsp:param name="thumbnail" value="./../img/106.jpg" />
+					<jsp:param name="thumbnail"
+						value="./../img/<%=material.getThumbnail(i)%>" />
 					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
 					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
 				</jsp:include>

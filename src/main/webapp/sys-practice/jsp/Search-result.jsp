@@ -94,7 +94,7 @@ try {
 							<jsp:param name="materialId" value="<%=search.getMaterialId(i)%>" />
 							<jsp:param name="price" value="<%=search.getPrice(i)%>" />
 							<jsp:param name="thumbnail"
-								value="./../img/<%=search.getThumbnail(i)%>" />
+								value="<%=search.getThumbnail(i)%>" />
 							<jsp:param name="category" value="<%=search.getCategoryName(i)%>" />
 							<jsp:param name="title" value="<%=search.getMaterialName(i)%>" />
 						</jsp:include>
