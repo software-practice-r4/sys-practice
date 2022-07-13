@@ -22,7 +22,7 @@
 			throw new Exception("カテゴリーが入力されていません。");
 		if(title.equals(""))
 			throw new Exception("タイトルが入力されていません。");
-		
+
 		// 文字が制限を超えた時の丸め処理
 		title = title.substring(0, 20);
 		title += "...";
@@ -34,6 +34,7 @@
 <a href=<%="Material-detail.jsp?materialId=" + price %> class="material-card link">
 	<div class="card-top">
 		<img src="<%=thumbnail %>">
+		<img src="../img/<%=thumbnail%>">
 		<span class="card-price">
 			&yen;<%=price %>
 		</span>

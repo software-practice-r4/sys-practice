@@ -6,7 +6,11 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/kouta/git/sys-practice/src/main/webapp/sys-practice/WEB-INF/lib/servlet-api.jar">
+=======
+	<classpathentry kind="lib" path="C:/Sys_practice_ws/apache-tomcat-10.0.22/lib/servlet-api.jar">
+>>>>>>> develop
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -18,7 +22,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="C:/Users/kouta/git/sys-practice/src/main/webapp/sys-practice/WEB-INF/lib/catalina.jar"/>
 	<classpathentry kind="lib" path="C:/Users/kouta/git/sys-practice/src/main/webapp/sys-practice/WEB-INF/lib/mysql-connector-java-8.0.27.jar"/>
+=======
+>>>>>>> develop
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

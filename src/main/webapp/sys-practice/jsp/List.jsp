@@ -1,9 +1,60 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="category" scope="session" class="sys_practice.Category" />
+
+<%
+/* エンコード */
+request.setCharacterEncoding("UTF-8");
+/* データ一覧の取得メソッド */
+try {
+	category.dispCategory();
+} catch (Exception e) {
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>エラーの表示</title>
+</head>
+<body>
+	<header>
+		<h1>エラーの表示</h1>
+	</header>
+	<%=e%>
+</body>
+</html>
+<%
+}
+%>
+
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<%
+/* エンコード */
+request.setCharacterEncoding("UTF-8");
+/* データ一覧の取得メソッド */
+try {
+	material.listMaterial();
+} catch (Exception e) {
+%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>エラーの表示</title>
+</head>
+<body>
+	<header>
+		<h1>エラーの表示</h1>
+	</header>
+	<%=e%>
+</body>
+</html>
+<%
+}
+%>
+
+
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="一覧ページ" />
+	<jsp:param name="title" value="一覧を表示" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
-
 <div id="main">
 	<div class="sidebar">
 		<h3>絞り込み検索</h3>
@@ -11,10 +62,11 @@
 			<h1>カテゴリー</h1>
 			<div class="select">
 				<select name="category" class="text-box">
-					<option value="A">A型</option>
-					<option value="B">B型</option>
-					<option value="O">O型</option>
-					<option value="AB">AB型</option>
+					<%
+					for (int i = 0; i < category.getNum(); i++) {
+					%>
+					<option value=<%=category.getCategoryId(i)%>><%=category.getCategoryName(i)%></option>
+					<%}%>
 				</select>
 			</div>
 			<h1>価格</h1>
@@ -29,8 +81,8 @@
 			<h1>年齢制限</h1>
 			<div class="select">
 				<select name="age" class="text-box">
-					<option value="A">---</option>
-					<option value="O">R-18</option>
+					<option value="allages">全年齢</option>
+					<option value="adult">R-18</option>
 				</select>
 			</div>
 		</ul>
@@ -42,18 +94,19 @@
 	<div class="cnt">
 		<div class="post">
 			<div class="centering-ttl-box">
-				<h2 class="centering-ttl">素材一覧</h2>
+				<h2 class="centering-ttl">素材の検索結果</h2>
 			</div>
 			<div class="material-card-wrapper">
 				<%
-				for (int i = 0; i < 10; i++) {
+				for (int i = 0; i < material.getNum(); i++) {
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="id" value="3039202" />
-					<jsp:param name="price" value="500" />
-					<jsp:param name="thumbnail" value="./../img/106.jpg" />
-					<jsp:param name="category" value="BGM" />
-					<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
+					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
+					<jsp:param name="thumbnail"
+						value="./../img/<%=material.getThumbnail(i)%>" />
+					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
+					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
 				</jsp:include>
 				<%
 				}
