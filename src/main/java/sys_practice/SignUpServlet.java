@@ -22,10 +22,17 @@ public class SignUpServlet extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-;		String email = request.getParameter("email");
+		String email = request.getParameter("email");
 		String password = request.getParameter("password");
 		int questionId = Integer.parseInt(request.getParameter("questionId"));
 		String questionAnswer = request.getParameter("questionAnswer");
+
+		/* データが空だったときの処理 */
+		String questionIdString = String.valueOf(questionId);
+		if (questionIdString.equals("")) {
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?isNull=true");
+			return;
+		}
 
 		// メールアドレスまたはパスワードまたは秘密の質問が入っていなかったときにサインアップページにリダイレクト
 		if (email == null || password == null || questionId == 0 || questionAnswer == null) {
@@ -35,22 +42,23 @@ public class SignUpServlet extends HttpServlet {
 
 		SignUp signup = new SignUp();
 		int err = 0;// データの格納を判定
-		int acount = 0;// アカウントが既に存在するかを判定
+		int acount = -1;// アカウントが既に存在するかを判定
 
 		/* データが空だったときの処理 */
 		// TODO:
-		if (email.equals("") || password.equals("") || questionId == 0 || questionAnswer.equals("")) {
+		if (email.equals("") || password.equals("") || questionAnswer.equals("")) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
 			return;
 		}
 
-		//入力されたemailに該当するテーブルがあるを判定
+		//入力されたemailに該当するユーザーテーブル（アカウント）があるを判定
 		try {
 			acount = signup.acountQuantity(email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		//まだ該当するemailのアカウントがない場合、サインアップ
 		if (acount == 0) {
 			try {
 				err = signup.signUp(email, password, questionId, questionAnswer);
@@ -72,7 +80,7 @@ public class SignUpServlet extends HttpServlet {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Mypage.jsp");
 			return;
 		}
-		// データがなかった場合に、リダイレクト
+		// データがなかったor既にアカウントが存在する場合に、リダイレクト
 		else {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isErr=true");
 			return;
