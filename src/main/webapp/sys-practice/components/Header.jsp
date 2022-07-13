@@ -3,6 +3,10 @@
 <%
 String title = "";
 String style = "";
+Cookie cookie[] = request.getCookies();
+int userId = -1; // ログイン時のユーザーIDを格納
+String displayName = "";
+
 try {
 	title = request.getParameter("title");
 	style = request.getParameter("style");

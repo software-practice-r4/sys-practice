@@ -34,7 +34,7 @@ if (request.getParameter("searchIsAdult") != null && !request.getParameter("sear
 
 /*素材検索メソッド */
 try {
-	search.getmaterial(keyword, searchCategoryId, searchPrice, searchIsAdult);
+	search.getMaterial(keyword, searchCategoryId, searchPrice, searchIsAdult);
 %>
 <jsp:forward page="Search-result.jsp" />
 <%
