@@ -1,5 +1,30 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<jsp:useBean id="file" scope="session" class="sys_practice.Trend" />
+<jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
+<jsp:useBean id="check" scope="session" class="sys_practice.User" />
+
+<%
+int userId = -1;
+
+try{
+Cookie cookie[] = request.getCookies();
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			userId = Integer.parseInt("1");//cookie[i].getValue()
+		}
+	}
+} catch(Exception e){
+	userId = -1;
+}
+
+boolean hasUser = check.hasUserIdOnDatabase(userId);
+if(!hasUser){
+	userId = -1;
+}
+
+else if(hasUser){
+  trend.getTrend(userId);
+}
+%>
 
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="マイページトップ" />
@@ -11,20 +36,25 @@
                 <div class="inner">
                     <div class="post">
                         <div class="centering-ttl-box">
+                        <%if(userId == -1) {%>
+							<p class="err-txt">ユーザIDの取得に失敗しました。再度ログインしてください。</p>
+						<%}	else {%>
                             <h2 class="centering-ttl">
                                 あなたのこんな作品が人気です
                             </h2>
                         </div>
                         <div class="material-card-wrapper">
-                            <%
-                            for (int i = 0; i < file.getnumresults() ; i++) {
+                        	<%if(trend.getNumResults() == 0) {%>
+								<p class="err-txt">まだ素材が投稿されていません。</p>
+							<%}
+                            for (int i = 0; i < trend.getNumResults() ; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value="<%=file.getmaterialId(i)%>" />
-                                <jsp:param name="price" value="<%=file.getprice(i)%>" />
-                                <jsp:param name="thumbnail" value="<%=file.getfileName(i)%>" />
-                                <jsp:param name="category" value="<%=file.getcategory(i)%>" />
-                                <jsp:param name="title" value="<%=file.getmaterialName(i)%>" />
+                                <jsp:param name="materialId" value="<%=trend.getMaterialId(i)%>" />
+                                <jsp:param name="price" value="<%=trend.getPrice(i)%>" />
+                                <jsp:param name="thumbnail" value="<%=trend.getThumbnail(i)%>" />
+                                <jsp:param name="category" value="<%=trend.getCategory(i)%>" />
+                                <jsp:param name="title" value="<%=trend.getMaterialName(i)%>" />
                             </jsp:include>
                             <%
                             }
@@ -93,6 +123,7 @@
                         <div class="add">
                             <a href="#" class="btn-gradient-radius">もっとみる</a>
                         </div>
+                    <%} %>
                     </div>
                 </div>
             </div>

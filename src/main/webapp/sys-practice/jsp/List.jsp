@@ -72,10 +72,10 @@ try {
 			<h1>価格</h1>
 			<div class="select">
 				<select name="price" class="text-box">
-					<option value="A">～&yen;500</option>
-					<option value="B">&yen;500～&yen;2000</option>
-					<option value="C">&yen;2000～&yen;5000</option>
-					<option value="D">&yen;5000～</option>
+					<option value="A">～\500</option>
+					<option value="B">\500～\2000</option>
+					<option value="O">\2000～\5000</option>
+					<option value="AB">\5000～</option>
 				</select>
 			</div>
 			<h1>年齢制限</h1>

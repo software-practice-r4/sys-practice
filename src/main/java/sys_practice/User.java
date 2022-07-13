@@ -24,14 +24,14 @@ public class User {
 	protected int[] wallet = new int[100];
 	protected int num;//データ件数
 	int agmntUserId;//引数用のuserId
-	
+
 
 	Connection conn = null;
 	ResultSet resultSet = null;
 	String results = "";
 	String statement = null;
-	
-	
+
+
 	/*
 	 * ユーザーIDと合致する全データをロードする
 	 * @author shuya
@@ -45,7 +45,7 @@ public class User {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, userId);
 			resultSet = stmt.executeQuery();
-			
+
 			while (resultSet.next()) {
 				this.userId[0] = resultSet.getInt("userId");
 				this.email[0] = resultSet.getString("email");
@@ -55,7 +55,7 @@ public class User {
 
 			}
 			System.err.println(this.icon[0]);
-			
+
 			stmt.close();
 			resultSet.close();
 			conn.close();
@@ -144,7 +144,7 @@ public class User {
 		stmt.close();
 		conn.close();
 	}
-	
+
 	/*
 	 * メールアドレスと合致するユーザーIDを取得する
 	 * @author shuya
@@ -160,9 +160,9 @@ public class User {
 			stmt.setString(1, email);
 			stmt.setMaxRows(100); //最大の数を制限
 			resultSet = stmt.executeQuery();
-			
+
 			int[] userId = new int[100];
-			
+
 			while (resultSet.next()) {
 				userId[0] = resultSet.getInt("userId");
 			}
@@ -188,7 +188,7 @@ public class User {
 				}
 		}
 	}
-	
+
 
 	/*
 	 * ユーザーIDと合致する表示名を取得する
@@ -205,9 +205,9 @@ public class User {
 			stmt.setInt(1, userId);
 			stmt.setMaxRows(100); //最大の数を制限
 			resultSet = stmt.executeQuery();
-			
+
 			String[] displayName = new String[100];
-			
+
 			while (resultSet.next()) {
 				displayName[0] = resultSet.getString("displayName");
 			}
@@ -234,7 +234,61 @@ public class User {
 				}
 		}
 	}
-	
+
+	/*
+	 * 受け取ったユーザIDがuser内に存在するかどうかを判定する
+	 * @author kotaro
+	 * @param int userId
+	 * @return 存在すればtrue,存在しなければfalseを返却
+	 * */
+	public boolean hasUserIdOnDatabase(int userId) throws Exception {
+
+		Connection conn = null;
+		ResultSet resultSet = null;
+		try {
+			num = 0;
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM user WHERE userId = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
+			stmt.setMaxRows(10); //最大の数を制限
+
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.userId[num] = resultSet.getInt("userId");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			if(num >= 1) {
+				return true;
+			}
+			return true;
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} catch (Exception e) {
+			System.err.println(e);
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+		return false;
+	}
+
+
 	public int getUserId(int i) {
 		if (i >= 0) {
 			return userId[i];

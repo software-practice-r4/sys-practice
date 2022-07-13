@@ -16,52 +16,14 @@ body {
 	opacity: 0.7;
 	transition: opacity 0.4s;
 }
-.link-color-init{
-	color: #0000ee;
-}
 .inner{
-	width: 80%;
+	width: 1100px;
 	margin: 0 auto;
 }
 .txt{
 	letter-spacing: 0.1em;
 	line-height: 30px;
 }
-.err-txt{
-	padding: 10px;
-	background-color: red;
-	color: white;
-	text-align:center;
-	display: flex;
-	justify-content:center;
-	align-items:center;
-	margin-top: 20px;
-}
-
-.timeout{
-	/*animation: fadeOut 1s; */
-	position: absolute;
-	top: 50px;
-	left: 50%;
- 	transform: translateX(-50%);
-    -webkit-transform: translateX(-50%);
-    -ms-transform: translateX(-50%);
-    z-index: 998;
-}
-.no-margin{
-	margin: 0;
-}
-
-@keyframes fadeOut{
-	from{
-		opacity: 1;
-	}
-	
-	to{
-		opacity: 0;
-	}
-}
-
 /* ヘッダー */
 header {
     width: 100%;
@@ -256,10 +218,11 @@ header {
 
 footer {
     text-align: center;
+    height: 50px;
     bottom: 0px;
     width: 100%;
-    height: 100%;
     background-color: #ffad90;
+    /*margin-top:10px;*/
 }
 
 .btn-real {

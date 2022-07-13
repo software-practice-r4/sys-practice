@@ -1,25 +1,6 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.User" />
-<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
-<%
-int userId = -1;
-Cookie cookie[] = request.getCookies();
-
-for(int i=0;i<cookie.length;i++){
-	if(cookie[i].getName().equals("userId")){
-		userId = Integer.parseInt(cookie[i].getValue());
-	}
-}
-String displayName = user.getDisplayNameById(userId);;
-String pageTitle = displayName + "さんのプロフィール";
-
-user.dataloadById(userId);
-material.getMaterialByUserId(userId);
-
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="<%=pageTitle%>" />
+	<jsp:param name="title" value="○○さんのプロフィール" />
 	<jsp:param name="style" value="profile" />
 </jsp:include>
 
@@ -27,17 +8,13 @@ material.getMaterialByUserId(userId);
 	<div class="inner">
 		<div class="intro">
 			<div class="intro-top">
-			<%
-				String iconUrl = "./../img/" + user.getIcon(0);
-
-			%>
-				<img src="<%=iconUrl%>">
+				<img src="./../img/288627_m.jpg">
 			</div>
 			<div class="intro-bottom">
 				<div class="user-information">
 					<div class="lead-ttl">
 						<h3>
-							<%=user.getDisplayName(0) %>
+							テスト太郎さん
 						    <a href="Dm-detail.jsp" class="btn-circle-border-double">
 								<i class="fa fa-envelope-o"></i>
 							</a>
@@ -45,7 +22,7 @@ material.getMaterialByUserId(userId);
 					</div>
 				</div>
 				<p class="txt" style="margin-top: 40px;">
-					<%=user.getExplanation(0) %>
+					テキストテキストテキストテキステキストテキストテキストテキステキストテキストテキストテキステキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキストテキスト
 				</p>
 			</div>
 		</div>
@@ -57,15 +34,14 @@ material.getMaterialByUserId(userId);
 			</div>
 			<div class="material-card-wrapper">
 				<%
-
-				for (int i = 0; i < material.getNum(); i++) {
+				for (int i = 0; i < 10; i++) {
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="materialId" value="<%=material.getMaterialId(i) %>" />
-					<jsp:param name="price" value="<%=material.getPrice(i) %>" />
-					<jsp:param name="thumbnail" value="<%=material.getThumbnail(i)%>" />
-					<jsp:param name="category" value="<%=material.getCategoryName(i) %>" />
-					<jsp:param name="title" value="<%=material.getMaterialName(i) %>" />
+					<jsp:param name="id" value="3039202" />
+					<jsp:param name="price" value="500" />
+					<jsp:param name="thumbnail" value="./../img/106.jpg" />
+					<jsp:param name="category" value="BGM" />
+					<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
 				</jsp:include>
 				<%
 				}
@@ -77,16 +53,3 @@ material.getMaterialByUserId(userId);
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
-
-<%--
-<%
-}
-%>
-<%
-} catch (Exception e) {
-%>
-
-<%
-}
-%>
---%>

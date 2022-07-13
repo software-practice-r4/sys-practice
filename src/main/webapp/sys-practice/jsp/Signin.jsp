@@ -1,19 +1,3 @@
-<jsp:useBean id="sign" scope="session" class="sys_practice.SignIn" />
-<%
-request.setCharacterEncoding("UTF-8");
-
-boolean isNull = false;
-boolean isErr = false;
-
-if(request.getParameter("isNull") != null){
-	isNull = Boolean.valueOf(request.getParameter("isNull"));
-}
-if(request.getParameter("isErr") != null){
-	isErr = Boolean.valueOf(request.getParameter("isErr"));
-}
-
-%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="サインインページ" />
