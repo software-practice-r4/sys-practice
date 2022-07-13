@@ -3,8 +3,6 @@
 	<jsp:param name="title" value="カート" />
 	<jsp:param name="style" value="cart" />
 </jsp:include>
-
-        <jsp:include page="./../components/header-after.jsp" />
         <div id="main">
             <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
