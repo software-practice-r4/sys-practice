@@ -3,13 +3,13 @@
 
 <%
 boolean isLogout = false;
-boolean isZero = false;
+boolean isNull = false;//秘密の質問テーブルのデータが空だったとき
 
 if(request.getParameter("isLogout") != null){
 	isLogout = Boolean.valueOf(request.getParameter("isLogout"));
 }
-if(request.getParameter("isZero") != null){
-	isZero = Boolean.valueOf(request.getParameter("isZero"));
+if(request.getParameter("isNull") != null){
+	isNull = Boolean.valueOf(request.getParameter("isNull"));
 }
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -22,7 +22,7 @@ if(request.getParameter("isZero") != null){
 <%if(isLogout){ %>
 	<p class="err-txt timeout no-margin">ログアウトしました</p>
 <%} %>
-<%if(isZero){ %>
+<%if(isNull){ %>
 	<p class="err-txt timeout no-margin">現在アカウントを作ることが出来ませんしました</p>
 <%} %>
 <div class="intro">

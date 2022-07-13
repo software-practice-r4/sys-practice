@@ -27,10 +27,10 @@ public class SignUpServlet extends HttpServlet {
 		int questionId = Integer.parseInt(request.getParameter("questionId"));
 		String questionAnswer = request.getParameter("questionAnswer");
 
-		//秘密の質問テーブルにデータが格納されていなかった場合にリダイレクト
+		/* データが空だったときの処理 */
 		String questionIdString = String.valueOf(questionId);
 		if (questionIdString.equals("")) {
-			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?isZero=true");
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?isNull=true");
 			return;
 		}
 
