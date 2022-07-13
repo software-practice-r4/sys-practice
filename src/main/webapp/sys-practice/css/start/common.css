@@ -24,6 +24,51 @@ body {
 	letter-spacing: 0.1em;
 	line-height: 30px;
 }
+.err-txt{
+	padding: 10px;
+	background-color: red;
+	color: white;
+	text-align:center;
+	display: flex;
+	justify-content:center;
+	align-items:center;
+	margin-top: 20px;
+}
+.success-txt{
+	padding: 10px;
+	background-color: green;
+	color: white;
+	text-align:center;
+	display: flex;
+	justify-content:center;
+	align-items:center;
+	margin-top: 20px;
+	color: white;
+	font-weight: bold;
+}
+.timeout{
+	/*animation: fadeOut 1s; */
+	position: absolute;
+	top: 50px;
+	left: 50%;
+ 	transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    z-index: 998;
+}
+.no-margin{
+	margin: 0;
+}
+
+@keyframes fadeOut{
+	from{
+		opacity: 1;
+	}
+
+	to{
+		opacity: 0;
+	}
+}
 /* ヘッダー */
 header {
     width: 100%;
@@ -72,6 +117,7 @@ header {
 }
 .material-card {
 	width: 180px;
+	height: 100%;
 	display: block;
     position: relative;
     margin-bottom: 40px;

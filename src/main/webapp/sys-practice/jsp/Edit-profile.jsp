@@ -6,7 +6,7 @@
 
         <jsp:include page="./../components/header-after.jsp" />
         <div id="main">
-            <jsp:include page="./../components/left-menu.jsp" />
+            <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
                 <div class="inner">
                     <div class="post">

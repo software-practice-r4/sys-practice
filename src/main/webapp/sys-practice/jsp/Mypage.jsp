@@ -1,30 +1,60 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
+<jsp:useBean id="check" scope="session" class="sys_practice.User" />
+
+<%
+int userId = -1;
+
+try{
+Cookie cookie[] = request.getCookies();
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			userId = Integer.parseInt(cookie[i].getValue());
+		}
+	}
+} catch(Exception e){
+	userId = -1;
+}
+
+boolean hasUser = check.hasUserIdOnDatabase(userId);
+if(!hasUser){
+	userId = -1;
+}
+
+else if(hasUser){
+  trend.getTrend(userId);
+}
+%>
+
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="マイページトップ" />
 	<jsp:param name="style" value="mypage" />
 </jsp:include>
-
-        <jsp:include page="./../components/header-after.jsp" />
         <div class="main">
             <jsp:include page="./../components/SideBar.jsp" />
             <div id="C">
                 <div class="inner">
                     <div class="post">
                         <div class="centering-ttl-box">
+                        <%if(userId == -1) {%>
+							<p class="err-txt">ユーザIDの取得に失敗しました。再度ログインしてください。</p>
+						<%}	else {%>
                             <h2 class="centering-ttl">
                                 あなたのこんな作品が人気です
                             </h2>
                         </div>
                         <div class="material-card-wrapper">
-                            <%
-                            for (int i = 0; i < 10; i++) {
+                        	<%if(trend.getNumResults() == 0) {%>
+								<p class="err-txt">まだ素材が投稿されていません。</p>
+							<%}
+                            for (int i = 0; i < trend.getNumResults() ; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
-                                <jsp:param name="price" value="500" />
-                                <jsp:param name="thumbnail" value="./../img/106.jpg" />
-                                <jsp:param name="category" value="BGM" />
-                                <jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+                                <jsp:param name="materialId" value="<%=trend.getMaterialId(i)%>" />
+                                <jsp:param name="price" value="<%=trend.getPrice(i)%>" />
+                                <jsp:param name="thumbnail" value="<%=trend.getThumbnail(i)%>" />
+                                <jsp:param name="category" value="<%=trend.getCategory(i)%>" />
+                                <jsp:param name="title" value="<%=trend.getMaterialName(i)%>" />
                             </jsp:include>
                             <%
                             }
@@ -41,7 +71,7 @@
                             </h2>
                         </div>
                         <div class="samune">
-                            <a href="post-material.jsp" class="btn-square">投稿画面へ</a>
+                            <a href="Post-material.jsp" class="btn-square">投稿画面へ</a>
                         </div>
                     </div>
                     <div class="post">
@@ -55,7 +85,7 @@
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -80,7 +110,7 @@
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
+                                <jsp:param name="materialId" value="3039202" />
                                 <jsp:param name="price" value="500" />
                                 <jsp:param name="thumbnail" value="./../img/106.jpg" />
                                 <jsp:param name="category" value="BGM" />
@@ -93,6 +123,7 @@
                         <div class="add">
                             <a href="#" class="btn-gradient-radius">もっとみる</a>
                         </div>
+                    <%} %>
                     </div>
                 </div>
             </div>

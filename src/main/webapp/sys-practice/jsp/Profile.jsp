@@ -1,8 +1,44 @@
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<%
+
+int userId = -1;
+boolean isInvalidParameter = false;
+boolean isInvalidUserId = false;
+String pageTitle = "";
+
+/* パラメータ不足もしくは、空だったとき */
+if(request.getParameter("userId") != null && request.getParameter("userId").equals("")){
+	userId = Integer.parseInt(request.getParameter("userId"));
+}
+else{
+	isInvalidParameter = true;
+}
+
+/* ユーザーIDはパラメータに含まれているが、無効なIDの場合 */
+String displayName = user.getDisplayNameById(userId);
+if(!displayName.equals("")){
+	isInvalidUserId = true;
+	pageTitle = "プロフィールページ";
+}
+
+if(!isInvalidParameter && !isInvalidUserId){
+	user.dataloadById(userId);
+	material.getMaterialByUserId(userId);
+	pageTitle = displayName + "さんのプロフィール";
+}
+
+%>
+
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="○○さんのプロフィール" />
 	<jsp:param name="style" value="profile" />
 </jsp:include>
+<%
+	if(!isInvalidParameter && !isInvalidUserId){
+%>
 
 <div class="content">
 	<div class="inner">
@@ -14,8 +50,9 @@
 				<div class="user-information">
 					<div class="lead-ttl">
 						<h3>
-							テスト太郎さん <a href="Dm-detail.jsp" class="btn-circle-border-double">
-								<i class="fa-solid fa-mailbox"></i>
+							テスト太郎さん
+						    <a href="Dm-detail.jsp" class="btn-circle-border-double">
+								<i class="fa fa-envelope-o"></i>
 							</a>
 						</h3>
 					</div>
@@ -49,6 +86,11 @@
 		</div>
 	</div>
 </div>
+<%}else if(isInvalidParameter){%>
+	<p class="err-txt">無効なパラメータです</p>
+<%}else if(isInvalidUserId){ %>
+	<p class="err-txt">無効なIDです</p>
+<%} %>
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
