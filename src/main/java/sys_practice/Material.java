@@ -21,7 +21,7 @@ public class Material {
 	protected String[] categoryName = new String[100];
 	protected int[] providerId = new int[100];
 	protected String[] displayName = new String[100]; // 提供者の名前を格納
-	protected boolean[] isAdult = new boolean[100];
+	protected int[] isAdult = new int[100];
 	protected int num;
 
 	Connection conn = null;
@@ -52,7 +52,7 @@ public class Material {
 			this.price[num] = rs.getInt("price");
 			this.categoryId[num] = rs.getInt("categoryId");
 			this.providerId[num] = rs.getInt("providerId");
-			this.isAdult[num] = rs.getBoolean("isAdult");
+			this.isAdult[num] = rs.getInt("isAdult");
 			num++;
 		}
 
@@ -233,7 +233,7 @@ public class Material {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
 			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId "
-					+ "inner join user on material.providerid = user.userId WHERE material.categoryId = ? ORDER BY RAND() limit 10;";
+					+ "INNER JOIN user ON material.providerid = user.userId WHERE material.categoryId = ? ORDER BY RAND() limit 10;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, categoryId);
 			stmt.setMaxRows(10); //最大の数を制限
@@ -351,11 +351,11 @@ public class Material {
 		}
 	}
 	
-	public boolean getIsAdult(int i) {
+	public int getIsAdult(int i) {
 		if(i>=0) {
 			return isAdult[i];
 		}else {
-		return false;
+		return 0;
 		}
 	}
 	

@@ -34,6 +34,7 @@ public class FileUpload extends HttpServlet {
 
 		// 保存先ファイルの設定		S
 		String dataDir = getServletContext().getRealPath("sys-practice/content");
+		System.out.println(dataDir);
 		File dataDirFile = new File(dataDir);
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setRepository(dataDirFile);
@@ -76,23 +77,35 @@ public class FileUpload extends HttpServlet {
 				}
 			}
 			// 情報が欠如していた場合に、エラー情報を付与し、リダイレクトする
-			if(filename.equals("") || content.get(0).equals("") || content.get(1).equals("")) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/post-materila.jsp?is_success=false");
+			if(filename.equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?fileisNull=true");
+				return;
+			} else if (content.get(0).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?materialNameisNull=true");
+				return;
+			} else if (content.get(1).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?explanationisNull=true");
+				return;
+			} else if (content.get(2).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?priceisNull=true");
+				return;
+			} else if (content.get(6).equals("")) {
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp");
 				return;
 			}
 
-			// DB接続
+
 			// SQL文発行
 			Upload uploadMaterial = new Upload();
-			uploadMaterial.uploadMaterial(content.get(1), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), dataDir + filename, filename);
+			uploadMaterial.uploadMaterial(content.get(0), content.get(1), content.get(2), content.get(3), content.get(4), content.get(5), content.get(6), filename);
 
 			try {
 				Cookie cookie[] = request.getCookies();
-				String user_id = null;
+				String userId = null;
 				if (cookie != null){
 				    for (int i = 0 ; i < cookie.length ; i++){
-				      if (cookie[i].getName().equals("user_id"))
-				        user_id = cookie[i].getValue();
+				      if (cookie[i].getName().equals("userId"))
+				        userId = cookie[i].getValue();
 				    }
 				}
 				System.err.println(content.get(0)+", "+content.get(1));
@@ -101,10 +114,11 @@ public class FileUpload extends HttpServlet {
 			}
 			// ファイル名をデータベースに登録する
 			if (!uploaded)
-				processRequest(request, response); //エラー表示
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
+				//processRequest(request, response); //エラー表示
 			else {
 				// 次の一覧表示ページへ転送する
-;				response.sendRedirect("/sys-practice/sys-practice/jsp/post-material.jsp?is_successed=true");
+;				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isSuccessed=true");
 				return;
 			}
 		} catch (Exception e) {
@@ -118,6 +132,7 @@ public class FileUpload extends HttpServlet {
 
 		//エラーを表示するHTMLの出力
 		try (PrintWriter out = response.getWriter()) {
+
 			out.println("<html>");
 			out.println("<head><title>エラー表示 POST時のエラー</title></head>");
 		} catch (Exception e) {

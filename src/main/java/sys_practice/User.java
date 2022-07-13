@@ -215,8 +215,12 @@ public class User {
 			stmt.close();
 			resultSet.close();
 			conn.close();
-
-			return displayName[0];
+			
+			if(!displayName[0].equals("") && displayName[0].length() > 0) {
+				return displayName[0];
+			}else {
+				return "";
+			}
 
 		// TODO: catch時のリターン値を決める
 		} catch (SQLException ex) {

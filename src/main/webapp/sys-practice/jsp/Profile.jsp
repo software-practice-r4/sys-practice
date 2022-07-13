@@ -2,20 +2,43 @@
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 <%
 
+int userId = -1;
+boolean isInvalidParameter = false;
+boolean isInvalidUserId = false;
+String pageTitle = "";
 
-String displayName = user.getDisplayNameById(userId);;
-String pageTitle = displayName + "さんのプロフィール";
+/* パラメータ不足もしくは、空だったとき */
+if(request.getParameter("userId") != null && request.getParameter("userId").equals("")){
+	userId = Integer.parseInt(request.getParameter("userId"));
+}
+else{
+	isInvalidParameter = true;
+}
 
-user.dataloadById(userId);
-material.getMaterialByUserId(userId);
+/* ユーザーIDはパラメータに含まれているが、無効なIDの場合 */
+String displayName = user.getDisplayNameById(userId);
+if(!displayName.equals("")){
+	isInvalidUserId = true;
+	pageTitle = "プロフィールページ";
+}
+
+if(!isInvalidParameter && !isInvalidUserId){
+	user.dataloadById(userId);
+	material.getMaterialByUserId(userId);
+	pageTitle = displayName + "さんのプロフィール";
+}
 
 %>
+
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="<%=pageTitle%>" />
 	<jsp:param name="style" value="profile" />
 </jsp:include>
+<%
+	if(!isInvalidParameter && !isInvalidUserId){
+%>
 
 <div class="content">
 	<div class="inner">
@@ -68,19 +91,11 @@ material.getMaterialByUserId(userId);
 		</div>
 	</div>
 </div>
+<%}else if(isInvalidParameter){%>
+	<p class="err-txt">無効なパラメータです</p>
+<%}else if(isInvalidUserId){ %>
+	<p class="err-txt">無効なIDです</p>
+<%} %>
 <jsp:include page="./../components/Footer.jsp" />
 </body>
 </html>
-
-<%--
-<%
-}
-%>
-<%
-} catch (Exception e) {
-%>
-
-<%
-}
-%>
---%>
