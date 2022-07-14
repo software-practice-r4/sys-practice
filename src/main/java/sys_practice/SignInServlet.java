@@ -8,12 +8,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-/*
- * @author shuya
- * @version 1.0
- * */
-public class SignInServlet extends HttpServlet {
 
+public class SignInServlet extends HttpServlet {
+	/*
+	 * post-materila.jspから、素材情報を取得
+	 * その後そのデータをRDSに格納し、元ページへリダイレクトする
+	 * */
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -24,6 +24,9 @@ public class SignInServlet extends HttpServlet {
 
 		String email = request.getParameter("email");
 		String password = request.getParameter("password");
+
+		User user = new User();
+
 
 		// メールアドレスまたはパスワードが入っていなかったときにマイページにリダイレクト
 		if(email == null || password == null) {
@@ -39,7 +42,6 @@ public class SignInServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		User user = new User();
 		// ユーザーIDと表示名をセッションで保持
 		int userId = user.getUserIdByEmail(email);
 

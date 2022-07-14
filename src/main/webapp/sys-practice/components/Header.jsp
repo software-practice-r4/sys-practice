@@ -1,16 +1,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <%
-String title = ""; // ページタイトル格納
-String style = ""; // ページのスタイルシート名(拡張子無し)を格納
+String title = "";
+String style = "";
+Cookie cookie[] = request.getCookies();
 int userId = -1; // ログイン時のユーザーIDを格納
-
 String displayName = "";
 
-Cookie cookie[] = request.getCookies();
-
 try {
-	/* jsp:parameterの取得 */
 	title = request.getParameter("title");
 	style = request.getParameter("style");
 	if (title.equals("") || style.equals(""))
@@ -26,7 +23,6 @@ try {
 	}
 
 	displayName = user.getDisplayNameById(userId);
-	System.out.println(userId);
 } catch (Exception e) {
 	e.printStackTrace();
 }
@@ -60,8 +56,8 @@ if (!style.equals(""))
 				<a href="../jsp/Home.jsp" class="link"> 素材提供サイト </a>
 			</div>
 			<div class="head-left">
-				<form method="GET" action="List.jsp" class="search">
-					<input id="sbox" id="s" name="s" type="search" placeholder="キーワードを入力" />
+				<form method="POST" action="<%=request.getContextPath()%>/sys-practice/jsp/HeaderSearch.jsp" class="search">
+					<input id="sbox" name="sbox" type="search" placeholder="キーワードを入力" required/>
 					<input id="sbtn" type="submit" value="検索" />
 				</form>
 			</div>
@@ -93,9 +89,11 @@ if (!style.equals(""))
 	})
 
 	sbox.addEventListener("change", ()=>{
+		console.log(sbox.value);
 		if(sbox.value.length == 0)
 			sbtn.style.pointerEvents="none";
 		else
 			sbtn.style.pointerEvents="auto";
 	})
+
 </script>

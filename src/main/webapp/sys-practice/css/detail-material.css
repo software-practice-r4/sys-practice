@@ -5,6 +5,9 @@
 .intro-left{
 	min-width: 400px;
 	min-height: 400px;
+	max-width: 600px;
+	max-height: 600px;
+	object-fit: cover;
 }
 .intro-left img{
 	width: 100%;

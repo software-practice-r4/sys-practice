@@ -56,8 +56,6 @@ public class SignUp {
 
 			num = ps.executeUpdate();
 
-			System.out.println("num" + num);
-
 			ps.close();
 			conn.close();
 
@@ -130,7 +128,7 @@ public class SignUp {
 	 * @param String email
 	 * @return ユーザーデータの個数を返却 正常時1or0 エラー時には-1返す
 	 * */
-	public int acountQuantity(String email) throws Exception {
+	public int hasAccountQuantity(String email) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
 			AWS aws = new AWS();

@@ -1,7 +1,9 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 
 <%
+int dataLength = 0;
 boolean isLogout = false;
 boolean isNull = false;//秘密の質問テーブルのデータが空だったとき
 
@@ -43,24 +45,22 @@ if(request.getParameter("isNull") != null){
 					<h2 class="centering-ttl">あなたへのおすすめ</h2>
 				</div>
 				<div class="material-card-wrapper">
-					<%
-					for (int i = 0; i < 10; i++) {
-					%>
-					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="materialId" value="3039202" />
-						<jsp:param name="price" value="500" />
-						<jsp:param name="thumbnail" value="./../img/106.jpg" />
-						<jsp:param name="category" value="BGM" />
-						<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
-					</jsp:include>
-					<%
-					}
-					%>
-				</div>
-				<!--  <div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
-				</div>
-				-->
+				<%
+				material.listMaterial();
+				for (int i = 0; i < 10; i++) {
+				%>
+				<jsp:include page="./../components/Material-Card.jsp">
+					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
+					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
+					<jsp:param name="thumbnail" value="<%=material.getThumbnail(i)%>" />
+					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
+					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
+				</jsp:include>
+				<%
+				}
+				%>
+			</div>
+
 			</div>
 			<div class="post">
 				<div class="centering-ttl-box">

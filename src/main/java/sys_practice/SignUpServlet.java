@@ -42,10 +42,9 @@ public class SignUpServlet extends HttpServlet {
 
 		SignUp signup = new SignUp();
 		int err = 0;// データの格納を判定
-		int acount = -1;// アカウントが既に存在するかを判定
+		int hasAccount = -1;
 
 		/* データが空だったときの処理 */
-		// TODO:
 		if (email.equals("") || password.equals("") || questionAnswer.equals("")) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
 			return;
@@ -53,13 +52,13 @@ public class SignUpServlet extends HttpServlet {
 
 		//入力されたemailに該当するユーザーテーブル（アカウント）があるを判定
 		try {
-			acount = signup.acountQuantity(email);
+			hasAccount = signup.hasAccountQuantity(email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		//まだ該当するemailのアカウントがない場合、サインアップ
-		if (acount == 0) {
+		if (hasAccount == 0) {
 			try {
 				err = signup.signUp(email, password, questionId, questionAnswer);
 			} catch (Exception e) {
@@ -72,7 +71,7 @@ public class SignUpServlet extends HttpServlet {
 		int userId = user.getUserIdByEmail(email);
 		System.out.println("err" + err);
 		// 正常時処理
-		if (err != 0 && acount == 0) {
+		if (err != 0 && hasAccount == 0) {
 			Cookie cookie = new Cookie("userId", String.valueOf(userId));
 			cookie.setMaxAge(-1);
 			response.addCookie(cookie);

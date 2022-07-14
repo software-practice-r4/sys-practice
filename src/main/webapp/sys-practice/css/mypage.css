@@ -1,11 +1,9 @@
 #C {
+/*    min-height: 800px;*/
     height: auto;
     width: 100%;
     background-color: #d5d5d5;
-
-}
-.main{
-    display: flex;
+/*    padding-bottom: 20px;*/
 }
 
 .inner{
@@ -76,6 +74,10 @@ img{
 .add {
     margin-top: 30px;
     text-align: center;
+}
+
+.main {
+    display: flex;
 }
 
 h2 {
