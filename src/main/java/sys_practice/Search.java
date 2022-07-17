@@ -196,7 +196,6 @@ public class Search extends Material {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
 			ResultSet rs = stmt.executeQuery();
-			System.out.println("sql=" + sql);
 
 			/*結果の取り出しと表示 */
 			num = 0;

@@ -139,15 +139,20 @@ public class Cart extends HttpServlet {
 			}
 			
 
-			sql = "INSERT INTO cart (materialId, userId) VALUES (?, ?)";
+			sql = "INSERT INTO cart (materialId, userId) SELECT * FROM (SELECT ?,?) AS tmp "
+					+ "WHERE exists(SELECT materialId FROM material WHERE materialId = ?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,materialId);
 			stmt.setInt(2,userId);
+			stmt.setInt(3,materialId);
 			result = stmt.executeUpdate();
 
 			stmt.close();
 			conn.close();
 			
+			if(result <= 0) {
+				return -1;
+			}
 			return result;
 
 		} catch (SQLException ex) {
