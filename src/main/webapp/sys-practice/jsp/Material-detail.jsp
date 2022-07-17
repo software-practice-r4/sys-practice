@@ -1,4 +1,5 @@
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<jsp:useBean id="history" scope="session" class="sys_practice.Purchase" />
 <%
 	boolean isInvalidMaterialId = false;
 	boolean isAddCartFailed = false;
@@ -19,6 +20,28 @@
 		}
 	}
 
+	// 購入履歴に開いている素材があるか
+	// historyLengthは、userIdに依存する
+	// -1の際には、0を格納して、後述するfor文が回らないようにし、
+	// フラグが立つのを防ぐ
+	int historyLength = userId != -1 ? history.loadPurchaseHistory(userId): 0;
+	int materialId = request.getParameter("materialId") != null ?
+			Integer.parseInt(request.getParameter("materialId")): -1;
+	
+	// 素材IDがパラメータとして入っているときに、
+	boolean isMatchMaterialId = false;
+	for(int i=0;i<historyLength;i++){
+		
+		if(materialId != -1 && materialId == history.getMaterialId(i)){
+			System.out.println(materialId);
+			System.out.println(history.getMaterialId(i));
+			System.out.println(materialId == history.getMaterialId(i));
+			isMatchMaterialId = true;
+			break;
+		}
+		
+	}
+	
 	// 素材IDがパラメータにない or 値が入ってないとき
 	if(request.getParameter("materialId") == null || request.getParameter("materialId").equals("")){
 		isInvalidMaterialId = true;
@@ -86,7 +109,7 @@
 				<p style="font-size: 32px; font-weight: bold; margin-top: 50px; margin-bottom: 20px;">
 					&yen;<%=material.getPrice(0) %>
 				</p>
-				<%if(material.getPrice(0) <= 0){ %>
+				<%if(material.getPrice(0) <= 0 || isMatchMaterialId){ %>
 					<a href="<%="../img/" +material.getThumbnail(0) %>" 
 					   download class="btn-square-emboss link">ダウンロード</a>
 				<%}else{ %>

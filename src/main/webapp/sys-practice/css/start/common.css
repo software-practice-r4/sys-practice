@@ -66,6 +66,9 @@ body {
 	  -ms-filter: blur(6px);
 	  filter: blur(6px);
 }
+.events-none{
+	pointer-events: none;
+}
 .purchase-wrap{
 	position:relative;
 }
