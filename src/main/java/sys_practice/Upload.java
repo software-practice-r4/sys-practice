@@ -26,6 +26,7 @@ public class Upload{
 		try {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
+
 			/* categoryIdでその他が選択されているとき */
 			if(Integer.parseInt(categoryId) == 0) {
 	
@@ -43,14 +44,19 @@ public class Upload{
 			    PreparedStatement stmt2 = conn.prepareStatement(sql2);
 			    stmt2.setString(1, categoryName);
 			    ResultSet rs = stmt2.executeQuery();
-			    categoryId = rs.getString("categoryId");
+			    
+			    while(rs.next()) {
+			    	categoryId = rs.getString("categoryId");
+			    }
 	
 			    rs.close();
 			    stmt2.close();
 		    }
 	
 			/* Materialへ素材を追加 */
-		    String sql = "INSERT INTO material (materialName,price,thumbnail,categoryId,providerId,explanation,isAdult) VALUES (?,?,?,?,?,?,?)";
+		    String sql = "INSERT INTO material (materialName, price, thumbnail, categoryId, providerId, explanation, isAdult) "
+		    		   + "SELECT * FROM (select ?, ?, ?, ?, ?, ?, ?) "
+		    		   + "AS tmp WHERE exists(SELECT * FROM category WHERE categoryId = ?)";
 		    PreparedStatement stmt3 = conn.prepareStatement(sql);
 		    stmt3.setString(1, materialName);
 		    stmt3.setInt(2, Integer.parseInt(price));
@@ -59,12 +65,17 @@ public class Upload{
 		    stmt3.setInt(5, Integer.parseInt(providerId));
 		    stmt3.setString(6, explanation);
 		    stmt3.setInt(7, Integer.parseInt(isAdult));
-	
+		    stmt3.setInt(8, Integer.parseInt(categoryId));
+		    
 		    result = stmt3.executeUpdate();
 	
 		    stmt3.close();
 		    conn.close();
 		    
+		    // 更新された行がないことを返却
+		    if(result == 0) {
+		    	return -1;
+		    }
 		    return result;
 		}catch(Exception e) {
 		    conn.close();

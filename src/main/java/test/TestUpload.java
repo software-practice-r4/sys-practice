@@ -10,9 +10,9 @@ public class TestUpload {
 		
 		arg[0] = "テスト素材名";
 		arg[1] = "説明説明";
-		arg[2] = "1000";
+		arg[2] = "111111";
 		arg[3] = "0";
-		arg[4] = "テスト増やすカテゴリー名";
+		arg[4] = "";
 		arg[5] = "0";
 		arg[6] = "1";
 		arg[7] = "sample.jpg";
