@@ -39,10 +39,12 @@ try {
 	<div id="main">
 		<div class="sidebar">
 			<h3>絞り込み検索</h3>
-			<ul>
+		<ul>
+			<form action="Narrowdown.jsp" method="post">
+				<!--nd -> nallow down （絞り込む）-->
 				<h1>カテゴリー</h1>
 				<div class="select">
-					<select name="category" class="text-box">
+					<select name="ndCategoryId" class="text-box">
 						<%
 						for (int i = 0; i < category.getNum(); i++) {
 						%>
@@ -52,21 +54,24 @@ try {
 				</div>
 				<h1>価格</h1>
 				<div class="select">
-					<select name="price" class="text-box">
-						<option value="A">～&yen;500</option>
-						<option value="B">&yen;500～&yen;2000</option>
-						<option value="C">&yen;2000～&yen;5000</option>
-						<option value="D">&yen;5000～</option>
+					<select name="ndPrice" class="text-box">
+						<!--ls->less than(未満)  mt->more than(以上)-->
+						<option value="lt500">～&yen;500</option>
+						<option value="mt500lt2000">&yen;500～&yen;2000</option>
+						<option value="mt2000lt5000">&yen;2000～&yen;5000</option>
+						<option value="mt5000">&yen;5000～</option>
 					</select>
 				</div>
 				<h1>年齢制限</h1>
 				<div class="select">
-					<select name="age" class="text-box">
-						<option value="allages">全年齢</option>
-						<option value="adult">R-18</option>
+					<select name="ndIsAdult" class="text-box">
+						<option value="0">全年齢</option>
+						<option value="1">R-18</option>
 					</select>
 				</div>
-			</ul>
+				<br> <input type="submit" value="絞り込む">
+			</form>
+		</ul>
 			<!--<div class="search-more">
 				<input class="btn-gradient-3d" type="submit" value="条件追加" />
 			</div>
@@ -93,8 +98,7 @@ try {
 						<jsp:include page="./../components/Material-Card.jsp">
 							<jsp:param name="materialId" value="<%=search.getMaterialId(i)%>" />
 							<jsp:param name="price" value="<%=search.getPrice(i)%>" />
-							<jsp:param name="thumbnail"
-								value="<%=search.getThumbnail(i)%>" />
+							<jsp:param name="thumbnail" value="<%=search.getThumbnail(i)%>" />
 							<jsp:param name="category" value="<%=search.getCategoryName(i)%>" />
 							<jsp:param name="title" value="<%=search.getMaterialName(i)%>" />
 						</jsp:include>
@@ -102,11 +106,12 @@ try {
 					<%
 					}
 					%>
+					<br/>
 					<%
 					}
 					%>
 				</div>
-	<a href="Search.jsp"><button type="button">検索情報入力画面に戻る</button>></a>
+				<a href="Search.jsp"><button type="button">検索情報入力画面に戻る</button>></a>
 				<div class="next">
 					<a href="#">1..100</a>
 				</div>

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+ >
+  
  <session-config>
    <session-timeout>3600</session-timeout>
  </session-config>
+  
  <servlet>
    <servlet-name>fileupload</servlet-name>
    <servlet-class>sys_practice.FileUpload</servlet-class>
@@ -13,7 +16,7 @@
    <servlet-name>fileupload</servlet-name>
    <url-pattern>/fileupload</url-pattern>
  </servlet-mapping>
-
+ 
   <servlet>
    <servlet-name>signin</servlet-name>
    <servlet-class>sys_practice.SignInServlet</servlet-class>
@@ -22,7 +25,16 @@
    <servlet-name>signin</servlet-name>
    <url-pattern>/signin</url-pattern>
  </servlet-mapping>
-
+ 
+<servlet>
+   <servlet-name>signout</servlet-name>
+   <servlet-class>sys_practice.Signout</servlet-class>
+ </servlet>
+ <servlet-mapping>
+   <servlet-name>signout</servlet-name>
+   <url-pattern>/signout</url-pattern>
+ </servlet-mapping>
+ 
  <servlet>
    <servlet-name>signup</servlet-name>
    <servlet-class>sys_practice.SignUpServlet</servlet-class>
@@ -31,13 +43,22 @@
    <servlet-name>signup</servlet-name>
    <url-pattern>/signup</url-pattern>
  </servlet-mapping>
-
-   <servlet>
-   <servlet-name>signout</servlet-name>
-   <servlet-class>sys_practice.Signout</servlet-class>
+ 
+  <servlet>
+   <servlet-name>cart</servlet-name>
+   <servlet-class>sys_practice.Cart</servlet-class>
  </servlet>
  <servlet-mapping>
-   <servlet-name>signout</servlet-name>
-   <url-pattern>/signout</url-pattern>
+   <servlet-name>cart</servlet-name>
+   <url-pattern>/cart</url-pattern>
+ </servlet-mapping>
+ 
+   <servlet>
+   <servlet-name>removeCart</servlet-name>
+   <servlet-class>sys_practice.RemoveCart</servlet-class>
+ </servlet>
+ <servlet-mapping>
+   <servlet-name>removeCart</servlet-name>
+   <url-pattern>/removeCart</url-pattern>
  </servlet-mapping>
  </web-app>

@@ -42,7 +42,7 @@ public class Material {
 				this.explanation[num] = rs.getString("explanation");
 				this.materialId[num] = rs.getInt("materialId");
 				this.price[num] = rs.getInt("price");
-				this.categoryId[num] = rs.getInt("categoryId");
+				this.categoryId[num] = rs.getInt("material.categoryId");
 				this.categoryName[num]=rs.getString("categoryName");
 				this.providerId[num] = rs.getInt("providerId");
 				this.isAdult[num] = rs.getInt("isAdult");

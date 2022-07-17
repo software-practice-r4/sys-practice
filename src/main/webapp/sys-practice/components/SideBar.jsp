@@ -8,7 +8,7 @@
         <a href="List-mymaterial.jsp" class="btn-square-pop">素材の投稿一覧</a>
         <a href="Dm.jsp" class="btn-square-pop">DM</a></li>
         <a href="Edit-profile.jsp" class="btn-square-pop">プロフィール編集</a>
-        <a href="InputSearchInfo.jsp" class="btn-square-pop">素材を検索</a>
+        <a href="Search.jsp" class="btn-square-pop">素材を検索</a>
         <a href="<%=request.getContextPath() %>/signout" class="btn-square-pop" >ログアウト</a>
     </ul>
 </div>

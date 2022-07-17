@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * @author shusaku
  */
 
-public class Category {
+public class Category extends Material{
 
 	protected int[] categoryId = new int[100];
 	protected String[] categoryName = new String[100];
@@ -49,7 +49,7 @@ public class Category {
 			AWS aws = new AWS();
 			Connection conn = aws.getRemoteConnection();
 
-			String sql = "SELECT * FROM category";
+			String sql = "SELECT * FROM category WHERE categoryId="+categoryId;
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100);
 			ResultSet rs = stmt.executeQuery();

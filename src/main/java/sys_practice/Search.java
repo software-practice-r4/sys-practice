@@ -7,11 +7,15 @@ import java.sql.SQLException;
 
 public class Search extends Material {
 
-	/*フィールド定義*/
+	/*フィールド定義 nd -> nallow down （絞り込む）*/
 	String keyword;
+	String ndPrice;
+	String value;
 	int searchCategoryId;
 	int searchPrice;
 	int searchIsAdult;
+	int ndCategoryId;
+	int ndIsAdult;
 	int param;
 
 	/*
@@ -31,14 +35,14 @@ public class Search extends Material {
 		}
 	}
 
-	public void getmaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult) throws Exception {
+	public void getMaterial(String keyword, int searchCategoryId, int searchPrice, int searchIsAdult) throws Exception {
 		try {
 			AWS aws = new AWS();
 			Connection conn = aws.getRemoteConnection();
 
-			/*入力フォームで検索*/
+			/*materialテーブルとcategoryテーブルを内部結合したテーブルから抽出(materialテーブルにカラム：categoryNameがないため)*/
 			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId" +
-					" WHERE materialName like '%"+keyword+"%'";
+					" WHERE materialName like '%" + keyword + "%'";
 
 			/*-1==入力されていない -1!=入力済み*/
 			/*年齢制限だけ入力されている*/
@@ -70,7 +74,6 @@ public class Search extends Material {
 				sql += " AND material.categoryId=" + searchCategoryId + " AND price=" + searchPrice
 						+ " AND isAdult=" + searchIsAdult;
 			}
-			System.out.println(sql);
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
 			ResultSet rs = stmt.executeQuery();
@@ -110,17 +113,134 @@ public class Search extends Material {
 	}
 
 	/*ヘッダーでの検索*/
-	public void getmaterial(String keyword) throws Exception {
+	public void searchHeader(String keyword) throws Exception {
 		try {
 			AWS aws = new AWS();
 			Connection conn = aws.getRemoteConnection();
-
+			/*materialテーブルとcategoryテーブルを内部結合したテーブルから抽出(materialテーブルにカラム：categoryNameがないため)*/
 			String sql = "SELECT * FROM material inner join category on material.categoryId = category.categoryId" +
 					" WHERE materialName like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
 			stmt.setMaxRows(100); //最大の数を制限
 			stmt.setString(1, "%" + keyword + "%");
 			ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+
+			/*結果の取り出しと表示 */
+			num = 0;
+			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
+				this.materialId[num] = rs.getInt("materialId");
+				this.materialName[num] = rs.getString("materialName");
+				this.price[num] = rs.getInt("price");
+				this.thumbnail[num] = rs.getString("thumbnail");
+				this.categoryId[num] = rs.getInt("categoryId");
+				this.categoryName[num] = rs.getString("categoryName");
+				this.providerId[num] = rs.getInt("providerId");
+				this.explanation[num] = rs.getString("explanation");
+				this.isAdult[num] = rs.getInt("isAdult");
+				num++;
+			}
+			/* 2.1.4 データベースからの切断 */
+			rs.close(); //開いた順に閉じる
+			stmt.close();
+			conn.close();
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+	}
+
+	public String createWhere(String value) {
+		/*<option value>をsql文のWHERE句に置換*/
+		String where="";
+		if (value.equals("lt500")) {
+			/*price < 500 500未満*/
+			where= "<500";
+		} else if (value.equals("mt500lt2000")) {
+			/*price BETWEEN 500 AND 1999 500以上2000未満*/
+			where=" BETWEEN 500 AND 1999";
+		} else if (value.equals("mt2000lt50000")) {
+			/*price BETWEEN 2000 AND 4999 2000以上5000未満*/
+			where=" BETWEEN 2000 AND 4999";
+		} else if (value.equals("mt5000")) {
+			/*price >= 5000 5000以上*/
+			where=">=5000";
+		}
+		System.out.println("value"+value);
+		System.out.println("price"+where);
+		return where;
+	}
+
+	public void narrowdown(int ndCategoryId, String ndPrice, int ndIsAdult) throws Exception {
+		try {
+			AWS aws = new AWS();
+			/*AWSに接続*/
+			Connection conn = aws.getRemoteConnection();
+
+			/*materialテーブルとcategoryテーブルを内部結合したテーブルから抽出(materialテーブルにカラム：categoryNameがないため)*/
+			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId WHERE"
+					+ " material.categoryId=" + ndCategoryId + " AND price" + createWhere(ndPrice) + " AND isAdult=" + ndIsAdult;
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setMaxRows(100); //最大の数を制限
+			ResultSet rs = stmt.executeQuery();
+			System.out.println("sql=" + sql);
+
+			/*結果の取り出しと表示 */
+			num = 0;
+			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
+				this.materialId[num] = rs.getInt("materialId");
+				this.materialName[num] = rs.getString("materialName");
+				this.price[num] = rs.getInt("price");
+				this.thumbnail[num] = rs.getString("thumbnail");
+				this.categoryId[num] = rs.getInt("categoryId");
+				this.categoryName[num] = rs.getString("categoryName");
+				this.providerId[num] = rs.getInt("providerId");
+				this.explanation[num] = rs.getString("explanation");
+				this.isAdult[num] = rs.getInt("isAdult");
+				num++;
+			}
+			/* 2.1.4 データベースからの切断 */
+			rs.close(); //開いた順に閉じる
+			stmt.close();
+			conn.close();
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+
+	}
+
+	/*home.jspの下部で使用。カテゴリー名のボタン押下でそのカテゴリー別検索を行う*/
+	public void searchByCategory(int ndCategoryId) throws Exception {
+		try {
+			AWS aws = new AWS();
+			/*AWSに接続*/
+			Connection conn = aws.getRemoteConnection();
+
+			/*materialテーブルとcategoryテーブルを内部結合したテーブルから抽出(materialテーブルにカラム：categoryNameがないため)*/
+			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId WHERE"
+					+ " material.categoryId=" + ndCategoryId;
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setMaxRows(100); //最大の数を制限
+			ResultSet rs = stmt.executeQuery();
+			System.out.println("sql=" + sql);
 
 			/*結果の取り出しと表示 */
 			num = 0;
