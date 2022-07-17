@@ -29,7 +29,7 @@ if(request.getParameter("isNull") != null){
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
-		あなたの好きをここに<br>クラフトボス最強
+		あなたの好きをここに<br>素材提供サイト
 	</h1>
 </div>
 
