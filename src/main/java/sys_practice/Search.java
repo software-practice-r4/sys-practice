@@ -20,7 +20,6 @@ public class Search extends Material {
 
 	/*
 	 * 入力された情報(キーワード＝素材名の一部または全部、カテゴリーId, 価格,　年齢制限)から素材を検索する
-	 * @author shusaku
 	 * @param String keywoed
 	 * @param String searchCategoryId
 	 * @param String searchPrice
@@ -104,7 +103,6 @@ public class Search extends Material {
 
 	/**
 	 * ヘッダー上で検索ボタンを押した際に、キーワードで検索をかけ、合致した素材をフィールドに格納する
-	 * @author shusaku
 	 * @param keyword
 	 * @throws Exception
 	 */
@@ -154,6 +152,11 @@ public class Search extends Material {
 
 	}
 	
+	/*
+	 * valueの値に合わせて、where句を生成する
+	 * @param String value
+	 * @return 生成したwhere句　もしくは空文字を返却する
+	 * */
 	public String createWhere(String value) {
 		/*<option value>をsql文のWHERE句に置換*/
 		String where="";
@@ -174,6 +177,13 @@ public class Search extends Material {
 		return where;
 	}
 	
+	/*
+	 * 引数で受け取ったモノに合わせて、絞り込み検索をかける
+	 * @param int cdCategoryId 
+	 * @param String ndPrice
+	 * @param int ndIsAdult
+	 * @throws Exception
+	 * */
 	public void narrowDown(int ndCategoryId, String ndPrice, int ndIsAdult) throws Exception {
 		try {
 			AWS aws = new AWS();
@@ -222,7 +232,10 @@ public class Search extends Material {
 
 	}
 	
-	/*home.jspの下部で使用。カテゴリー名のボタン押下でそのカテゴリー別検索を行う*/
+	/*
+	 * Home.jspの下部で使用。カテゴリー名のボタン押下でそのカテゴリー別検索を行う
+	 * @param int ndCategoryId
+	 * */
 	public void searchByCategory(int ndCategoryId) throws Exception {
 		try {
 			AWS aws = new AWS();
@@ -235,7 +248,6 @@ public class Search extends Material {
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
 			ResultSet rs = stmt.executeQuery();
-			System.out.println("sql=" + sql);
 
 			/*結果の取り出しと表示 */
 			num = 0;

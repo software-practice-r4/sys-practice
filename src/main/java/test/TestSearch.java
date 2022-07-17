@@ -9,7 +9,7 @@ public class TestSearch {
 		Search s = new Search();
 		
 		try {
-			System.out.println(s.createWhere("mt2000lt5000"));
+			s.searchByCategory(2);
 			System.out.println(s.getNum());
 			for(int i=0;i<s.getNum();i++) {
 	            System.out.println(s.getMaterialId(i));
