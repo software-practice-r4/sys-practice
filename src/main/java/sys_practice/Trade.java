@@ -48,7 +48,6 @@ public class Trade {
 			stmt = conn.prepareStatement(sql);
 			resultSet = stmt.executeQuery();
 			
-			System.out.println("hgoehgoe");
 			while (resultSet.next()) {
 				providerId[num] = resultSet.getInt("providerId");
 				providerWallet[num] = resultSet.getInt("wallet");

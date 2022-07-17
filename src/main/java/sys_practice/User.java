@@ -51,19 +51,26 @@ public class User {
 				this.displayName[0] = resultSet.getString("displayName");
 				this.explanation[0] = resultSet.getString("explanation");
 				this.icon[0] = resultSet.getString("icon");
-
+				num++;
 			}
 
 			stmt.close();
 			resultSet.close();
 			conn.close();
-
+			
+			// 何もデータを格納できなかった場合
+			if(num==0) {
+				throw new Exception("存在しないユーザーIDを参照しました。");
+			}
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-		} finally {
+		}catch(Exception e) {
+			System.err.println(e);
+		}
+		finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
 				try {
@@ -185,6 +192,9 @@ public class User {
 			resultSet.close();
 			conn.close();
 			
+			if(displayName == null) {
+				return "";
+			}
 			return displayName;
 
 		// TODO: catch時のリターン値を決める
