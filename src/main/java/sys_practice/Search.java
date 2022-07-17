@@ -54,7 +54,7 @@ public class Search extends Material {
 			}
 			/*カテゴリーIDと年齢制限が入力されている*/
 			else if (hasData(searchCategoryId) && !hasData(searchPrice) && hasData(searchIsAdult)) {
-				sql += " AND material.categoryId=" + searchCategoryId + " AND idAdult=" + searchIsAdult;
+				sql += " AND material.categoryId=" + searchCategoryId + " AND isAdult=" + searchIsAdult;
 			}
 			/*カテゴリーIDと価格が入力されている*/
 			else if (hasData(searchCategoryId) && hasData(searchPrice) && !hasData(searchIsAdult)) {
@@ -163,15 +163,14 @@ public class Search extends Material {
 		} else if (value.equals("mt500lt2000")) {
 			/*price BETWEEN 500 AND 1999 500以上2000未満*/
 			where=" BETWEEN 500 AND 1999";
-		} else if (value.equals("mt2000lt50000")) {
+		} else if (value.equals("mt2000lt5000")) {
 			/*price BETWEEN 2000 AND 4999 2000以上5000未満*/
 			where=" BETWEEN 2000 AND 4999";
 		} else if (value.equals("mt5000")) {
 			/*price >= 5000 5000以上*/
 			where=">=5000";
 		}
-		System.out.println("value"+value);
-		System.out.println("price"+where);
+
 		return where;
 	}
 	
