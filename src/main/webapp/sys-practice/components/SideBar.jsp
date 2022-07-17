@@ -1,3 +1,5 @@
+<!-- MyPage用のサイドバー -->
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <link rel="stylesheet" type="text/css" media="screen" href="./../css/start/left-menu.css" />

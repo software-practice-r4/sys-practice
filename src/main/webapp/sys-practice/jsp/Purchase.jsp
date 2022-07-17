@@ -5,6 +5,7 @@
 <% 
 	int userId = -1;
 	int cartLength = -1;
+	boolean isErr = false;
 	
 	Cookie cookie[] = request.getCookies();
 	if(cookie.length > 0){
@@ -16,6 +17,12 @@
 					cartLength = cart.getCartByUserId(userId);
 			}
 		}
+	}
+	
+	if(request.getParameter("isErr") != null && 
+			   !String.valueOf(request.getParameter("isErr")).equals(""))
+	{
+		isErr = true;	
 	}
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -30,9 +37,12 @@
                     <div class="post">
                         <div class="centering-ttl-box">
                             <h2 class="centering-ttl">
-                                カート内
+                                購入画面
                             </h2>
                         </div>
+                        <%if(isErr){ %>
+                        	<p class="err-txt">購入時にエラーが発生しました。ページを更新してください。</p>
+                        <%} %>
                         <div class="material-card-wrapper">
                         	
                             <%
@@ -69,9 +79,33 @@
                         <h4>合計金額 : </h4>
                         <h5><%=totalPrice %>円</h>
                     </div>
-                    <div class="add">
-                        <a href="./Purchase.jsp" class="btn-gradient-radius">ダウンロードする</a>
+                    <div class="amount">
+                    <% 
+                    	int userWallet = user.getMoneyById(userId);
+                    	boolean isErrGetWallet = false;
+                    	if(userWallet < 0){
+                    		isErrGetWallet = true;
+                    	}
+                    %>
+                        <h4>あなたの残高: </h4>
+                        <%if(!isErrGetWallet){ %>
+                        	<h5><%=userWallet %>円</h5>
+                       	<%}else{ %>
+                       		<h5 class="err-txt">取得できませんでした。ページを更新してください。</h5>
+                     	<%} %>
                     </div>
+                    <%if(userWallet-totalPrice >= 0){ %>
+	                    <div class="add">
+	                        <a href="<%=request.getContextPath() %>/purchase?userId=<%=userId %>" 
+	                        class="btn-gradient-radius">購入する</a>
+	                    </div>
+                    <%}else{ %>
+	                    <div class="add">
+	                        <a href="./Purchase.jsp" class="btn-gradient-radius err-txt" style="pointer-events:none;">
+	                        	残高チャージしてください
+	                        </a>
+	                    </div>
+                    <%} %>
                 </div>
             </div>
         </div>

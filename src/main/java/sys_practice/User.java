@@ -110,32 +110,42 @@ public class User {
 	}
 
 	/* ユーザーIDと合致するお金を取得する*/
-	public int getMoneybyId(int agmntUserId) throws Exception {
-		/*データベース接続*/
-		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-		String url = "jdbc:mysql://localhost/softd2?characterEncoding=UTF-8"; //データベース名は適宜修正：文字エンコードはUTF-8
-		Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
+	public int getMoneyById(int userId) throws Exception {
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "select wallet from user where userId = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+			
+			int wallet = 0;
+			
+			while (resultSet.next()) {
+				wallet = resultSet.getInt("wallet");
+			}
 
-		String sql = "SELECT * FROM user WHERE userid = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-		stmt.setMaxRows(100); //最大の数を制限
-		stmt.setString(1, String.valueOf(agmntUserId));
-		ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
+			stmt.close();
+			resultSet.close();
+			conn.close();
 
-		/*結果の取り出しと表示*/
-		num = 0;
-		int wallet = 0;
-		while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
-			wallet = rs.getInt("wallet");
-			num++;
+			return wallet;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return -1;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
 		}
-
-		/*データベース切断*/
-		rs.close();
-		stmt.close();
-		conn.close();
-		
-		return wallet;
 	}
 
 	/*

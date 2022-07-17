@@ -75,6 +75,56 @@ public class Material {
 	}
 	
 	/*
+	 * ランダムに素材を取得する
+	 * ランキング機能の代わり
+	 * */
+	public void getRandomMaterial() throws Exception { //エラー処理が必要にする
+		try {
+
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId"
+					   + " ORDER BY RAND() LIMIT 10";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setMaxRows(100); //最大の数を制限
+			ResultSet rs = stmt.executeQuery();
+
+			/* 2.1.3 結果の取り出しと表示 */
+			num = 0;
+			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
+				this.materialName[num] = rs.getString("materialName");
+				this.thumbnail[num] = rs.getString("thumbnail");
+				this.explanation[num] = rs.getString("explanation");
+				this.materialId[num] = rs.getInt("materialId");
+				this.price[num] = rs.getInt("price");
+				this.categoryId[num] = rs.getInt("categoryId");
+				this.categoryName[num]=rs.getString("categoryName");
+				this.providerId[num] = rs.getInt("providerId");
+				this.isAdult[num] = rs.getInt("isAdult");
+				num++;
+			}
+
+			/*データベースからの切断*/
+			rs.close(); //開いた順に閉じる
+			stmt.close();
+			conn.close();
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+
+	}
+	
+	/*
 	 * ユーザーIDと合致する素材を取得する
 	 * @author shuya
 	 * @param int userId

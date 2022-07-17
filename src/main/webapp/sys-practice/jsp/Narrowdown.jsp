@@ -114,9 +114,11 @@ try {
 				<div class="centering-ttl-box">
 					<h2 class="centering-ttl">素材の絞り込み結果</h2>
 				</div>
+				<p>
+					データ件数:<%=nd.getNum()%>
+				</p>
 				<div class="material-card-wrapper">
-					<p>
-						データ件数:<%=nd.getNum()%></p>
+					
 					<%
 					if (nd.getNum() == 0) {
 					%>
@@ -125,15 +127,13 @@ try {
 					} else {
 					for (int i = 0; i < nd.getNum(); i++) {
 					%>
-					<p>
-						<jsp:include page="./../components/Material-Card.jsp">
-							<jsp:param name="materialId" value="<%=nd.getMaterialId(i)%>" />
-							<jsp:param name="price" value="<%=nd.getPrice(i)%>" />
-							<jsp:param name="thumbnail" value="<%=nd.getThumbnail(i)%>" />
-							<jsp:param name="category" value="<%=nd.getCategoryName(i)%>" />
-							<jsp:param name="title" value="<%=nd.getMaterialName(i)%>" />
-						</jsp:include>
-					</p>
+					<jsp:include page="./../components/Material-Card.jsp">
+						<jsp:param name="materialId" value="<%=nd.getMaterialId(i)%>" />
+						<jsp:param name="price" value="<%=nd.getPrice(i)%>" />
+						<jsp:param name="thumbnail" value="<%=nd.getThumbnail(i)%>" />
+						<jsp:param name="category" value="<%=nd.getCategoryName(i)%>" />
+						<jsp:param name="title" value="<%=nd.getMaterialName(i)%>" />
+					</jsp:include>
 					<%
 					}
 					%>

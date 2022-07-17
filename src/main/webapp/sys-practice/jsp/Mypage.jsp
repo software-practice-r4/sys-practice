@@ -2,6 +2,7 @@
 <jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
 <jsp:useBean id="check" scope="session" class="sys_practice.User" />
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<jsp:useBean id="history" scope="session" class="sys_practice.Purchase" />
 
 <%
 int userId = -1;
@@ -94,7 +95,11 @@ else if(hasUser){
                         <div class="material-card-wrapper">
                             <%
                             material.getMaterialByUserId(userId);
-                            for (int i = 0; i < 10; i++) {
+                            int length = material.getNum();
+                            if(length > 10){
+                            	length = 10;
+                            }
+                            for (int i = 0; i < length; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
                                 <jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
@@ -120,15 +125,21 @@ else if(hasUser){
                         </div>
                         <div class="material-card-wrapper">
                             <%
-                            for (int i = 0; i < 10; i++) {
+                            int dataLength = history.loadPurchaseHistory(userId);
+                            for (int i = 0; i < dataLength; i++) {
+                            	boolean isAdult = false;
+            					if(history.getIsAdult(i) == 1){
+            						isAdult = true;
+            					}
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value="3039202" />
-                                <jsp:param name="price" value="500" />
-                                <jsp:param name="thumbnail" value="./../img/106.jpg" />
-                                <jsp:param name="category" value="BGM" />
-                                <jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
-                            </jsp:include>
+								<jsp:param name="materialId" value="<%=history.getMaterialId(i)%>" />
+								<jsp:param name="price" value="<%=history.getPrice(i)%>" />
+								<jsp:param name="thumbnail" value="<%=history.getThumbnail(i)%>" />
+								<jsp:param name="category" value="<%=history.getCategoryName(i)%>" />
+								<jsp:param name="title" value="<%=history.getMaterialName(i)%>" />
+								<jsp:param name="isAdult" value="<%=isAdult %>" />
+							</jsp:include>
                             <%
                             }
                             %>

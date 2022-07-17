@@ -44,7 +44,7 @@
    <url-pattern>/signup</url-pattern>
  </servlet-mapping>
  
-  <servlet>
+<servlet>
    <servlet-name>cart</servlet-name>
    <servlet-class>sys_practice.Cart</servlet-class>
  </servlet>
@@ -53,12 +53,21 @@
    <url-pattern>/cart</url-pattern>
  </servlet-mapping>
  
-   <servlet>
+<servlet>
    <servlet-name>removeCart</servlet-name>
    <servlet-class>sys_practice.RemoveCart</servlet-class>
  </servlet>
  <servlet-mapping>
    <servlet-name>removeCart</servlet-name>
    <url-pattern>/removeCart</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet>
+   <servlet-name>purchase</servlet-name>
+   <servlet-class>sys_practice.PurchaseServlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+   <servlet-name>purchase</servlet-name>
+   <url-pattern>/purchase</url-pattern>
  </servlet-mapping>
  </web-app>

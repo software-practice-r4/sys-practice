@@ -1,5 +1,6 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 
 <%
 boolean isLogout = false;
@@ -32,9 +33,6 @@ if(request.getParameter("isNull") != null){
 	</h1>
 </div>
 
-<form action="<%=request.getContextPath() %>/awss3" method="POST">
-	<input type="submit" value="送信">
-</form>
 <div class="recommend">
 	<div class="inner">
 		<div class="content">
@@ -44,14 +42,20 @@ if(request.getParameter("isNull") != null){
 				</div>
 				<div class="material-card-wrapper">
 					<%
+					material.getRandomMaterial();
 					for (int i = 0; i < 10; i++) {
+						boolean isAdult = false;
+						if(material.getIsAdult(i) == 1){
+							isAdult = true;
+						}
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="materialId" value="3039202" />
-						<jsp:param name="price" value="500" />
-						<jsp:param name="thumbnail" value="./../img/106.jpg" />
-						<jsp:param name="category" value="BGM" />
-						<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+						<jsp:param name="materialId" value="<%=material.getMaterialId(i) %>" />
+						<jsp:param name="price" value="<%=material.getPrice(i) %>" />
+						<jsp:param name="thumbnail" value="<%=material.getThumbnail(i) %>" />
+						<jsp:param name="category" value="<%=material.getCategoryName(i) %>" />
+						<jsp:param name="title" value="<%=material.getMaterialName(i) %>" />
+						<jsp:param name="isAdult" value="<%=isAdult %>" />
 					</jsp:include>
 					<%
 					}
@@ -65,21 +69,24 @@ if(request.getParameter("isNull") != null){
 				</div>
 				<div class="material-card-wrapper">
 					<%
+					material.getRandomMaterial();
 					for (int i = 0; i < 10; i++) {
+						boolean isAdult = false;
+						if(material.getIsAdult(i) == 1){
+							isAdult = true;
+						}
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
-						<jsp:param name="materialId" value="3039202" />
-						<jsp:param name="price" value="500" />
-						<jsp:param name="thumbnail" value="./../img/106.jpg" />
-						<jsp:param name="category" value="BGM" />
-						<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+						<jsp:param name="materialId" value="<%=material.getMaterialId(i) %>" />
+						<jsp:param name="price" value="<%=material.getPrice(i) %>" />
+						<jsp:param name="thumbnail" value="<%=material.getThumbnail(i) %>" />
+						<jsp:param name="category" value="<%=material.getCategoryName(i) %>" />
+						<jsp:param name="title" value="<%=material.getMaterialName(i) %>" />
+						<jsp:param name="isAdult" value="<%=isAdult %>" />
 					</jsp:include>
 					<%
 					}
 					%>
-				</div>
-				<div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
 				</div>
 			</div>
 
@@ -90,9 +97,6 @@ if(request.getParameter("isNull") != null){
 				<div class="category-list">
 					<a href=<%="List.jsp?category_id="+512%> class="btn-square">カテゴリー1</a>
 					<a href=<%="List.jsp?category_id="+212%> class="btn-square">カテゴリー2</a>
-				</div>
-				<div class="add">
-					<a href="#" class="btn-gradient-radius">もっとみる</a>
 				</div>
 			</div>
 		</div>

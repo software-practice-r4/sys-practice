@@ -99,6 +99,10 @@ if (!style.equals(""))
 	window.addEventListener("load", ()=>{
 		if(getParam("sbox"))
 			sbox.value = getParam("sbox");
+		if(sbox.value.length == 0)
+			sbtn.style.pointerEvents="none";
+		else
+			sbtn.style.pointerEvents="auto";
 	})
 	/**
 	 * Get the URL parameter value

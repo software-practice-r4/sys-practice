@@ -12,7 +12,7 @@
     }
     /*素材検索メソッド */
     try {
-        search.getMaterial(keyword);
+        search.searchHeader(keyword);
 %>
 <jsp:forward page="Search-result.jsp" />
 <%

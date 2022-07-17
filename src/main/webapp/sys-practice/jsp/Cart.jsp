@@ -59,6 +59,9 @@
                             <%}%>
                         </div>
                     </div>
+                    <%if(cart.getNum()<=0){ %>
+                    	<p class="err-txt">まだカートに商品はありません</p>
+                    <%} %>
                     <div class="amount">
                     <% 
                     	int totalPrice = 0;
@@ -74,7 +77,7 @@
 	                    <div class="add">
 	                        <a href="./Purchase.jsp" class="btn-gradient-radius">購入する</a>
 	                    </div>
-                    <%}else{ %>
+                    <%}else if(totalPrice <= 0 && cart.getNum()>0){ %>
 	                    <div class="add">
 	                        <a href="./Purchase.jsp" class="btn-gradient-radius">ダウンロードする</a>
 	                    </div>
