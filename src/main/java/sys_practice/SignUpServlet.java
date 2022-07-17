@@ -51,19 +51,12 @@ public class SignUpServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
-		try {
-			hasQuestion = signup.existsQuestion(questionId);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		//まだ該当するemailのアカウントがない場合、サインアップ
 		if (hasAccount == 0) {
-			if (hasQuestion == 1) {
-				try {
-					err = signup.signUp(email, password, questionId, questionAnswer);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+			try {
+				err = signup.signUp(email, password, questionId, questionAnswer);
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 
