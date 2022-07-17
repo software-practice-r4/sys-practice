@@ -21,7 +21,11 @@ public class Trend {
 	protected String[] category = new String[10]; //カテゴリ
 	protected int[] isAdult = new int[100];
 	protected int numResults; //データ取得件数
-
+	
+	/*
+	 * ユーザーのダウンロードされているものの傾向をフィールドに格納する
+	 * @params int providerId
+	 * */
 	public void getTrend(int providerId) throws Exception {
 
 		Connection conn = null;

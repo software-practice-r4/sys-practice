@@ -13,7 +13,12 @@ public class TestSignUp {
 		int qId = 100;
 		String ans = "サンプル答え";
 		
-		System.out.println(signup.signUp(email, pass, qId, ans));
+		try {
+			System.out.println(signup.signUp(email, pass, qId, ans));
+		} catch (Exception e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
 	}
 
 }

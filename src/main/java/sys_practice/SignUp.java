@@ -39,7 +39,7 @@ public class SignUp {
 	 * @param String questionAnswer
 	 * @return 挿入された行数を返却 エラー時には-1返す
 	 * */
-	public int signUp(String email, String password, int questionId, String questionAnswer) {
+	public int signUp(String email, String password, int questionId, String questionAnswer) throws Exception {
 		int num = 0;//取得件数の初期化
 		try {
 
@@ -80,10 +80,15 @@ public class SignUp {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-
+			
 			return -1;
 
-		} finally {
+		}catch(Exception e) {
+			System.err.println(e);
+			
+			return -1;
+		}
+		finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
 				try {
