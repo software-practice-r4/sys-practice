@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/*
+ * @author shuya
+ * */
 public class Cart extends HttpServlet {
 
 	protected int[] materialId = new int[100];
@@ -98,6 +101,15 @@ public class Cart extends HttpServlet {
 		
 	}
 	
+	/*
+	 * 素材詳細ページ内で、カートに追加するボタンを押した際に発火する
+	 * 素材IDとユーザーIDを引数で受け取り、対象のユーザーIDのカートに素材を追加する
+	 * @param int materialId 素材ID
+	 * @param int userId ユーザーID
+	 * @return カートに追加できれば、更新された行数を返却
+	 *         カートにすでに追加されていた場合、-2
+	 *         それ以外のエラーは、-1を返却する
+	 * */
 	private int addCart(int materialId, int userId) {
 		int result=-1;
 		Connection conn = null;
@@ -152,7 +164,15 @@ public class Cart extends HttpServlet {
 		}
 	}
 	
-	public int removeCart(int materialId) {
+	/*
+	 * Cart.jsp内で×ボタンを押したときに発火するメソッド
+	 * 引数として素材IDと、ユーザーIDを受け取り
+	 * 合致するカートの商品を削除する
+	 * @param int materialId 素材ID
+	 * @param int userId ユーザーID
+	 * @return int 更新できた行の量 エラー時は、-1を返却する
+	 * */
+	public int removeCart(int materialId, int userId) {
 		int result=-1;
 		Connection conn = null;
 		num = 0;
@@ -161,9 +181,10 @@ public class Cart extends HttpServlet {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
 			
-			String sql = "DELETE FROM cart where materialId = ?";
+			String sql = "DELETE FROM cart where materialId = ? AND userId = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,materialId);
+			stmt.setInt(2,userId);
 			result = stmt.executeUpdate();
 
 			stmt.close();
@@ -186,6 +207,12 @@ public class Cart extends HttpServlet {
 				}
 		}
 	}
+	
+	/*
+	 * 引数で渡されたユーザーIDに合致するカートをフィールドに格納する
+	 * @param int userId ユーザーID
+	 * @return int 取得できたデータ数 エラー時は、-1を返却する 
+	 * */
 	public int getCartByUserId(int userId) {
 		int cartLength = 0;
 		try {

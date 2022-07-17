@@ -29,8 +29,8 @@ public class SignIn {
 	String statement = null;
 
 	/*
-	 * @author shuya
 	 * @author keita
+	 * @author shuya
 	 * eメール・パスワードと合致するユーザー情報を取得する
 	 * @param String email
 	 * @param String password
@@ -61,100 +61,6 @@ public class SignIn {
 			}
 
 			stmt.close();
-			resultSet.close();
-			conn.close();
-
-			return num;
-
-		} catch (SQLException ex) {
-			// Handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
-		} finally {
-			System.out.println("Closing the connection.");
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (SQLException ignore) {
-				}
-		}
-	}
-
-	/*(未実装)
-	 * @author keita
-	 * eメールから自身の秘密の質問の情報(Id,Title,Answer)を取得する
-	 * @param String email
-	 * @return データの取得件数を返却 エラー時には-1返す
-	 * */
-	public int requestSecretQuestion(String email) throws Exception {
-		num = 0;//取得件数の初期化
-		try {
-			AWS aws = new AWS();
-			conn = aws.getRemoteConnection();
-			String sql = "SELECT user.questionId, user.questionAnswer, question.questionTitle FROM user FULL OUTER JOIN question ON user.questionId = question.questionId WHERE email Like ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, email);
-			stmt.setMaxRows(100); //最大の数を制限
-			resultSet = stmt.executeQuery();
-
-			while (resultSet.next()) {
-				this.questionId[num] = resultSet.getInt("questionId");
-				this.questionAnswer[num] = resultSet.getString("questionAnswer");
-				this.questionTitle[num] = resultSet.getString("questionTitle");
-				num++;
-			}
-
-			stmt.close();
-			resultSet.close();
-			conn.close();
-
-			return num;
-
-		} catch (SQLException ex) {
-			// Handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
-		} finally {
-			System.out.println("Closing the connection.");
-			if (conn != null)
-				try {
-					conn.close();
-				} catch (SQLException ignore) {
-				}
-		}
-	}
-
-	/*(未実装)
-	 * @author keita
-	 * eメール・秘密の質問の解答から自身のパスワードを更新する
-	 * @param String questionAnswer
-	 * @param String email
-	 * @param String password
-	 * @return 成功時1を返却 エラー時には-1返す
-	 * */
-	public int resetPassWord(String questionAnswer, String email, String password) throws Exception {
-		int num = 0;//取得件数の初期化
-		try {
-			AWS aws = new AWS();
-			Connection conn = aws.getRemoteConnection();
-
-			String sql = "UPDATE user SET password Like ? WHERE questionAnswer Like ? and email Like ?";
-
-			PreparedStatement ps = conn.prepareStatement(sql);
-			ps.setString(1, password);
-			ps.setString(2, questionAnswer);
-			ps.setString(3, email);
-			ps.addBatch(sql);
-			cnt = ps.executeBatch();
-			if (cnt != null) {
-				num = 1;
-			}
-
-			ps.close();
 			resultSet.close();
 			conn.close();
 

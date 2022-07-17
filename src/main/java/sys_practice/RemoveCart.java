@@ -19,7 +19,6 @@ public class RemoveCart extends HttpServlet {
 		int materialId = -1;
 		int userId = -1;
 		
-		System.out.println("materialId" + materialId);
 		if(request.getParameter("materialId") != null) {
 			materialId = Integer.parseInt(request.getParameter("materialId"));
 		}else {
@@ -40,7 +39,6 @@ public class RemoveCart extends HttpServlet {
 			/* 何かでcookieが残ったままだと、
 			   ログインしないで、カートに追加すると、userIdが-1の初期値のままくる
 		    */
-			System.out.println("userID" + userId);
 			if(userId == -1) {
 				response.sendRedirect("/sys-practice/sys-practice/jsp/Material-detail.jsp?materialId=" 
 						+ materialId + "&isNotLogin=true");
@@ -56,7 +54,7 @@ public class RemoveCart extends HttpServlet {
 		
 		
 		Cart cart = new Cart();
-		int result = cart.removeCart(materialId);
+		int result = cart.removeCart(materialId, userId);
 		
 		// 正常にカートに追加された場合
 		if(result != -1) {
