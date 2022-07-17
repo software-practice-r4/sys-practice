@@ -61,6 +61,9 @@ public class Purchase extends Material{
 			stmt.close();
 			conn.close();
 			
+			if(num == 0) {
+				return -1;
+			}
 			return num;
 		} catch (SQLException ex) {
 			// Handle any errors
