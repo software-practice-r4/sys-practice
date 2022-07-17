@@ -91,7 +91,7 @@
                     	}
                     %>
                         <h4>合計金額 : </h4>
-                        <h5><%=totalPrice %>円</h>
+                        <h5><%=totalPrice %>円</h5>
                     </div>
                     <%if(totalPrice > 0){ %>
                     <!-- 合計金額が、0以上の時 -->
