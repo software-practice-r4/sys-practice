@@ -52,7 +52,7 @@ try {
 
 
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="一覧を表示" />
+	<jsp:param name="title" value="一覧ページ" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
 <div id="main">
@@ -99,14 +99,19 @@ try {
 			<div class="material-card-wrapper">
 				<%
 				for (int i = 0; i < material.getNum(); i++) {
+					boolean isAdult = false;
+					if(material.getIsAdult(i) == 1){
+						isAdult = true;
+					}
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
 					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
 					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
 					<jsp:param name="thumbnail"
-						value="./../img/<%=material.getThumbnail(i)%>" />
+						value="<%=material.getThumbnail(i)%>" />
 					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
 					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
+					<jsp:param name="isAdult" value="<%=isAdult %>" />
 				</jsp:include>
 				<%
 				}

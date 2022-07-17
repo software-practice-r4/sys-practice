@@ -20,7 +20,7 @@
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="カート" />
+	<jsp:param name="title" value="購入" />
 	<jsp:param name="style" value="cart" />
 </jsp:include>
         <div id="main">
@@ -69,16 +69,9 @@
                         <h4>合計金額 : </h4>
                         <h5><%=totalPrice %>円</h>
                     </div>
-                    <%if(totalPrice > 0){ %>
-                    <!-- 合計金額が、0以上の時 -->
-	                    <div class="add">
-	                        <a href="./Purchase.jsp" class="btn-gradient-radius">購入する</a>
-	                    </div>
-                    <%}else{ %>
-	                    <div class="add">
-	                        <a href="./Purchase.jsp" class="btn-gradient-radius">ダウンロードする</a>
-	                    </div>
-                    <%} %>
+                    <div class="add">
+                        <a href="./Purchase.jsp" class="btn-gradient-radius">ダウンロードする</a>
+                    </div>
                 </div>
             </div>
         </div>

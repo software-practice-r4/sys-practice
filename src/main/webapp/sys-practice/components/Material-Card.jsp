@@ -6,12 +6,17 @@
 	String thumbnail = "";
 	String category = "";
 	String title = "";
+	Boolean isAdult = false;
+	
 	try{
 		materialId = request.getParameter("materialId");
 		price = request.getParameter("price");
 		thumbnail = request.getParameter("thumbnail");
 		category = request.getParameter("category");
 		title = request.getParameter("title");
+		if(request.getParameter("isAdult") != null){
+			isAdult = Boolean.valueOf(request.getParameter("isAdult"));
+		}
 		if(materialId.equals(""))
 			throw new Exception("materialIdが入力されていません。");
 		if(price.equals(""))
@@ -22,7 +27,7 @@
 			throw new Exception("カテゴリーが入力されていません。");
 		if(title.equals(""))
 			throw new Exception("タイトルが入力されていません。");
-
+		
 		// 文字が制限を超えた時の丸め処理
 		if(title.length() > 20){
 			title = title.substring(0, 20);
@@ -31,12 +36,15 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}
+	
+	System.out.println("isAdult" + isAdult);
+
 %>
 
-<a href=<%="Material-detail.jsp?materialId=" + price %> class="material-card link">
+<a href=<%="Material-detail.jsp?materialId=" + materialId %> class="material-card link">
 	<div class="card-top">
-		<img src="<%=thumbnail %>">
-		<img src="../img/<%=thumbnail%>">
+		
+		<img src="../img/<%=thumbnail%>" class="<% if(isAdult){%>is-adult<%}%>">
 		<span class="card-price">
 			&yen;<%=price %>
 		</span>

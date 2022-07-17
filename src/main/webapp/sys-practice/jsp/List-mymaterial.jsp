@@ -31,6 +31,10 @@ for (int i = 0; i < cookie.length; i++) {
 					<%
 					dataLength = material.getProviderMaterial(userId);
 					for (int i = 0; i < dataLength; i++) {
+						boolean isAdult = false;
+						if(material.getIsAdult(i) == 1){
+							isAdult = true;
+						}	
 					%>
 					<jsp:include page="./../components/Material-Card.jsp">
 						<jsp:param name="materialId"
@@ -40,6 +44,7 @@ for (int i = 0; i < cookie.length; i++) {
 						<jsp:param name="category"
 							value="<%=material.getCategoryName(i)%>" />
 						<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
+						<jsp:param name="isAdult" value="<%=isAdult %>" />
 					</jsp:include>
 					<%
 					}

@@ -59,7 +59,13 @@ body {
 .no-margin{
 	margin: 0;
 }
-
+.m-auto{
+	margin: 0 auto;
+}
+.is-adult{
+	  -ms-filter: blur(6px);
+	  filter: blur(6px);
+}
 @keyframes fadeOut{
 	from{
 		opacity: 1;

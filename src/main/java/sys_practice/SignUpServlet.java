@@ -27,13 +27,6 @@ public class SignUpServlet extends HttpServlet {
 		int questionId = Integer.parseInt(request.getParameter("questionId"));
 		String questionAnswer = request.getParameter("questionAnswer");
 
-		/* データが空だったときの処理 */
-		String questionIdString = String.valueOf(questionId);
-		if (questionIdString.equals("")) {
-			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?isNull=true");
-			return;
-		}
-
 		// メールアドレスまたはパスワードまたは秘密の質問が入っていなかったときにサインアップページにリダイレクト
 		if (email == null || password == null || questionId == 0 || questionAnswer == null) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Signup.jsp?isNull=true");
@@ -52,7 +45,7 @@ public class SignUpServlet extends HttpServlet {
 
 		//入力されたemailに該当するユーザーテーブル（アカウント）があるを判定
 		try {
-			hasAccount = signup.hasAccountQuantity(email);
+			hasAccount = signup.existsAccount(email);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

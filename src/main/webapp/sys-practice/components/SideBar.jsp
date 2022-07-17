@@ -2,12 +2,15 @@
 <!DOCTYPE html>
 <link rel="stylesheet" type="text/css" media="screen" href="./../css/start/left-menu.css" />
 <div class="sidebar">
-    <ul>
+     <ul>
         <a href="Mypage.jsp" class="btn-square-pop">マイページトップ</a>
         <a href="Purchase-history.jsp" class="btn-square-pop">購入履歴</a>
         <a href="Post-material.jsp" class="btn-square-pop">素材の投稿</a>
         <a href="List-mymaterial.jsp" class="btn-square-pop">素材の投稿一覧</a>
-        <a href="Dm.jsp" class="btn-square-pop">DM</a></li>
+        <a href="Dm.jsp" class="btn-square-pop">DM</a>
         <a href="Edit-profile.jsp" class="btn-square-pop">プロフィール編集</a>
+        <a href="ReceiveInfo.jsp" class="btn-square-pop">素材を検索</a>
+        <a href="<%=request.getContextPath()%>/signout"
+            class="btn-square-pop">ログアウト</a>
     </ul>
 </div>

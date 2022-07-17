@@ -99,6 +99,7 @@ public class Material {
 				this.categoryId[num] = resultSet.getInt("categoryId");
 				this.categoryName[num] = resultSet.getString("categoryName");
 				this.providerId[num] = resultSet.getInt("providerId");
+				this.isAdult[num] = resultSet.getInt("isAdult");
 				num++;
 			}
 
@@ -150,9 +151,10 @@ public class Material {
 				this.categoryId[num] = resultSet.getInt("categoryId");
 				this.categoryName[num] = resultSet.getString("categoryName");
 				this.displayName[num] = resultSet.getString("displayName");
+				this.isAdult[num] = resultSet.getInt("isAdult");
 				num++;
 			}
-
+			
 			stmt.close();
 			resultSet.close();
 			conn.close();
@@ -204,6 +206,7 @@ public class Material {
 				this.categoryId[num] = resultSet.getInt("categoryId");
 				this.categoryName[num] = resultSet.getString("categoryName");
 				this.displayName[num] = resultSet.getString("displayName");
+				this.isAdult[num] = resultSet.getInt("isAdult");
 				num++;
 			}
 
@@ -258,6 +261,7 @@ public class Material {
 				this.categoryId[num] = resultSet.getInt("categoryId");
 				this.categoryName[num] = resultSet.getString("categoryName");
 				this.displayName[num] = resultSet.getString("displayName");
+				this.isAdult[num] = resultSet.getInt("isAdult");
 				num++;
 			}
 

@@ -8,7 +8,7 @@ boolean isInvalidUserId = false;
 String pageTitle = "";
 
 /* パラメータ不足もしくは、空だったとき */
-if(request.getParameter("userId") != null && request.getParameter("userId").equals("")){
+if(request.getParameter("userId") != null && !request.getParameter("userId").equals("")){
 	userId = Integer.parseInt(request.getParameter("userId"));
 }
 else{
@@ -71,6 +71,11 @@ if(!isInvalidParameter && !isInvalidUserId){
 			<div class="material-card-wrapper">
 				<%
 				for (int i = 0; i < 10; i++) {
+					boolean isAdult = false;
+					if(material.getIsAdult(i) == 1){
+						isAdult = true;
+					}	
+
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
 					<jsp:param name="id" value="3039202" />
@@ -78,6 +83,7 @@ if(!isInvalidParameter && !isInvalidUserId){
 					<jsp:param name="thumbnail" value="./../img/106.jpg" />
 					<jsp:param name="category" value="BGM" />
 					<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+					<jsp:param name="isAdult" value="<%=isAdult %>" />
 				</jsp:include>
 				<%
 				}

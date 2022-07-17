@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="trend" scope="session" class="sys_practice.Trend" />
 <jsp:useBean id="check" scope="session" class="sys_practice.User" />
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 
 <%
 int userId = -1;
@@ -45,9 +46,14 @@ else if(hasUser){
                         </div>
                         <div class="material-card-wrapper">
                         	<%if(trend.getNumResults() == 0) {%>
-								<p class="err-txt">まだ素材が投稿されていません。</p>
-							<%}
+								<p class="err-txt m-auto">まだ素材が投稿されていません。</p>
+							<%}else{
                             for (int i = 0; i < trend.getNumResults() ; i++) {
+                            	boolean isAdult = false;
+                            	if(material.getIsAdult(i) == 1){
+                            		isAdult = true;
+                            	}	
+
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
                                 <jsp:param name="materialId" value="<%=trend.getMaterialId(i)%>" />
@@ -55,14 +61,19 @@ else if(hasUser){
                                 <jsp:param name="thumbnail" value="<%=trend.getThumbnail(i)%>" />
                                 <jsp:param name="category" value="<%=trend.getCategory(i)%>" />
                                 <jsp:param name="title" value="<%=trend.getMaterialName(i)%>" />
+                                <jsp:param name="isAdult" value="<%=isAdult %>" />
                             </jsp:include>
                             <%
                             }
                             %>
+                            
+                          <%} %>
                         </div>
-                        <div class="add">
-                            <a href="#" class="btn-gradient-radius">もっとみる</a>
-                        </div>
+                        <%if(trend.getNumResults() != 0) {%>
+	                        <div class="add">
+	                           	<a href="#" class="btn-gradient-radius">もっとみる</a>
+	                       	</div>
+                       	<%} %>
                     </div>
                     <div class="post">
                         <div class="centering-ttl-box">
@@ -82,15 +93,17 @@ else if(hasUser){
                         </div>
                         <div class="material-card-wrapper">
                             <%
+                            material.getMaterialByUserId(userId);
                             for (int i = 0; i < 10; i++) {
                             %>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="materialId" value="3039202" />
-                                <jsp:param name="price" value="500" />
-                                <jsp:param name="thumbnail" value="./../img/106.jpg" />
-                                <jsp:param name="category" value="BGM" />
-                                <jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+                                <jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
+                                <jsp:param name="price" value="<%=material.getPrice(i)%>" />
+                                <jsp:param name="thumbnail" value="<%=material.getThumbnail(i)%>" />
+                                <jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
+                                <jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
                             </jsp:include>
+                            
                             <%
                             }
                             %>

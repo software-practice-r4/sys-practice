@@ -54,7 +54,6 @@ public class User {
 				this.icon[0] = resultSet.getString("icon");
 
 			}
-			System.err.println(this.icon[0]);
 
 			stmt.close();
 			resultSet.close();
@@ -111,13 +110,12 @@ public class User {
 	}
 
 	/* ユーザーIDと合致するお金を取得する*/
-	public void getMoneybyId(int agmntUserId) throws Exception {
+	public int getMoneybyId(int agmntUserId) throws Exception {
 		/*データベース接続*/
 		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
 		String url = "jdbc:mysql://localhost/softd2?characterEncoding=UTF-8"; //データベース名は適宜修正：文字エンコードはUTF-8
 		Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
 
-		/*SELECT文の実行 */
 		String sql = "SELECT * FROM user WHERE userid = ?";
 		PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
 		stmt.setMaxRows(100); //最大の数を制限
@@ -126,16 +124,9 @@ public class User {
 
 		/*結果の取り出しと表示*/
 		num = 0;
+		int wallet = 0;
 		while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
-			this.userId[num] = rs.getInt("userId");
-			this.email[num] = rs.getString("email");
-			this.password[num] = rs.getString("password");
-			this.questionId[num] = rs.getInt("questionId");
-			this.questionAnswer[num] = rs.getString("questionAnswer");
-			this.displayName[num] = rs.getString("displayName");
-			this.explanation[num] = rs.getString("explanation");
-			this.icon[num] = rs.getString("icon");
-			this.wallet[num] = rs.getInt("wallet");
+			wallet = rs.getInt("wallet");
 			num++;
 		}
 
@@ -143,6 +134,8 @@ public class User {
 		rs.close();
 		stmt.close();
 		conn.close();
+		
+		return wallet;
 	}
 
 	/*
@@ -161,24 +154,24 @@ public class User {
 			stmt.setMaxRows(100); //最大の数を制限
 			resultSet = stmt.executeQuery();
 
-			int[] userId = new int[100];
+			int userId = -1;
 
 			while (resultSet.next()) {
-				userId[0] = resultSet.getInt("userId");
+				userId = resultSet.getInt("userId");
 			}
 
 			stmt.close();
 			resultSet.close();
 			conn.close();
 
-			return userId[0];
+			return userId;
 
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+			return -1;
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
@@ -206,21 +199,17 @@ public class User {
 			stmt.setMaxRows(100); //最大の数を制限
 			resultSet = stmt.executeQuery();
 
-			String[] displayName = new String[100];
+			String displayName = "";
 
 			while (resultSet.next()) {
-				displayName[0] = resultSet.getString("displayName");
+				displayName = resultSet.getString("displayName");
 			}
 
 			stmt.close();
 			resultSet.close();
 			conn.close();
 			
-			if(!displayName[0].equals("") && displayName[0].length() > 0) {
-				return displayName[0];
-			}else {
-				return "";
-			}
+			return displayName;
 
 		// TODO: catch時のリターン値を決める
 		} catch (SQLException ex) {
@@ -270,10 +259,9 @@ public class User {
 			resultSet.close();
 			conn.close();
 
-			if(num >= 1) {
+			if(num >= 1)
 				return true;
-			}
-			return true;
+			
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());

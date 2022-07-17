@@ -1,17 +1,51 @@
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 <%
-	boolean isValidMaterialId = false;
-	int dataLength = 0;
+	boolean isInvalidMaterialId = false;
+	boolean isAddCartFailed = false;
+	boolean isNotLogin = false;
+	boolean isExistItems = false;
 	
+	int dataLength = 0;
+	int userId = -1;
+	
+	Cookie cookie[] = request.getCookies();
+	if(cookie.length > 0){
+		/* ログインしていた場合にユーザーIDを格納 */
+		for(int i=0;i<cookie.length;i++){
+			if(cookie[i].getName().equals("userId")){
+				if(!cookie[i].getValue().equals(""))
+					userId = Integer.parseInt(cookie[i].getValue());
+			}
+		}
+	}
+
 	// 素材IDがパラメータにない or 値が入ってないとき
 	if(request.getParameter("materialId") == null || request.getParameter("materialId").equals("")){
-		isValidMaterialId = true;
+		isInvalidMaterialId = true;
 	}else{
 		dataLength = material.getMaterialByMaterialId(Integer.parseInt(request.getParameter("materialId")));
 
 		// 無効な素材IDを取得したとき
 		if(dataLength == 0)
-			isValidMaterialId = true;
+			isInvalidMaterialId = true;
+	}
+	
+	if(request.getParameter("isAddCartFailed") != null && 
+	   !String.valueOf(request.getParameter("isAddCartFailed")).equals(""))
+	{
+		isAddCartFailed = true;	
+	}
+	
+	if(request.getParameter("isExistItems") != null && 
+			   !String.valueOf(request.getParameter("isExistItems")).equals(""))
+	{
+		isExistItems = true;	
+	}
+	
+	if(request.getParameter("isNotLogin") != null &&
+	   !String.valueOf(request.getParameter("isAddCartFailed")).equals("") && userId == -1)
+	{
+		isNotLogin = true;	
 	}
 	
 	int providerId = material.getProviderId(0);
@@ -23,10 +57,20 @@
 	<jsp:param name="title" value="素材詳細ページ" />
 	<jsp:param name="style" value="detail-material" />
 </jsp:include>
-<%if(!isValidMaterialId){ %>
+<%if(!isInvalidMaterialId){ %>
 <div class="content">
-	<div class="inner">		
+	<div class="inner">
+		<%if(isAddCartFailed){%>
+			<p class="err-txt" style="margin-bottom: 20px;">カートの追加に失敗しました。</p>
+		<%} %>
+		<%if(isNotLogin){ %>
+			<p class="err-txt" style="margin-bottom: 20px;">ログインしてください。</p>
+		<%} %>
+		<%if(isExistItems){ %>
+			<p class="err-txt" style="margin-bottom: 20px;">すでにカートに存在しています</p>
+		<%} %>
 		<div class="intro">
+		
 			<div class="intro-left">
 				<img src="./../img/<%=material.getThumbnail(0)%>">
 			</div>
@@ -35,14 +79,21 @@
 				<h2 class="lead-ttl">タイトル：<%=material.getMaterialName(0) %></h2>
 				<h2 class="lead-ttl">
 					投稿者名：
-					<a href="Profile.jsp?userId=<%=material.getProviderId(0) %>" style="text-decoration:underline">
+					<a href="Profile.jsp?userId=<%=providerId %>" style="text-decoration:underline">
 						<%=material.getDisplayName(0) %>
 					</a>
 				</h2>
 				<p style="font-size: 32px; font-weight: bold; margin-top: 50px; margin-bottom: 20px;">
 					&yen;<%=material.getPrice(0) %>
 				</p>
-				<a href="#" class="btn-square-emboss link">カートに入れる</a>
+				<%if(material.getPrice(0) <= 0){ %>
+					<a href="<%="../img/" +material.getThumbnail(0) %>" 
+					   download class="btn-square-emboss link">ダウンロード</a>
+				<%}else{ %>
+					<a href="<%=request.getContextPath()%>/cart?materialId=<%=material.getMaterialId(0) %>"  
+					   class="btn-square-emboss link">カートに追加</a>
+				<%} %>
+				
 			</div>
 		</div>
 	</div>
@@ -73,11 +124,10 @@
 					}
 					else{
 						for (int i = 0; i < dataLength; i++) {
-							System.out.println(material.getMaterialId(i));
-							System.out.println(material.getPrice(i));
-							System.out.println(material.getThumbnail(i));
-							System.out.println(material.getCategoryName(i));
-							System.out.println(material.getMaterialName(i));
+							boolean isAdult = false;
+							if(material.getIsAdult(i) == 1){
+								isAdult = true;
+							}
 						%>
 						<jsp:include page="./../components/Material-Card.jsp">
 							<jsp:param name="materialId" value="<%=material.getMaterialId(i) %>" />
@@ -85,6 +135,7 @@
 							<jsp:param name="thumbnail" value="<%=material.getThumbnail(i) %>" />
 							<jsp:param name="category" value="<%=material.getCategoryName(i) %>" />
 							<jsp:param name="title" value="<%=material.getMaterialName(i) %>" />
+							<jsp:param name="isAdult" value="<%=isAdult %>" />
 						</jsp:include>
 						<%
 						}

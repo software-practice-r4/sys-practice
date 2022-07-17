@@ -5,7 +5,9 @@
     background-color: #d5d5d5;
 /*    padding-bottom: 20px;*/
 }
-
+.main{
+	display: flex;
+}
 .inner{
     margin-bottom: 60px;
 }

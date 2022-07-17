@@ -53,6 +53,7 @@ try {
 						<div class="title">
 							<div class="message">秘密の質問の解答：</div>
 							<select name="questionId" id="question">
+							<option value="0">選択してください</option>
 								<%for (int i = 0; i < questionData; i++) {%>
 								    <option value="<%=signup.getQuestionId(i)%>"><%=signup.getQuestionTitle(i)%></option>
 								<%}%>

@@ -37,7 +37,7 @@ public class FileUpload extends HttpServlet {
 		response.setContentType("text/html; charset=UTF-8");
 		request.setCharacterEncoding("UTF-8");
 
-		// 保存先ファイルの設定		S
+		// 保存先ファイルの設定
 		String dataDir = getServletContext().getRealPath("sys-practice/img");
 		System.out.println(dataDir);
 		File dataDirFile = new File(dataDir);
@@ -99,6 +99,7 @@ public class FileUpload extends HttpServlet {
 					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
 					return;
 				}
+				// upload.javaに渡す前にエラーを出したい
 				int i = Integer.parseInt(content.get(2));
 			}catch(NumberFormatException e) {
 				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isPriceNull=true");

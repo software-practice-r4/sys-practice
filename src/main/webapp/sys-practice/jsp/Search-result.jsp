@@ -31,7 +31,6 @@ try {
 	<jsp:param name="title" value="一覧ページ" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
-<html>
 <head>
 <link rel="stylesheet" href="search-result.css">
 </head>
@@ -40,6 +39,7 @@ try {
 		<div class="sidebar">
 			<h3>絞り込み検索</h3>
 			<ul>
+			]<form action="Narrowdown.jsp" method="post">
 				<h1>カテゴリー</h1>
 				<div class="select">
 					<select name="category" class="text-box">
@@ -66,20 +66,19 @@ try {
 						<option value="adult">R-18</option>
 					</select>
 				</div>
+				<br> <input type="submit" value="絞り込む">
+			</form>
 			</ul>
-			<!--<div class="search-more">
-				<input class="btn-gradient-3d" type="submit" value="条件追加" />
-			</div>
-		-->
 		</div>
 		<div class="cnt">
 			<div class="post">
 				<div class="centering-ttl-box">
 					<h2 class="centering-ttl">素材の検索結果</h2>
 				</div>
+				<p style="padding: 10px 0 20px; text-align:right;">
+					データ件数:<%=search.getNum()%>
+				</p>
 				<div class="material-card-wrapper">
-					<p>
-						データ件数:<%=search.getNum()%></p>
 					<%
 					if (search.getNum() == 0) {
 					%>
@@ -88,8 +87,12 @@ try {
 					<%
 					} else {
 					for (int i = 0; i < search.getNum(); i++) {
+						boolean isAdult = false;
+						if(search.getIsAdult(i) == 1){
+							isAdult = true;
+						}	
+
 					%>
-					<p>
 						<jsp:include page="./../components/Material-Card.jsp">
 							<jsp:param name="materialId" value="<%=search.getMaterialId(i)%>" />
 							<jsp:param name="price" value="<%=search.getPrice(i)%>" />
@@ -97,8 +100,8 @@ try {
 								value="<%=search.getThumbnail(i)%>" />
 							<jsp:param name="category" value="<%=search.getCategoryName(i)%>" />
 							<jsp:param name="title" value="<%=search.getMaterialName(i)%>" />
+							<jsp:param name="isAdult" value="<%=isAdult %>" />
 						</jsp:include>
-					</p>
 					<%
 					}
 					%>
@@ -106,7 +109,7 @@ try {
 					}
 					%>
 				</div>
-	<a href="Search.jsp"><button type="button">検索情報入力画面に戻る</button>></a>
+				<a href="Search.jsp" class="link-init">検索情報入力画面に戻る &gt;</a>
 				<div class="next">
 					<a href="#">1..100</a>
 				</div>

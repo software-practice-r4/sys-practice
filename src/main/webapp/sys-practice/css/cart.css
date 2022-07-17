@@ -9,7 +9,18 @@
     background-color:#D5D5D5;
     /*    position: relative;*/
 }
-
+.material-card-cart{
+	position: relative;
+}
+.remove-items{
+	color: red;
+	position: absolute;
+	top: 0;
+	left: 0;
+	display:inline-block;
+	z-index: 10;
+	background-color: black;
+}
 .samune {
     /*    margin-top: 30px;*/
     text-align: center;
@@ -202,9 +213,4 @@ h3{
     /* right: 70px; */
     text-align: right;
     /* position: absolute; */
-}
-
-a{
-    width: 100px;
-    height: 100px;
 }
