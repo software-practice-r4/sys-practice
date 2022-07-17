@@ -101,7 +101,7 @@
 	                    </div>
                     <%}else{ %>
 	                    <div class="add">
-	                        <a href="./Purchase.jsp" class="btn-gradient-radius err-txt" style="pointer-events:none;">
+	                        <a href="#" class="btn-gradient-radius err-txt" style="pointer-events:none;">
 	                        	残高チャージしてください
 	                        </a>
 	                    </div>
