@@ -186,51 +186,6 @@ public class SignUp {
 		}
 	}
 
-	/*
-	 * 受け取ったquestionIdが、questionテーブル内に存在する個数を取得する
-	 * @param int questionId
-	 * @return 個数を返却 正常時1or0 エラー時には-1返す
-	 * */
-	public int existsQuestion(int questionId) throws Exception {
-		num = 0;//取得件数の初期化
-		try {
-			AWS aws = new AWS();
-			conn = aws.getRemoteConnection();
-			String sql = "SELECT * FROM question WHERE questionId = ?";
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setInt(1, questionId);
-			stmt.setMaxRows(100); //最大の数を制限
-			resultSet = stmt.executeQuery();
-
-			while (resultSet.next()) {
-				this.questionId[num] = resultSet.getInt("questionId");
-				this.questionTitle[num] = resultSet.getString("questionTitle");
-				num++;
-			}
-
-			stmt.close();
-			resultSet.close();
-			conn.close();
-
-			return num;
-
-		} catch (SQLException ex) {
-			// Handle any errors
-			System.out.println("SQLException: " + ex.getMessage());
-			System.out.println("SQLState: " + ex.getSQLState());
-			System.out.println("VendorError: " + ex.getErrorCode());
-			return -1;
-		} finally {
-			System.out.println("Closing the connection.");
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException ignore) {
-				}
-			}
-		}
-	}
-
 	public int getUserId(int i) {
 		if (i >= 0 && num > i) {
 			return userId[i];
