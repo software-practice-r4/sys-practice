@@ -30,7 +30,8 @@ public class Trend {
 			numResults = 0;
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-			String getTrend = "SELECT * FROM downloaded INNER JOIN material ON downloaded.materialId = material.materialId RIGHT JOIN category ON material.categoryId = category.categoryId WHERE providerId = ? ORDER BY downloaded DESC LIMIT 10";
+			String getTrend = "SELECT * FROM downloaded INNER JOIN material ON downloaded.materialId = material.materialId"
+					 + " RIGHT JOIN category ON material.categoryId = category.categoryId WHERE providerId = ? ORDER BY downloaded DESC LIMIT 10";
 			PreparedStatement stmt = conn.prepareStatement(getTrend);
 			stmt.setInt(1, providerId);
 			stmt.setMaxRows(10); //最大の数を制限
@@ -46,7 +47,6 @@ public class Trend {
 				this.category[numResults] = resultSet.getString("categoryName");
 				numResults++;
 			}
-
 
 			stmt.close();
 			resultSet.close();

@@ -3,6 +3,7 @@ package sys_practice;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /*
  * @author kotaro
@@ -14,10 +15,12 @@ public class Upload{
 	protected int price;
 	protected String[] thumbnail = new String[70];
 	protected int categoryId;
+	protected int hasCategoryId[] = new int[100];
 	protected int providerId;
 	protected String[] explanation = new String[300];
 	protected String[] categoryName =  new String[10];
 	protected int[] isAdult;
+	protected int num;
 
 	public void uploadMaterial(String materialName, String explanation, String price, String categoryId, String categoryName, String isAdult, String providerId, String thumbnail) throws Exception {
 		AWS aws = new AWS();
@@ -46,6 +49,12 @@ public class Upload{
 		    stmt2.close();
 	    }
 
+		boolean hasCategory = hasCategoryIdOnDatabase(Integer.parseInt(categoryId));
+		if(!hasCategory) {
+			System.out.println("No category.");
+			return;
+		}
+
 		/* Materialへ素材を追加 */
 	    String sql = "INSERT INTO material (materialName,price,thumbnail,categoryId,providerId,explanation,isAdult) VALUES (?,?,?,?,?,?,?)";
 	    PreparedStatement stmt3 = conn.prepareStatement(sql);
@@ -62,4 +71,57 @@ public class Upload{
 	    stmt3.close();
 	    conn.close();
 	}
+
+	/*
+	 * 受け取ったユーザIDがuser内に存在するかどうかを判定する
+	 * @param int categoryId
+	 * @return 存在すればtrue,存在しなければfalseを返却
+	 * */
+	public boolean hasCategoryIdOnDatabase(int categoryId) throws Exception {
+
+		Connection conn = null;
+		ResultSet resultSet = null;
+		try {
+			num = 0;
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM category WHERE categoryId = ?";
+
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, categoryId);
+			stmt.setMaxRows(10); //最大の数を制限
+
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.hasCategoryId[num] = resultSet.getInt("categoryId");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			if(num >= 1) {
+				return true;
+			}
+			return true;
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+		} catch (Exception e) {
+			System.err.println(e);
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null)
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+		}
+		return false;
+	}
+
 }

@@ -5,7 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-/* 
+/*
  * @author shusaku
  */
 
@@ -18,7 +18,7 @@ public class Category {
 	/*
 	 * return カテゴリー名、カテゴリーID
 	*/
-	public int dispCategory() {
+	public void dispCategory() {
 		num = 0;
 		try {
 			AWS aws = new AWS();
@@ -36,9 +36,15 @@ public class Category {
 				this.categoryName[num] = rs.getString("categoryName");
 				num++;
 			}
-			return num;
+
+			//test用　コンソール表示
+			for (int cnt = 0; cnt < num; cnt++) {
+				System.out.println("categoryId  : " + this.categoryId[cnt]);
+				System.out.println("categoryName: " + this.categoryName[cnt]);
+			}
+
 		} catch (SQLException e) {
-			return 0;
+			System.err.println(e);
 		}
 	}
 
@@ -49,8 +55,10 @@ public class Category {
 			AWS aws = new AWS();
 			Connection conn = aws.getRemoteConnection();
 
-			String sql = "SELECT * FROM category";
+			String sql = "SELECT * FROM category WHERE categoryId = ?";
+
 			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, categoryId);
 			stmt.setMaxRows(100);
 			ResultSet rs = stmt.executeQuery();
 
@@ -60,6 +68,13 @@ public class Category {
 				this.categoryName[num] = rs.getString("categoryName");
 				num++;
 			}
+
+			//test用　コンソール表示
+			for (int cnt = 0; cnt < num; cnt++) {
+				System.out.println("categoryId  : " + this.categoryId[cnt]);
+				System.out.println("categoryName: " + this.categoryName[cnt]);
+			}
+
 			return categoryName[0];
 		} catch (SQLException e) {
 			return "";

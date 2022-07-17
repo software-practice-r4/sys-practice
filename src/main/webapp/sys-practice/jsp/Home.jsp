@@ -1,16 +1,14 @@
 <jsp:useBean id="user" scope="session" class="sys_practice.User" />
 <jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
-<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<jsp:useBean id="category" scope="session" class="sys_practice.Category" />
 
 <%
-int dataLength = 0;
 boolean isLogout = false;
 boolean isNull = false;//秘密の質問テーブルのデータが空だったとき
-
-if(request.getParameter("isLogout") != null){
+if (request.getParameter("isLogout") != null) {
 	isLogout = Boolean.valueOf(request.getParameter("isLogout"));
 }
-if(request.getParameter("isNull") != null){
+if (request.getParameter("isNull") != null) {
 	isNull = Boolean.valueOf(request.getParameter("isNull"));
 }
 %>
@@ -21,12 +19,20 @@ if(request.getParameter("isNull") != null){
 	<jsp:param name="style" value="home" />
 </jsp:include>
 
-<%if(isLogout){ %>
-	<p class="err-txt timeout no-margin">ログアウトしました</p>
-<%} %>
-<%if(isNull){ %>
-	<p class="err-txt timeout no-margin">現在アカウントを作ることが出来ませんしました</p>
-<%} %>
+<%
+if (isLogout) {
+%>
+<p class="err-txt timeout no-margin">ログアウトしました</p>
+<%
+}
+%>
+<%
+if (isNull) {
+%>
+<p class="err-txt timeout no-margin">現在アカウントを作ることが出来ませんしました</p>
+<%
+}
+%>
 <div class="intro">
 	<span class="cover"></span>
 	<h1>
@@ -34,7 +40,7 @@ if(request.getParameter("isNull") != null){
 	</h1>
 </div>
 
-<form action="<%=request.getContextPath() %>/awss3" method="POST">
+<form action="<%=request.getContextPath()%>/awss3" method="POST">
 	<input type="submit" value="送信">
 </form>
 <div class="recommend">
@@ -45,21 +51,20 @@ if(request.getParameter("isNull") != null){
 					<h2 class="centering-ttl">あなたへのおすすめ</h2>
 				</div>
 				<div class="material-card-wrapper">
-				<%
-				material.listMaterial();
-				for (int i = 0; i < 10; i++) {
-				%>
-				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
-					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
-					<jsp:param name="thumbnail" value="<%=material.getThumbnail(i)%>" />
-					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
-					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
-				</jsp:include>
-				<%
-				}
-				%>
-			</div>
+					<%
+					for (int i = 0; i < 10; i++) {
+					%>
+					<jsp:include page="./../components/Material-Card.jsp">
+						<jsp:param name="materialId" value="3039202" />
+						<jsp:param name="price" value="500" />
+						<jsp:param name="thumbnail" value="./../img/106.jpg" />
+						<jsp:param name="category" value="BGM" />
+						<jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+					</jsp:include>
+					<%
+					}
+					%>
+				</div>
 
 			</div>
 			<div class="post">
@@ -91,8 +96,13 @@ if(request.getParameter("isNull") != null){
 					<h2 class="centering-ttl">カテゴリー</h2>
 				</div>
 				<div class="category-list">
-					<a href=<%="List.jsp?category_id="+512%> class="btn-square">カテゴリー1</a>
-					<a href=<%="List.jsp?category_id="+212%> class="btn-square">カテゴリー2</a>
+					<%
+					category.dispCategory();
+					for (int i = 0; i < category.getNum(); i++) {
+					%>
+					<a href=<%="List.jsp?categoryId="+category.getCategoryId(i)%>
+						class="btn-square"><%= category.getCategoryName(i)%></a>
+					<%}%>
 				</div>
 				<div class="add">
 					<a href="#" class="btn-gradient-radius">もっとみる</a>

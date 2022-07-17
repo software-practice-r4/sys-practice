@@ -1,3 +1,23 @@
+<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<jsp:useBean id="user" scope="session" class="sys_practice.User" />
+<jsp:useBean id="cart" scope="session" class="sys_practice.Cart" />
+
+<%
+	int userId = -1;
+	int cartLength = -1;
+
+	Cookie cookie[] = request.getCookies();
+	if(cookie.length > 0){
+		/* ログインしていた場合にユーザーIDを格納 */
+		for(int i=0;i<cookie.length;i++){
+			if(cookie[i].getName().equals("userId")){
+				if(!cookie[i].getValue().equals(""))
+					userId = Integer.parseInt(cookie[i].getValue());
+					cartLength = cart.getCartByUserId(userId);
+			}
+		}
+	}
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="カート" />
@@ -14,28 +34,51 @@
                             </h2>
                         </div>
                         <div class="material-card-wrapper">
+
                             <%
-                            for (int i = 0; i < 10; i++) {
+                            for (int i = 0; i < cart.getNum(); i++) {
+                            	boolean isAdult = false;
+    							if(material.getIsAdult(i) == 1){
+    								isAdult = true;
+    							}
                             %>
+                            <div class="material-card-cart">
+                           	<form action="<%=request.getContextPath() %>/removeCart" method="POST">
+	                           	<input type="hidden" name="materialId" value="<%=cart.getMaterialId(i)%>">
+	                           	<input type="submit" class="remove-items" value="×">
+                           	</form>
                             <jsp:include page="./../components/Material-Card.jsp">
-                                <jsp:param name="id" value="3039202" />
-                                <jsp:param name="price" value="500" />
-                                <jsp:param name="thumbnail" value="./../img/106.jpg" />
-                                <jsp:param name="category" value="BGM" />
-                                <jsp:param name="title" value="タイトルタイトルタイトルタイトルタイトルタイトルタイトル" />
+                                <jsp:param name="materialId" value="<%=cart.getMaterialId(i) %>" />
+                                <jsp:param name="price" value="<%=cart.getPrice(i) %>" />
+                                <jsp:param name="thumbnail" value="<%=cart.getThumbnail(i) %>" />
+                                <jsp:param name="category" value="<%=cart.getCategoryName(i) %>" />
+                                <jsp:param name="title" value="<%=cart.getMaterialName(i) %>" />
+                                <jsp:param name="isAdult" value="<%=isAdult %>" />
                             </jsp:include>
-                            <%
-                            }
-                            %>
+                            </div>
+                            <%}%>
                         </div>
                     </div>
                     <div class="amount">
+                    <%
+                    	int totalPrice = 0;
+                    	for(int i=0;i<cart.getNum(); i++){
+                    		totalPrice += cart.getPrice(i);
+                    	}
+                    %>
                         <h4>合計金額 : </h4>
-                        <h5>20000000円</h>
+                        <h5><%=totalPrice %>円</h>
                     </div>
-                    <div class="add">
-                        <a href="#" class="btn-gradient-radius">ダウンロードする</a>
-                    </div>
+                    <%if(totalPrice > 0){ %>
+                    <!-- 合計金額が、0以上の時 -->
+	                    <div class="add">
+	                        <a href="./Purchase.jsp" class="btn-gradient-radius">購入する</a>
+	                    </div>
+                    <%}else{ %>
+	                    <div class="add">
+	                        <a href="./Purchase.jsp" class="btn-gradient-radius">ダウンロードする</a>
+	                    </div>
+                    <%} %>
                 </div>
             </div>
         </div>

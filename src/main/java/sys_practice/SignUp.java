@@ -128,12 +128,12 @@ public class SignUp {
 	 * @param String email
 	 * @return ユーザーデータの個数を返却 正常時1or0 エラー時には-1返す
 	 * */
-	public int hasAccountQuantity(String email) throws Exception {
+	public int existsAccount(String email) throws Exception {
 		num = 0;//取得件数の初期化
 		try {
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-			String sql = "SELECT * FROM user WHERE email Like ?";
+			String sql = "SELECT * FROM user WHERE email = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, email);
 			stmt.setMaxRows(100); //最大の数を制限

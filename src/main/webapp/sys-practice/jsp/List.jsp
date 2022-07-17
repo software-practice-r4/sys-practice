@@ -25,13 +25,14 @@ try {
 }
 %>
 
-<jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<jsp:useBean id="nd" scope="session" class="sys_practice.Search" />
 <%
 /* エンコード */
 request.setCharacterEncoding("UTF-8");
+int categoryId=Integer.parseInt(request.getParameter("categoryId"));
 /* データ一覧の取得メソッド */
 try {
-	material.listMaterial();
+	nd.searchByCategory(categoryId);
 } catch (Exception e) {
 %>
 <html>
@@ -59,32 +60,37 @@ try {
 	<div class="sidebar">
 		<h3>絞り込み検索</h3>
 		<ul>
-			<h1>カテゴリー</h1>
-			<div class="select">
-				<select name="category" class="text-box">
-					<%
-					for (int i = 0; i < category.getNum(); i++) {
-					%>
-					<option value=<%=category.getCategoryId(i)%>><%=category.getCategoryName(i)%></option>
-					<%}%>
-				</select>
-			</div>
-			<h1>価格</h1>
-			<div class="select">
-				<select name="price" class="text-box">
-					<option value="A">～\500</option>
-					<option value="B">\500～\2000</option>
-					<option value="O">\2000～\5000</option>
-					<option value="AB">\5000～</option>
-				</select>
-			</div>
-			<h1>年齢制限</h1>
-			<div class="select">
-				<select name="age" class="text-box">
-					<option value="allages">全年齢</option>
-					<option value="adult">R-18</option>
-				</select>
-			</div>
+			<form action="Narrowdown.jsp" method="post">
+				<!--nd -> nallow down （絞り込む）-->
+				<h1>カテゴリー</h1>
+				<div class="select">
+					<select name="ndCategoryId" class="text-box">
+						<%
+						for (int i = 0; i < category.getNum(); i++) {
+						%>
+						<option value=<%=category.getCategoryId(i)%>><%=category.getCategoryName(i)%></option>
+						<%}%>
+					</select>
+				</div>
+				<h1>価格</h1>
+				<div class="select">
+					<select name="ndPrice" class="text-box">
+						<!--ls->less than(未満)  mt->more than(以上)-->
+						<option value="lt500">～&yen;500</option>
+						<option value="mt500lt2000">&yen;500～&yen;2000</option>
+						<option value="mt2000lt5000">&yen;2000～&yen;5000</option>
+						<option value="mt5000">&yen;5000～</option>
+					</select>
+				</div>
+				<h1>年齢制限</h1>
+				<div class="select">
+					<select name="ndIsAdult" class="text-box">
+						<option value="0">全年齢</option>
+						<option value="1">R-18</option>
+					</select>
+				</div>
+				<br> <input type="submit" value="絞り込む">
+			</form>
 		</ul>
 		<!--<div class="search-more">
 				<input class="btn-gradient-3d" type="submit" value="条件追加" />
@@ -98,15 +104,14 @@ try {
 			</div>
 			<div class="material-card-wrapper">
 				<%
-				for (int i = 0; i < material.getNum(); i++) {
+				for (int i = 0; i < nd.getNum(); i++) {
 				%>
 				<jsp:include page="./../components/Material-Card.jsp">
-					<jsp:param name="materialId" value="<%=material.getMaterialId(i)%>" />
-					<jsp:param name="price" value="<%=material.getPrice(i)%>" />
-					<jsp:param name="thumbnail"
-						value="./../img/<%=material.getThumbnail(i)%>" />
-					<jsp:param name="category" value="<%=material.getCategoryName(i)%>" />
-					<jsp:param name="title" value="<%=material.getMaterialName(i)%>" />
+					<jsp:param name="materialId" value="<%=nd.getMaterialId(i)%>" />
+					<jsp:param name="price" value="<%=nd.getPrice(i)%>" />
+					<jsp:param name="thumbnail" value="<%=nd.getThumbnail(i)%>" />
+					<jsp:param name="category" value="<%=nd.getCategoryName(i)%>" />
+					<jsp:param name="title" value="<%=nd.getMaterialName(i)%>" />
 				</jsp:include>
 				<%
 				}

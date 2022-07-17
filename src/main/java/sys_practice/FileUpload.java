@@ -101,7 +101,7 @@ public class FileUpload extends HttpServlet {
 				}
 				int i = Integer.parseInt(content.get(2));
 			}catch(NumberFormatException e) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isPriceNull=true");
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isPriceErr=true");
 				return;
 			}
 
