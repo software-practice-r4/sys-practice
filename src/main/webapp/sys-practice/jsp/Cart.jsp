@@ -6,6 +6,7 @@
 	int userId = -1;
 	int cartLength = -1;
 	boolean isNotLogin = false;
+	boolean isErr = false;
 	
 	Cookie cookie[] = request.getCookies();
 	if(cookie.length > 0){
@@ -20,10 +21,17 @@
 	}
 	
 	if(request.getParameter("isNotLogin") != null &&
-			   !String.valueOf(request.getParameter("isAddCartFailed")).equals("") && userId == -1)
+			   !String.valueOf(request.getParameter("isNotLogin")).equals(""))
 	{
 		isNotLogin = true;	
 	}
+
+	if(request.getParameter("isErr") != null &&
+			   !String.valueOf(request.getParameter("isErr")).equals(""))
+	{
+		isErr = true;	
+	}
+	
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:include page="./../components/Header.jsp">
@@ -42,6 +50,9 @@
                         </div>
                         <%if(isNotLogin){ %>
                         	<p class="err-txt">ログインしてください。</p>
+                        <%} %>
+                        <%if(isErr){ %>
+                        	<p class="err-txt">エラーが発生しました。</p>
                         <%} %>
                         <div class="material-card-wrapper">
                         	

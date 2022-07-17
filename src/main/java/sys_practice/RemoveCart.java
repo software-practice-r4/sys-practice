@@ -55,13 +55,13 @@ public class RemoveCart extends HttpServlet {
 		Cart cart = new Cart();
 		int result = cart.removeCart(materialId, userId);
 		
-		// 正常にカートに追加された場合
+		// 正常にカートから削除された場合
 		if(result != -1) {
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Cart.jsp");
 			return;
 		}
 		else {
-			response.sendRedirect("/sys-practice/sys-practice/jsp/Cart.jsp?isRemoveCart=true");
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Cart.jsp?isErr=true");
 			return;
 		}
 	}
