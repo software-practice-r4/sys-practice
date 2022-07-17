@@ -43,6 +43,7 @@ public class Cart extends HttpServlet {
 		if(request.getParameter("materialId") != null) {
 			materialId = Integer.parseInt(request.getParameter("materialId"));
 		}else {
+			// 素材IDがない時点で、不正なので、トップページにリダイレクト
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp");
 			return;
 		}
@@ -68,10 +69,11 @@ public class Cart extends HttpServlet {
 				return;
 			}
 		} catch (Exception e) {
-			System.out.println(e);
+			System.err.println(e);
 			materialId = -1;
 			userId = -1;
-			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?hoge");
+			// ユーザーIDがない場合もしくは不正の場合は、トップページにリダイレクトする
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp");
 			return;
 		}
 		

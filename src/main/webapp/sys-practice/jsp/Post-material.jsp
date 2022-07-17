@@ -8,6 +8,7 @@ boolean isExplanationNull = false;
 boolean isPriceNull = false;
 boolean isSuccessed = false;
 boolean isFailed = false;
+boolean isInvalidPrice = false;
 
 if (request.getParameter("isFileNull") != null) {
 	isFileNull = Boolean.valueOf(request.getParameter("isFileNull"));
@@ -26,6 +27,9 @@ if (request.getParameter("isSuccessed") != null) {
 }
 if (request.getParameter("isFailed") != null) {
 	isFailed = Boolean.valueOf(request.getParameter("isFailed"));
+}
+if(request.getParameter("isInvalidPrice") != null){
+	isInvalidPrice = Boolean.valueOf(request.getParameter("isFailed"));
 }
 
 int userId = -1;
@@ -88,11 +92,17 @@ try {
 						<%
 						}
 						%>
+						<%if (isInvalidPrice) {%>
+						<p class="err-txt">素材の価格が不正値です。</p>
+						<%
+						}
+						%>
 						<%if (isSuccessed) {%>
 						<p class="err-txt">素材のアップロードに成功しました。</p>
 						<%
 						}
 						%>
+						
 						<ul>
 							<p>
 								タイトル：<br> <input type="text" name="materialName" size="40"

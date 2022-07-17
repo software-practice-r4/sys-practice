@@ -34,8 +34,9 @@ public class SignUpServlet extends HttpServlet {
 		}
 
 		SignUp signup = new SignUp();
-		int err = 0;// データの格納を判定
+		int err = -1;// データの格納を判定
 		int hasAccount = -1;
+		int hasQuestion = -1;
 
 		/* データが空だったときの処理 */
 		if (email.equals("") || password.equals("") || questionAnswer.equals("")) {
@@ -50,26 +51,35 @@ public class SignUpServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		try {
+			hasQuestion = signup.existsQuestion(questionId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		//まだ該当するemailのアカウントがない場合、サインアップ
 		if (hasAccount == 0) {
-			try {
-				err = signup.signUp(email, password, questionId, questionAnswer);
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (hasQuestion == 1) {
+				try {
+					err = signup.signUp(email, password, questionId, questionAnswer);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
 		User user = new User();
 		// ユーザーIDと表示名をセッションで保持
 		int userId = user.getUserIdByEmail(email);
-		System.out.println("err" + err);
 		// 正常時処理
-		if (err != 0 && hasAccount == 0) {
+		if (err != -1 && hasAccount == 0 && hasQuestion != -1 && hasQuestion != 0) {
 			Cookie cookie = new Cookie("userId", String.valueOf(userId));
 			cookie.setMaxAge(-1);
 			response.addCookie(cookie);
 			System.out.println("userId=" + userId);
 			response.sendRedirect("/sys-practice/sys-practice/jsp/Mypage.jsp");
+			return;
+		}else if(hasQuestion == -1 || hasQuestion == 0){
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?isNull=true");
 			return;
 		}
 		// データがなかったor既にアカウントが存在する場合に、リダイレクト

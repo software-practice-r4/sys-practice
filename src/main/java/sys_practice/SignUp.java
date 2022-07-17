@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 /*
  * @author keita
  * @version 1.0
@@ -41,24 +42,37 @@ public class SignUp {
 	public int signUp(String email, String password, int questionId, String questionAnswer) {
 		int num = 0;//取得件数の初期化
 		try {
+
+			System.out.println("email: " + email);
+			System.out.println("password: " + password);
+			System.out.println("questionId: " + questionId);
+			System.out.println("questionAnswer: " + questionAnswer);
+
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-			String sql = "INSERT INTO user (email,password,displayName,questionId,questionAnswer,wallet)"
-					+ "VALUES (?,?,?,?,?,?)";
+			String sql = "insert into user (email,password,displayName,questionId,questionAnswer,wallet) "
+					+ "select * from (select ?,?,?,?,?,?) AS tmp where exists (select * from question where questionId = ?)";
 
 			PreparedStatement ps = conn.prepareStatement(sql);
+			String displayName =  email.substring(0, email.lastIndexOf("@"))
+					+ String.valueOf(System.currentTimeMillis() / 1000L);
 			ps.setString(1, email);
 			ps.setString(2, password);
-			ps.setString(3, email);
+			ps.setString(3, displayName);
 			ps.setInt(4, questionId);
 			ps.setString(5, questionAnswer);
 			ps.setInt(6, 0); // wallet
-
+			ps.setInt(7, 0);
+			
 			num = ps.executeUpdate();
 
 			ps.close();
 			conn.close();
-
+			
+			// 更新されなかったときに、-1を返すようにする
+			if(num == 0) {
+				return -1;
+			}
 			return num;
 
 		} catch (SQLException ex) {
@@ -78,7 +92,6 @@ public class SignUp {
 				}
 		}
 	}
-
 	/*
 	 * 秘密の質問を取得する
 	 * @return 取得された件数を返却 エラー時には-1返す
@@ -140,14 +153,53 @@ public class SignUp {
 			resultSet = stmt.executeQuery();
 
 			while (resultSet.next()) {
-				this.email[num] = resultSet.getString("email");
-				this.password[num] = resultSet.getString("password");
-				this.displayName[num] = resultSet.getString("displayName");
 				this.questionId[num] = resultSet.getInt("questionId");
-				this.questionAnswer[num] = resultSet.getString("questionAnswer");
-				this.explanation[num] = resultSet.getString("explanation");
-				this.icon[num] = resultSet.getString("icon");
-				this.wallet[num] = resultSet.getInt("wallet");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
+				num++;
+			}
+
+			stmt.close();
+			resultSet.close();
+			conn.close();
+
+			return num;
+
+		} catch (SQLException ex) {
+			// Handle any errors
+			System.out.println("SQLException: " + ex.getMessage());
+			System.out.println("SQLState: " + ex.getSQLState());
+			System.out.println("VendorError: " + ex.getErrorCode());
+			return -1;
+		} finally {
+			System.out.println("Closing the connection.");
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException ignore) {
+				}
+			}
+		}
+	}
+
+	/*
+	 * 受け取ったquestionIdが、questionテーブル内に存在する個数を取得する
+	 * @param int questionId
+	 * @return 個数を返却 正常時1or0 エラー時には-1返す
+	 * */
+	public int existsQuestion(int questionId) throws Exception {
+		num = 0;//取得件数の初期化
+		try {
+			AWS aws = new AWS();
+			conn = aws.getRemoteConnection();
+			String sql = "SELECT * FROM question WHERE questionId = ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, questionId);
+			stmt.setMaxRows(100); //最大の数を制限
+			resultSet = stmt.executeQuery();
+
+			while (resultSet.next()) {
+				this.questionId[num] = resultSet.getInt("questionId");
+				this.questionTitle[num] = resultSet.getString("questionTitle");
 				num++;
 			}
 
