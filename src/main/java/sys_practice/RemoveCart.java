@@ -40,15 +40,14 @@ public class RemoveCart extends HttpServlet {
 			   ログインしないで、カートに追加すると、userIdが-1の初期値のままくる
 		    */
 			if(userId == -1) {
-				response.sendRedirect("/sys-practice/sys-practice/jsp/Material-detail.jsp?materialId=" 
-						+ materialId + "&isNotLogin=true");
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Cart.jsp?isNotLogin=true");
 				return;
 			}
 		} catch (Exception e) {
 			System.out.println(e);
 			materialId = -1;
 			userId = -1;
-			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp?hoge");
+			response.sendRedirect("/sys-practice/sys-practice/jsp/Home.jsp");
 			return;
 		}
 		

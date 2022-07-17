@@ -5,6 +5,7 @@
 <% 
 	int userId = -1;
 	int cartLength = -1;
+	boolean isNotLogin = false;
 	
 	Cookie cookie[] = request.getCookies();
 	if(cookie.length > 0){
@@ -16,6 +17,12 @@
 					cartLength = cart.getCartByUserId(userId);
 			}
 		}
+	}
+	
+	if(request.getParameter("isNotLogin") != null &&
+			   !String.valueOf(request.getParameter("isAddCartFailed")).equals("") && userId == -1)
+	{
+		isNotLogin = true;	
 	}
 %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -33,6 +40,9 @@
                                 カート内
                             </h2>
                         </div>
+                        <%if(isNotLogin){ %>
+                        	<p class="err-txt">ログインしてください。</p>
+                        <%} %>
                         <div class="material-card-wrapper">
                         	
                             <%
