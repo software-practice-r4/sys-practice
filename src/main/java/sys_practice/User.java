@@ -1,7 +1,6 @@
 package sys_practice;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -73,42 +72,6 @@ public class User {
 				}
 		}
 	}
-	/*agmntUserIdと一致したレコードを削除する*/
-	public void deleteUser(int agmntUserId) throws Exception {
-
-		/*データベースに接続*/
-		Class.forName("com.mysql.jdbc.Driver").newInstance(); //com.mysql.jdbc.Driverはドライバのクラス名
-		String url = "jdbc:mysql://localhost/softd2?characterEncoding=UTF-8"; //データベース名は適宜修正：文字エンコードはUTF-8
-		Connection conn = DriverManager.getConnection(url, "admin", "AraikenR4!"); //上記URL設定でユーザ名とパスワードを使って接続
-
-		/*SELECT文の実行 */
-		String sql = "DELETE * FROM user WHERE userid = ?";
-		PreparedStatement stmt = conn.prepareStatement(sql); //JDBCのステートメント（SQL文）の作成
-		stmt.setMaxRows(100); //最大の数を制限
-		stmt.setString(1, String.valueOf(agmntUserId));
-		ResultSet rs = stmt.executeQuery(); //ステートメントを実行しリザルトセットに代入
-
-		/*結果の取り出しと表示*/
-		num = 0;
-		while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
-			this.userId[num] = rs.getInt("userId");
-			this.email[num] = rs.getString("email");
-			this.password[num] = rs.getString("password");
-			this.questionId[num] = rs.getInt("questionId");
-			this.questionAnswer[num] = rs.getString("questionAnswer");
-			this.displayName[num] = rs.getString("displayName");
-			this.explanation[num] = rs.getString("explanation");
-			this.icon[num] = rs.getString("icon");
-			this.wallet[num] = rs.getInt("wallet");
-			num++;
-		}
-
-		/*データベースからの切断*/
-		rs.close(); //開いた順に閉じる
-		stmt.close();
-		conn.close();
-	}
-
 	/* ユーザーIDと合致するお金を取得する*/
 	public int getMoneyById(int userId) throws Exception {
 		try {
@@ -129,7 +92,10 @@ public class User {
 			stmt.close();
 			resultSet.close();
 			conn.close();
-
+			
+			if(wallet == 0) {
+				return -1;
+			}
 			return wallet;
 
 		} catch (SQLException ex) {
