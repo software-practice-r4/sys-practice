@@ -175,7 +175,7 @@ public class Search extends Material {
 		return where;
 	}
 	
-	public void narrowdown(int ndCategoryId, String ndPrice, int ndIsAdult) throws Exception {
+	public void narrowDown(int ndCategoryId, String ndPrice, int ndIsAdult) throws Exception {
 		try {
 			AWS aws = new AWS();
 			/*AWSに接続*/

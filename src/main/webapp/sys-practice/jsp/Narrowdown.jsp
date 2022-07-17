@@ -27,7 +27,7 @@ if (request.getParameter("ndIsAdult") != null && !request.getParameter("ndIsAdul
 /*素材検索メソッド */
 try {
 	System.out.println("narrowdown");
-	nd.narrowdown(ndCategoryId, ndPrice, ndIsAdult);
+	nd.narrowDown(ndCategoryId, ndPrice, ndIsAdult);
 %>
 
 <jsp:useBean id="category" scope="session" class="sys_practice.Category" />
