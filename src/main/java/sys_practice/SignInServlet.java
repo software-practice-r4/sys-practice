@@ -46,7 +46,7 @@ public class SignInServlet extends HttpServlet {
 		int userId = user.getUserIdByEmail(email);
 
 		// 正常時処理
-		if(err != 0) {
+		if(err != -1) {
 			Cookie cookie = new Cookie("userId", String.valueOf(userId));
 			cookie.setMaxAge(-1);
 			response.addCookie(cookie);
