@@ -35,8 +35,9 @@ public class Purchase extends Material{
 			conn = aws.getRemoteConnection();
 			String sql = "SELECT * FROM purchaseHistory INNER JOIN material on "
 					   + "purchaseHistory.materialId = material.materialId "
-					   + "INNER JOIN category ON material.categoryId = category.categoryId";
+					   + "INNER JOIN category ON material.categoryId = category.categoryId WHERE userId = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setInt(1, userId);
 			stmt.setMaxRows(100); //最大の数を制限
 			ResultSet rs = stmt.executeQuery();
 
