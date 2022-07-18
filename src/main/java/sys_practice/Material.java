@@ -109,12 +109,19 @@ public class Material {
 			rs.close(); //開いた順に閉じる
 			stmt.close();
 			conn.close();
+			
+			if(num <= 0) {
+				throw new Exception("データがありません");
+			}
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-		} finally {
+		} catch(Exception e){
+			System.err.println(e);
+		}finally {
+		}
 			System.out.println("Closing the connection.");
 			if (conn != null)
 				try {
