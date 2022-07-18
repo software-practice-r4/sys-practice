@@ -215,7 +215,10 @@ public class Material {
 			stmt.close();
 			resultSet.close();
 			conn.close();
-
+			
+			if(num <= 0) {
+				throw new Exception("データがありません");
+			}
 			return num;
 
 		} catch (SQLException ex) {
@@ -224,7 +227,10 @@ public class Material {
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
 			return 0;
-		} finally {
+		}catch(Exception e) {
+			System.err.println(e);
+		}
+		finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
 				try {
