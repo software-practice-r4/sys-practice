@@ -186,7 +186,7 @@ public class Material {
 	 * @param int userId
 	 * @return 取得したデータ数 0 <= num <= 100
 	 * */
-	public int getMaterialByMaterialId(int materialId) {
+	public int getMaterialByMaterialId(int materialId){
 		num = 0; // 取得したデータの量を格納
 		try {
 			AWS aws = new AWS();
@@ -226,9 +226,10 @@ public class Material {
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+			return -1;
 		}catch(Exception e) {
 			System.err.println(e);
+			return -1;
 		}
 		finally {
 			System.out.println("Closing the connection.");
