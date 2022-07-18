@@ -39,7 +39,7 @@ public class Material {
 			stmt.setMaxRows(100); //最大の数を制限
 			ResultSet rs = stmt.executeQuery();
 
-			/* 2.1.3 結果の取り出しと表示 */
+			/*結果の取り出しと表示 */
 			num = 0;
 			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
 				this.materialName[num] = rs.getString("materialName");
@@ -77,19 +77,20 @@ public class Material {
 	/*
 	 * ランダムに素材を取得する
 	 * ランキング機能の代わり
+	 * テスト素材は格納されないようにしている
 	 * */
 	public void getRandomMaterial() throws Exception { //エラー処理が必要にする
 		try {
 
 			AWS aws = new AWS();
 			conn = aws.getRemoteConnection();
-			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId"
+			String sql = "SELECT * FROM material INNER JOIN category ON material.categoryId = category.categoryId where material.materialId BETWEEN 3 AND 44"
 					   + " ORDER BY RAND() LIMIT 10";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setMaxRows(100); //最大の数を制限
 			ResultSet rs = stmt.executeQuery();
 
-			/* 2.1.3 結果の取り出しと表示 */
+			/* 結果の取り出しと表示 */
 			num = 0;
 			while (rs.next()) { //リザルトセットを1行進める．ない場合は終了
 				this.materialName[num] = rs.getString("materialName");

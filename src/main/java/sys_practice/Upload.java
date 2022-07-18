@@ -21,6 +21,9 @@ public class Upload{
 	
 	Connection conn = null;
 	
+	/*
+	 * 素材をアップロードする
+	 * */
 	public int uploadMaterial(String materialName, String explanation, String price, String categoryId, String categoryName, String isAdult, String providerId, String thumbnail) throws Exception{
 		int result = -1;
 		try {
