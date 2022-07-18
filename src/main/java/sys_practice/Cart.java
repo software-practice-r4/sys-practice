@@ -259,13 +259,16 @@ public class Cart extends HttpServlet {
 			stmt.close();
 			conn.close();
 			
+			if(cartLength <= 0) {
+				return -1;
+			}
 			return cartLength;
 		} catch (SQLException ex) {
 			// Handle any errors
 			System.out.println("SQLException: " + ex.getMessage());
 			System.out.println("SQLState: " + ex.getSQLState());
 			System.out.println("VendorError: " + ex.getErrorCode());
-			return 0;
+			return -1;
 		} finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)

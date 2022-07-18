@@ -70,11 +70,12 @@ public class FileUpload extends HttpServlet {
 				FileItem objFi = (FileItem) objItr.next();
 				//ファイルじゃない時
 				if (!objFi.isFormField()) {
-					String prev_filename = objFi.getName();
-					if(prev_filename.length() <= 0) {
-						break;
+					String prevFilename = objFi.getName();
+					if(prevFilename.length() <= 0) {
+						response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFileNull=true");
+						return;
 					}
-					filename = filename + prev_filename.substring(prev_filename.lastIndexOf("."));
+					filename = filename + prevFilename.substring(prevFilename.lastIndexOf("."));
 					if (filename != null && !filename.equals("")) {
 						objFi.write(new File(dataDir + "/" + filename));
 						uploaded = true;
@@ -89,11 +90,20 @@ public class FileUpload extends HttpServlet {
 				} else if (content.get(0).equals("")) {
 					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isMaterialNameNull=true");
 					return;
+				} else if ((content.get(0)).length() > 25) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isInvalidMaterialName=true");
+					return;
 				} else if (content.get(1).equals("")) {
 					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isExplanationNull=true");
 					return;
+				} else if ((content.get(1)).length() > 255) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isInvalidExplanation=true");
+					return;
 				} else if (content.get(2).equals("")) {
 					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isPriceNull=true");
+					return;
+				} else if (content.get(3).equals("0") && (content.get(4)).length() > 50) {
+					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isInvalidCategoryName=true");
 					return;
 				} else if (content.get(6).equals("")) {
 					response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
@@ -105,6 +115,8 @@ public class FileUpload extends HttpServlet {
 				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isInvalidPrice=true");
 				return;
 			}
+
+			System.out.println(content.get(0).length());
 
 			//userIdを確認するSQL文を発行
 			User hasUserIdOnDatabase = new User();
@@ -131,13 +143,16 @@ public class FileUpload extends HttpServlet {
 			} catch (Exception e) {
 				System.out.println(e);
 			}
-			// ファイル名をデータベースに登録する
-			if (!uploaded)
+
+
+			if (uploaded) {
+				// 成功情報を付与してPost-material.jspへ遷移する
+				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isSuccessed=true");
+				return;
+			}else {
+				// アップロードの失敗時、エラー情報を付与してPost-material.jspへ遷移する
 				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isFailed=true");
 				//processRequest(request, response); //エラー表示
-			else {
-				// 次の一覧表示ページへ転送する
-;				response.sendRedirect("/sys-practice/sys-practice/jsp/Post-material.jsp?isSuccessed=true");
 				return;
 			}
 		} catch (Exception e) {

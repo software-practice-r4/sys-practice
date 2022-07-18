@@ -9,6 +9,9 @@ boolean isPriceNull = false;
 boolean isSuccessed = false;
 boolean isFailed = false;
 boolean isInvalidPrice = false;
+boolean isInvalidMaterialName = false;
+boolean isInvalidExplanation = false;
+boolean isInvalidCategoryName = false;
 
 if (request.getParameter("isFileNull") != null) {
 	isFileNull = Boolean.valueOf(request.getParameter("isFileNull"));
@@ -28,8 +31,17 @@ if (request.getParameter("isSuccessed") != null) {
 if (request.getParameter("isFailed") != null) {
 	isFailed = Boolean.valueOf(request.getParameter("isFailed"));
 }
+if(request.getParameter("isInvalidMaterialName") != null){
+	isInvalidMaterialName = Boolean.valueOf(request.getParameter("isInvalidMaterialName"));
+}
+if(request.getParameter("isInvalidExplanation") != null){
+	isInvalidExplanation = Boolean.valueOf(request.getParameter("isInvalidExplanation"));
+}
 if(request.getParameter("isInvalidPrice") != null){
-	isInvalidPrice = Boolean.valueOf(request.getParameter("isFailed"));
+	isInvalidPrice = Boolean.valueOf(request.getParameter("isInvalidPrice"));
+}
+if(request.getParameter("isInvalidCategoryName") != null){
+	isInvalidCategoryName = Boolean.valueOf(request.getParameter("isInvalidCategoryName"));
 }
 
 int userId = -1;
@@ -82,8 +94,18 @@ try {
 						<%
 						}
 						%>
+						<%if (isInvalidMaterialName) {%>
+						<p class="err-txt">素材の名前が不正値です。</p>
+						<%
+						}
+						%>
 						<%if (isExplanationNull) {%>
 						<p class="err-txt">素材の説明を入力してください。</p>
+						<%
+						}
+						%>
+						<%if (isInvalidExplanation) {%>
+						<p class="err-txt">素材の説明が不正値です。</p>
 						<%
 						}
 						%>
@@ -97,12 +119,22 @@ try {
 						<%
 						}
 						%>
+						<%if (isInvalidCategoryName) {%>
+						<p class="err-txt">カテゴリーの名前が不正値です。</p>
+						<%
+						}
+						%>
+						<%if (isFailed) {%>
+						<p class="err-txt">素材のアップロードに失敗しました。</p>
+						<%
+						}
+						%>
 						<%if (isSuccessed) {%>
 						<p class="err-txt">素材のアップロードに成功しました。</p>
 						<%
 						}
 						%>
-						
+
 						<ul>
 							<p>
 								タイトル：<br> <input type="text" name="materialName" size="40"
@@ -118,7 +150,6 @@ try {
 							</p>
 							<p>カテゴリー：
 							<div class="select">
-
 								<select name="categoryId" class="text-box">
 									<%
 									for (int i = 0; i < category.getNum(); i++) {

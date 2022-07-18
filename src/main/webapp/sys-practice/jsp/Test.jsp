@@ -35,93 +35,10 @@ if (request.getParameter("isErr") != null &&
 	<jsp:param name="style" value="cart" />
 </jsp:include>
 <div id="main">
-	<jsp:include page="./../components/SideBar.jsp" />
-	<div id="C">
-		<div class="inner">
-			<div class="post">
-				<div class="centering-ttl-box">
-					<h2 class="centering-ttl">カート内</h2>
-				</div>
-				<%
-				if (isNotLogin) {
-				%>
-				<p class="err-txt">ログインしてください。</p>
-				<%
-				}
-				%>
-				<%
-				if (isErr) {
-				%>
-				<p class="err-txt">エラーが発生しました。</p>
-				<%
-				}
-				%>
-				<div class="material-card-wrapper">
-
-					<%
-					for (int i = 0; i < cart.getNum(); i++) {
-						boolean isAdult = false;
-						if (material.getIsAdult(i) == 1) {
-							isAdult = true;
-						}
-					%>
-					<div class="material-card-cart">
-						<form action="<%=request.getContextPath()%>/removeCart"
-							method="POST">
-							<input type="hidden" name="materialId"
-								value=-100> <input type="submit"
-								class="remove-items" value="×">
-						</form>
-						<jsp:include page="./../components/Material-Card.jsp">
-							<jsp:param name="materialId" value="<%=cart.getMaterialId(i)%>" />
-							<jsp:param name="price" value="<%=cart.getPrice(i)%>" />
-							<jsp:param name="thumbnail" value="<%=cart.getThumbnail(i)%>" />
-							<jsp:param name="category" value="<%=cart.getCategoryName(i)%>" />
-							<jsp:param name="title" value="<%=cart.getMaterialName(i)%>" />
-							<jsp:param name="isAdult" value="<%=isAdult%>" />
-						</jsp:include>
-					</div>
-					<%
-					}
-					%>
-				</div>
-			</div>
-			<%
-			if (cart.getNum() <= 0) {
-			%>
-			<p class="err-txt">まだカートに商品はありません</p>
-			<%
-			}
-			%>
-			<div class="amount">
-				<%
-				int totalPrice = 0;
-				for (int i = 0; i < cart.getNum(); i++) {
-					totalPrice += cart.getPrice(i);
-				}
-				%>
-				<h4>合計金額 :</h4>
-				<h5><%=totalPrice%>円
-				</h5>
-			</div>
-			<%
-			if (totalPrice > 0) {
-			%>
-			<!-- 合計金額が、0以上の時 -->
-			<div class="add">
-				<a href="./Purchase.jsp" class="btn-gradient-radius">購入する</a>
-			</div>
-			<%
-			} else if (totalPrice <= 0 && cart.getNum() > 0) {
-			%>
-			<div class="add">
-				<a href="./Purchase.jsp" class="btn-gradient-radius">ダウンロードする</a>
-			</div>
-			<%
-			}
-			%>
-		</div>
-	</div>
+		<a href="<%="../img/" +material.getThumbnail(0) %>" 
+		   download class="btn-square-emboss link">ダウンロード</a>
+		<a href="<%=request.getContextPath()%>/cart"  
+		   class="btn-square-emboss link">カートに追加</a>
 </div>
 <jsp:include page="./../components/Footer.jsp" />
 </body>
