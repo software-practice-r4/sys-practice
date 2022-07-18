@@ -40,7 +40,7 @@ try {
 				</div>
 				<div class="information">
 					<ul>
-						<form action="ReceiveInfo.jsp" method="post">
+						<form action="ReceiveInfo.jsp" method="GET">
 							<p>
 								キーワード:<br> <input type="search" name="keyword" size="40"
 									placeholder="アザラシ" class="text-box" required>
@@ -52,7 +52,7 @@ try {
 							<p>
 								カテゴリー：<br>
 							<div class="select">
-								<select name="searchCategoryId" class="text-box">
+								<select name="searchCategoryId" class="text-box" style="width: 300px;">
 									<option value="" selected>選択してください</option>
 									<%
 									for (int i = 0; i < category.getNum(); i++) {
@@ -66,14 +66,16 @@ try {
 							<p>
 								年齢制限：<br>
 							<div class="select">
-								<select name="searchIsAdult" class="text-box" size=>
+								<select name="searchIsAdult" class="text-box" style="width: 300px;">
 									<option value="" selected>選択してください</option>
 									<option value="0">全年齢</option>
 									<option value="1">R-18</option>
 								</select>
 							</div>
 							<p>
-								<input type="submit" value="検索">
+								<input type="submit" class="btn-square-pop m-auto"
+								style="text-align:center; display:flex; justify-content: center;; align-items:center;"
+								value="検索">
 						</form>
 
 					</ul>

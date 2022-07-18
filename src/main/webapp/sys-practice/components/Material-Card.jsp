@@ -36,9 +36,6 @@
 	}catch(Exception e){
 		e.printStackTrace();
 	}
-	
-	System.out.println("isAdult" + isAdult);
-
 %>
 
 <a href=<%="Material-detail.jsp?materialId=" + materialId %> class="material-card link">

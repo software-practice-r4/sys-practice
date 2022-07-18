@@ -49,6 +49,9 @@ if (!style.equals(""))
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap"
 	rel="stylesheet" />
 <title><%=title + "　|　素材提供サイト"%></title>
+<link rel="icon" sizes="16x16"  href="../img/favicon.ico">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="theme-color" content="#ffffff">
 </head>
 <header>
 	<div class="inner">
@@ -103,7 +106,12 @@ if (!style.equals(""))
 			sbtn.style.pointerEvents="none";
 		else
 			sbtn.style.pointerEvents="auto";
+		
+		if(getParam("keyword"))
+			sbox.value=getParam("keyword");
 	})
+	
+	
 	/**
 	 * Get the URL parameter value
 	 *

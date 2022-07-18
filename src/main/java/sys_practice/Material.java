@@ -244,7 +244,7 @@ public class Material {
 					+ "INNER JOIN category on material.categoryId = category.categoryId WHERE providerId = ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setInt(1, userId);
-			stmt.setMaxRows(10); //最大の数を制限
+			stmt.setMaxRows(100); //最大の数を制限
 			resultSet = stmt.executeQuery();
 
 			while (resultSet.next()) {

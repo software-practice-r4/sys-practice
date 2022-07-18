@@ -26,7 +26,9 @@ if (request.getParameter("ndIsAdult") != null && !request.getParameter("ndIsAdul
 }
 /*素材検索メソッド */
 try {
-	System.out.println("narrowdown");
+	System.out.println(ndCategoryId);
+	System.out.println(ndCategoryId);
+	System.out.println(ndCategoryId);
 	nd.narrowDown(ndCategoryId, ndPrice, ndIsAdult);
 %>
 
@@ -61,54 +63,14 @@ try {
 	<jsp:param name="title" value="一覧ページ" />
 	<jsp:param name="style" value="list" />
 </jsp:include>
-<html>
 <head>
 <link rel="stylesheet" href="search-result.css">
 </head>
 <body>
 	<div id="main">
-		<div class="sidebar">
-			<h3>絞り込み検索</h3>
-			<ul>
-				<form action="Narrowdown.jsp" method="post">
-					<!--nd -> nallow down （絞り込む）-->
-					<h1>カテゴリー</h1>
-					<div class="select">
-						<select name="ndCategoryId" class="text-box">
-							<%
-							for (int i = 0; i < category.getNum(); i++) {
-							%>
-							<option value=<%=category.getCategoryId(i)%>><%=category.getCategoryName(i)%></option>
-							<%
-							}
-							%>
-						</select>
-					</div>
-					<h1>価格</h1>
-					<div class="select">
-						<select name="ndPrice" class="text-box">
-							<!--ls->less than(未満)  mt->more than(以上)-->
-							<option value="lt500">～&yen;500</option>
-							<option value="mt500lt2000">&yen;500～&yen;2000</option>
-							<option value="mt2000lt5000">&yen;2000～&yen;5000</option>
-							<option value="mt5000">&yen;5000～</option>
-						</select>
-					</div>
-					<h1>年齢制限</h1>
-					<div class="select">
-						<select name="ndIsAdult" class="text-box">
-							<option value="0">全年齢</option>
-							<option value="1">R-18</option>
-						</select>
-					</div>
-					<br> <input type="submit" value="絞り込む">
-				</form>
-			</ul>
-			<!--<div class="search-more">
-				<input class="btn-gradient-3d" type="submit" value="条件追加" />
-			</div>
-		-->
-		</div>
+		
+		<jsp:include page="./../components/SearchSideBar.jsp" />
+		
 		<div class="cnt">
 			<div class="post">
 				<div class="centering-ttl-box">
