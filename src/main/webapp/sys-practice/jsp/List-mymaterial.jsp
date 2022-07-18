@@ -27,6 +27,9 @@ for (int i = 0; i < cookie.length; i++) {
 				<div class="centering-ttl-box">
 					<h2 class="centering-ttl">投稿一覧</h2>
 				</div>
+				<%if (userId == -1) {%>
+					<p class="err-txt">ユーザ情報の取得に失敗しました。再度ログインしてください。</p>
+				<%}else{ %>
 				<div class="material-card-wrapper">
 					<%
 					dataLength = material.getProviderMaterial(userId);
@@ -53,6 +56,7 @@ for (int i = 0; i < cookie.length; i++) {
 				<div class="next">
 					<a href="#">1..100</a>
 				</div>
+				<%} %>
 			</div>
 		</div>
 	</div>

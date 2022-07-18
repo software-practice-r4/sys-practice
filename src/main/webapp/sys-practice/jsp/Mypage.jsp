@@ -37,10 +37,11 @@ else if(hasUser){
             <div id="C">
                 <div class="inner">
                     <div class="post">
-                        <div class="centering-ttl-box">
+                        
                         <%if(userId == -1) {%>
 							<p class="err-txt">ユーザIDの取得に失敗しました。再度ログインしてください。</p>
 						<%}	else {%>
+						<div class="centering-ttl-box">
                             <h2 class="centering-ttl">
                                 あなたのこんな作品が人気です
                             </h2>

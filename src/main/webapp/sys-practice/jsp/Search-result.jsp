@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="category" scope="session" class="sys_practice.Category" />
+<jsp:useBean id="search" scope="session" class="sys_practice.Search" />
 
 <%
 /* エンコード */
@@ -14,7 +15,7 @@ try {
 }
 %>
 
-<jsp:useBean id="search" scope="session" class="sys_practice.Search" />
+
 <jsp:include page="./../components/Header.jsp">
 	<jsp:param name="title" value="一覧ページ" />
 	<jsp:param name="style" value="list" />

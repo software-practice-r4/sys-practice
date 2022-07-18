@@ -29,6 +29,9 @@ if(cookie.length > 0){
                                 購入履歴
                             </h2>
                         </div>
+                        <%if(userId == -1){ %>
+                        	<p class="err-txt">ユーザ情報の取得に失敗しました。再度ログインしてください。</p>
+                        <%}else{ %>
                        <div class="material-card-wrapper">
                             <%
                             int dataLength = history.loadPurchaseHistory(userId);
@@ -63,6 +66,7 @@ if(cookie.length > 0){
                         <div class="next">
                             <a href="#">1..100</a>
                         </div>
+                        <%} %>
                     </div>
                 </div>
             </div>

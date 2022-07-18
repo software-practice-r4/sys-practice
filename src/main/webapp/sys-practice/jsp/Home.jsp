@@ -1,5 +1,3 @@
-<jsp:useBean id="user" scope="session" class="sys_practice.User" />
-<jsp:useBean id="aws" scope="session" class="sys_practice.AWS" />
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
 
 <%
