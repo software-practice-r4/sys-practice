@@ -120,8 +120,8 @@ public class Material {
 			System.out.println("VendorError: " + ex.getErrorCode());
 		} catch(Exception e){
 			System.err.println(e);
-		}finally {
 		}
+		finally {
 			System.out.println("Closing the connection.");
 			if (conn != null)
 				try {
