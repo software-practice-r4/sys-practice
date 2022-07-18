@@ -73,7 +73,7 @@ else if(hasUser){
                         </div>
                         <%if(trend.getNumResults() != 0) {%>
 	                        <div class="add">
-	                           	<a href="#" class="btn-gradient-radius">もっとみる</a>
+	                           	<a href="#" class="btn-gradient-radius events-none">もっとみる</a>
 	                       	</div>
                        	<%} %>
                     </div>
@@ -115,7 +115,7 @@ else if(hasUser){
                             %>
                         </div>
                         <div class="add">
-                            <a href="#" class="btn-gradient-radius">もっとみる</a>
+                            <a href="./List-mymaterial.jsp" class="btn-gradient-radius">もっとみる</a>
                         </div>
                     </div>
                     <div class="post">
@@ -146,7 +146,7 @@ else if(hasUser){
                             %>
                         </div>
                         <div class="add">
-                            <a href="#" class="btn-gradient-radius">もっとみる</a>
+                            <a href="./Purchase-history.jsp" class="btn-gradient-radius">もっとみる</a>
                         </div>
                     <%} %>
                     </div>

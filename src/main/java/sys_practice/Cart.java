@@ -140,7 +140,7 @@ public class Cart extends HttpServlet {
 			
 
 			sql = "INSERT INTO cart (materialId, userId) SELECT * FROM (SELECT ?,?) AS tmp "
-					+ "WHERE exists(SELECT materialId FROM material WHERE materialId = ? AND providerId = ?)";
+					+ "WHERE exists(SELECT materialId FROM material WHERE NOT materialId = ? AND providerId = ?)";
 			stmt = conn.prepareStatement(sql);
 			stmt.setInt(1,materialId);
 			stmt.setInt(2,userId);
@@ -181,6 +181,8 @@ public class Cart extends HttpServlet {
 	 * @return int 更新できた行の量 エラー時は、-1を返却する
 	 * */
 	public int removeCart(int materialId, int userId) {
+		System.out.println("mateiralId" + materialId);
+		System.out.println("userID"+userId);
 		int result=-1;
 		Connection conn = null;
 		num = 0;
