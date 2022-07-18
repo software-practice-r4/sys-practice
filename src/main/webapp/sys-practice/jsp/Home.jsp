@@ -1,4 +1,5 @@
 <jsp:useBean id="material" scope="session" class="sys_practice.Material" />
+<jsp:useBean id="category" scope="session" class="sys_practice.Category" />
 
 <%
 boolean isLogout = false;
@@ -93,8 +94,13 @@ if(request.getParameter("isNull") != null){
 					<h2 class="centering-ttl">カテゴリー</h2>
 				</div>
 				<div class="category-list">
-					<a href=<%="List.jsp?category_id="+512%> class="btn-square">カテゴリー1</a>
-					<a href=<%="List.jsp?category_id="+212%> class="btn-square">カテゴリー2</a>
+					<%
+					category.dispCategory();
+					for (int i = 0; i < category.getNum(); i++) {
+					%>
+					<a href=<%="List.jsp?ndCategoryId="+category.getCategoryId(i)%>
+						class="btn-square"><%= category.getCategoryName(i)%></a>
+					<%}%>
 				</div>
 			</div>
 		</div>

@@ -71,7 +71,7 @@ try {
 					priceBox.options[2].selected = false;
 					priceBox.options[3].selected = false;
 
-				}else if(((500 <= searchPrice) && (price < 2000)) || (price === "mt500lt2000")){
+				}else if(((500 <= searchPrice) && (searchPrice < 2000)) || (price === "mt500lt2000")){
 					priceBox.options[0].selected = false;
 					priceBox.options[1].selected = true;
 					priceBox.options[2].selected = false;
@@ -79,7 +79,7 @@ try {
 
 				}
 				
-				else if(((2000 <= searchPrice) && (price < 5000)) || (price === "mt2000lt5000")){
+				else if(((2000 <= searchPrice) && (searchPrice < 5000)) || (price === "mt2000lt5000")){
 					priceBox.options[0].selected = false;
 					priceBox.options[1].selected = false;
 					priceBox.options[2].selected = true;

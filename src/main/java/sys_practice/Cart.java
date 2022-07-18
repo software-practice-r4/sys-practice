@@ -198,6 +198,9 @@ public class Cart extends HttpServlet {
 			stmt.close();
 			conn.close();
 			
+			if(result <= 0) {
+				return -1;
+			}
 			return result;
 
 		} catch (SQLException ex) {
