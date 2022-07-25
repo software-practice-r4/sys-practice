@@ -100,9 +100,6 @@ public class User {
 			resultSet.close();
 			conn.close();
 			
-			if(wallet == 0) {
-				return -1;
-			}
 			return wallet;
 
 		} catch (SQLException ex) {

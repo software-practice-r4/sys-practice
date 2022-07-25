@@ -91,7 +91,7 @@
                         <%if(!isErrGetWallet){ %>
                         	<h5><%=userWallet %>円</h5>
                        	<%}else{ %>
-                       		<h5 class="err-txt">取得できませんでした。ページを更新してください。</h5>
+                       		<h5><%=userWallet %>円</h5>
                      	<%} %>
                     </div>
                     <%if(userWallet-totalPrice >= 0){ %>
@@ -101,7 +101,7 @@
 	                    </div>
                     <%}else{ %>
 	                    <div class="add">
-	                        <a href="#" class="btn-gradient-radius err-txt" style="pointer-events:none;">
+	                        <a href="#" class="btn-gradient-radius err-txt" style="width: 300px;pointer-events:none;">
 	                        	残高チャージしてください
 	                        </a>
 	                    </div>

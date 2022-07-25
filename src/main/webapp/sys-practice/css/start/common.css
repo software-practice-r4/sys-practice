@@ -110,6 +110,9 @@ body {
 		opacity: 0;
 	}
 }
+.link-color-init{
+	color: #0000EE;
+}
 /* ヘッダー */
 header {
     width: 100%;

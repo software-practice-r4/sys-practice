@@ -61,6 +61,7 @@ public class Upload{
 		    		   + "SELECT * FROM (select ?, ?, ?, ?, ?, ?, ?) "
 		    		   + "AS tmp WHERE exists(SELECT * FROM category WHERE categoryId = ?)";
 		    PreparedStatement stmt3 = conn.prepareStatement(sql);
+		    
 		    stmt3.setString(1, materialName);
 		    stmt3.setInt(2, Integer.parseInt(price));
 		    stmt3.setString(3, thumbnail);
@@ -69,7 +70,7 @@ public class Upload{
 		    stmt3.setString(6, explanation);
 		    stmt3.setInt(7, Integer.parseInt(isAdult));
 		    stmt3.setInt(8, Integer.parseInt(categoryId));
-		    
+		    System.out.println(stmt3);
 		    result = stmt3.executeUpdate();
 	
 		    stmt3.close();

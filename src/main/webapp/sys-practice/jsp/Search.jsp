@@ -5,6 +5,18 @@
 /* エンコード */
 request.setCharacterEncoding("UTF-8");
 /* データ一覧の取得メソッド */
+int userId = -1;
+Cookie cookie[] = request.getCookies();
+if(cookie.length > 0){
+	/* ログインしていた場合にユーザーIDを格納 */
+	for(int i=0;i<cookie.length;i++){
+		if(cookie[i].getName().equals("userId")){
+			if(!cookie[i].getValue().equals(""))
+				userId = Integer.parseInt(cookie[i].getValue());
+		}
+	}
+}
+
 try {
 	category.dispCategory();
 } catch (Exception e) {
@@ -27,7 +39,7 @@ try {
 %>
 
 <jsp:include page="./../components/Header.jsp">
-	<jsp:param name="title" value="素材の投稿" />
+	<jsp:param name="title" value="素材の検索" />
 	<jsp:param name="style" value="post-material" />
 </jsp:include>
 <div id="main">
@@ -38,6 +50,9 @@ try {
 				<div class="centering-ttl-box">
 					<h2 class="centering-ttl">素材を検索</h2>
 				</div>
+				<%if(userId == -1){ %>
+					<p class="err-txt">ユーザ情報の取得に失敗しました。再度ログインしてください。</p>
+				<%}else{ %>
 				<div class="information">
 					<ul>
 						<form action="ReceiveInfo.jsp" method="GET">
@@ -80,6 +95,7 @@ try {
 
 					</ul>
 				</div>
+				<%} %>
 			</div>
 		</div>
 	</div>

@@ -127,7 +127,7 @@ else if(hasUser){
                         <div class="material-card-wrapper">
                             <%
                             int dataLength = history.loadPurchaseHistory(userId);
-                            for (int i = 0; i < dataLength; i++) {
+                            for (int i = 0; i < 10; i++) {
                             	boolean isAdult = false;
             					if(history.getIsAdult(i) == 1){
             						isAdult = true;

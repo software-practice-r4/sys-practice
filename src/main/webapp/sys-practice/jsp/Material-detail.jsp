@@ -102,7 +102,7 @@
 				<h2 class="lead-ttl">タイトル：<%=material.getMaterialName(0) %></h2>
 				<h2 class="lead-ttl">
 					投稿者名：
-					<a href="Profile.jsp?userId=<%=providerId %>" style="text-decoration:underline">
+					<a href="Profile.jsp?userId=<%=providerId %>" style="text-decoration:underline; pointer-events:none">
 						<%=material.getDisplayName(0) %>
 					</a>
 				</h2>

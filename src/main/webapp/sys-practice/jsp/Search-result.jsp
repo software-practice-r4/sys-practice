@@ -5,14 +5,6 @@
 <%
 /* エンコード */
 request.setCharacterEncoding("UTF-8");
-/* データ一覧の取得メソッド */
-try {
-	category.dispCategory();
-} catch (Exception e) {
-%>
-	System.err.println(e);
-<%
-}
 %>
 
 
@@ -65,7 +57,7 @@ try {
 					}
 					%>
 				</div>
-				<a href="Search.jsp" class="link-init">検索情報入力画面に戻る &gt;</a>
+				<a href="Search.jsp" class="link-color-init">検索情報入力画面に戻る &gt;</a>
 				<div class="next">
 					<a href="#">1..100</a>
 				</div>

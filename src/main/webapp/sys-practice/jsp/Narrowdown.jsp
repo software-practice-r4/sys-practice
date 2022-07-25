@@ -26,9 +26,6 @@ if (request.getParameter("ndIsAdult") != null && !request.getParameter("ndIsAdul
 }
 /*素材検索メソッド */
 try {
-	System.out.println(ndCategoryId);
-	System.out.println(ndCategoryId);
-	System.out.println(ndCategoryId);
 	nd.narrowDown(ndCategoryId, ndPrice, ndIsAdult);
 %>
 
@@ -103,7 +100,7 @@ try {
 					}
 					%>
 				</div>
-				<a href="List.jsp"><button type="button">一覧表示に戻る</button>></a>
+				<!-- <a href="List.jsp" class="link-color-init">一覧表示に戻る</button>></a> -->
 				<div class="next">
 					<a href="#">1..100</a>
 				</div>

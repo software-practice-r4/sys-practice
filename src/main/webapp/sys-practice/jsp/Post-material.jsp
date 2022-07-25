@@ -130,7 +130,7 @@ try {
 						}
 						%>
 						<%if (isSuccessed) {%>
-						<p class="err-txt">素材のアップロードに成功しました。</p>
+						<p class="success-txt">素材のアップロードに成功しました。</p>
 						<%
 						}
 						%>
